@@ -56,7 +56,49 @@ namespace Augment
         }
 
         /// <summary>
-        /// Instead of string.Format("Hello {0}", "Joe") "Hello {0}".FormatArgs("Joe") is handier
+        /// Instead of string.Format("Hello {0}", "Joe") "Hello {0}".FormatArgs("Joe") looks cleaner
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg0"></param>
+        /// <returns></returns>
+        public static string FormatArgs(this string s, object arg0)
+        {
+            Ensure.That(s).IsNotNull();
+
+            return string.Format(s, arg0);
+        }
+
+        /// <summary>
+        /// Instead of string.Format("Hello {0}", "Joe") "Hello {0}".FormatArgs("Joe") looks cleaner
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public static string FormatArgs(this string s, object arg0, object arg1)
+        {
+            Ensure.That(s).IsNotNull();
+
+            return string.Format(s, arg0, arg1);
+        }
+
+        /// <summary>
+        /// Instead of string.Format("Hello {0}", "Joe") "Hello {0}".FormatArgs("Joe") looks cleaner
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="arg0"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public static string FormatArgs(this string s, object arg0, object arg1, object arg2)
+        {
+            Ensure.That(s).IsNotNull();
+
+            return string.Format(s, arg0, arg1, arg2);
+        }
+
+        /// <summary>
+        /// Instead of string.Format("Hello {0}", "Joe") "Hello {0}".FormatArgs("Joe") looks cleaner
         /// </summary>
         /// <param name="s"></param>
         /// <param name="args"></param>

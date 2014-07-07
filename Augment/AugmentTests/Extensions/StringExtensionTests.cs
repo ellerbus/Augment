@@ -58,9 +58,27 @@ namespace Augment.Tests
         }
 
         [TestMethod]
-        public void StringExtension_FormatArgs_Test()
+        public void StringExtension_FormatArgs_Arg0_Test()
         {
             Assert.AreEqual("Hello Joe", "Hello {0}".FormatArgs("Joe"));
+        }
+
+        [TestMethod]
+        public void StringExtension_FormatArgs_Arg0_Arg1_Test()
+        {
+            Assert.AreEqual("Hello Joe", "{0} {1}".FormatArgs("Hello", "Joe"));
+        }
+
+        [TestMethod]
+        public void StringExtension_FormatArgs_Arg0_Arg1_Arg2_Test()
+        {
+            Assert.AreEqual("Hello Joe!", "{0} {1}{2}".FormatArgs("Hello", "Joe", '!'));
+        }
+
+        [TestMethod]
+        public void StringExtension_FormatArgs_Args_Test()
+        {
+            Assert.AreEqual("Hello Joe 1 2 3 4", "Hello {0} {1} {2} {3} {4}".FormatArgs("Joe", 1, 2, 3, 4));
         }
 
         [TestMethod]
