@@ -31,6 +31,21 @@ DateTime.Now.ToRelativeDateString()	//	3 seconds ago or 3 seconds from now
 6.Months().FromNow()
 ```
 
+[Enum](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/EnumExtensionTests.cs) Extensions
+
+``` csharp
+enum MyEnum
+{
+  Pass,
+  [System.ComponentModel.Description("Failed")]
+  Fail
+}
+
+string e = MyEnum.Pass.ToDescription();
+
+if (e.ToEnum<MyEnum> == MyEnum.Fail) // etc.
+```
+
 [Int](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/IntExtensionTests.cs), [Double](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/DoubleExtensionTests.cs) Extensions
 
 ``` csharp
