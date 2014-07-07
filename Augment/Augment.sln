@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment", "Augment\Augment.csproj", "{937B672A-3534-480F-B9B2-34E1094BDDAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Tests", "AugmentTests\Augment.Tests.csproj", "{01B3740F-61BA-4F73-8F6D-63806A333689}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{937B672A-3534-480F-B9B2-34E1094BDDAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{937B672A-3534-480F-B9B2-34E1094BDDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{937B672A-3534-480F-B9B2-34E1094BDDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{937B672A-3534-480F-B9B2-34E1094BDDAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B3740F-61BA-4F73-8F6D-63806A333689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B3740F-61BA-4F73-8F6D-63806A333689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B3740F-61BA-4F73-8F6D-63806A333689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B3740F-61BA-4F73-8F6D-63806A333689}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
