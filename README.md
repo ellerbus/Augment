@@ -14,7 +14,7 @@ from various sources (some known, others unfortunately forgotten).
 
 ### Samples
 
-DateTime, TimeSpan Extensions (by far the most numerous in the library)
+[DateTime](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/DateTimeExtensionTests.cs), [TimeSpan](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/TimeSpanExtensionTests.cs) Extensions
 
 ``` csharp
 DateTime.Now.BeginningOfDay()		// Week, Month, Year, Quarter
@@ -31,7 +31,7 @@ DateTime.Now.ToRelativeDateString()	//	3 seconds ago or 3 seconds from now
 6.Months().FromNow()
 ```
 
-Int, Double Extensions
+[Int](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/IntExtensionTests.cs), [Double](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/DoubleExtensionTests.cs) Extensions
 
 ``` csharp
 3.25.PercentOf(125.548)
@@ -39,7 +39,7 @@ Int, Double Extensions
 25.PercentOf(20000)
 ```
 
-String, StringBuilder Extensions
+[String](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/StringExtensionTests.cs), [StringBuilder](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/StringBuilderExtensionTests.cs) Extensions
 
 ``` csharp
 string text = "123abc";
