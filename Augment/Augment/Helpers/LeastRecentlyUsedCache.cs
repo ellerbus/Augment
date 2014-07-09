@@ -195,7 +195,7 @@ namespace Augment
         /// 
         /// </summary>
         /// <returns></returns>
-        private IEnumerable<TItem> GetValues()
+        private IEnumerable<TItem> GetItems()
         {
             foreach (Entry e in _linkedList)
             {
@@ -284,9 +284,9 @@ namespace Augment
         /// <summary>
         /// 
         /// </summary>
-        public IEnumerable<TItem> Values
+        public IEnumerable<TItem> Items
         {
-            get { return GetValues(); }
+            get { return GetItems(); }
         }
 
         /// <summary>
@@ -337,7 +337,7 @@ namespace Augment
         /// <returns></returns>
         public IEnumerator<TItem> GetEnumerator()
         {
-            return GetValues().GetEnumerator();
+            return GetItems().GetEnumerator();
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace Augment
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return GetValues().GetEnumerator();
+            return GetItems().GetEnumerator();
         }
 
         #endregion
