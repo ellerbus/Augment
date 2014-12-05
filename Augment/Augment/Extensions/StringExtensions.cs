@@ -11,15 +11,25 @@ namespace Augment
     {
         #region Misc
 
-        /// <summary>
-        /// Shortcut for string.IsNullOrEmpty()
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static bool IsNullOrEmpty(this string s)
-        {
-            return string.IsNullOrEmpty(s);
-        }
+        ///// <summary>
+        ///// Shortcut for string.IsNullOrEmpty()
+        ///// </summary>
+        ///// <param name="s"></param>
+        ///// <returns></returns>
+        //public static bool IsNullOrEmpty(this string s)
+        //{
+        //    return string.IsNullOrEmpty(s);
+        //}
+
+        ///// <summary>
+        ///// Shortcut for !string.IsNullOrEmpty()
+        ///// </summary>
+        ///// <param name="s"></param>
+        ///// <returns></returns>
+        //public static bool IsNotEmpty(this string s)
+        //{
+        //    return !string.IsNullOrEmpty(s);
+        //}
 
         /// <summary>
         /// Shortcut for string.IsNullOrWhiteSpace()
@@ -29,16 +39,6 @@ namespace Augment
         public static bool IsNullOrWhiteSpace(this string s)
         {
             return string.IsNullOrWhiteSpace(s);
-        }
-
-        /// <summary>
-        /// Shortcut for !string.IsNullOrEmpty()
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static bool IsNotEmpty(this string s)
-        {
-            return !string.IsNullOrEmpty(s);
         }
 
         /// <summary>

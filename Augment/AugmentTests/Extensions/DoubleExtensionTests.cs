@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Augment.Tests
@@ -33,6 +31,15 @@ namespace Augment.Tests
 
             Assert.AreEqual(6.0, 5.6.RoundTo(0, MidpointRounding.AwayFromZero));
             Assert.AreEqual(6.0, 5.6.RoundTo(0, MidpointRounding.ToEven));
+        }
+
+        [TestMethod]
+        public void DoubleExtensions_RoundOn_Test()
+        {
+            Assert.AreEqual(0.75, 0.80.RoundOn(0.25));
+            Assert.AreEqual(0.80, 0.80.RoundOn(0.05));
+            Assert.AreEqual(0.25, 0.255.RoundOn(0.25));
+            Assert.AreEqual(5.0, 6.25.RoundOn(5));
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Augment
         /// <returns></returns>
         public static string GetDescription(this Type type)
         {
-            if (type.FullName.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(type.FullName))
             {
                 return type.Name;
             }

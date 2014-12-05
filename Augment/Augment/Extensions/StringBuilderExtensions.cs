@@ -26,8 +26,8 @@ namespace Augment
             {
                 return sb.Append(trueValue);
             }
-            
-            if (!condition && falseValue.IsNotEmpty())
+
+            if (!condition && !string.IsNullOrEmpty(falseValue))
             {
                 return sb.Append(falseValue);
             }

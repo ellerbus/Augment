@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Extensions\EnumExtensionTests.cs" />
     <Compile Include="Extensions\DateTimeExtensionTests.cs" />
+    <Compile Include="Extensions\CollectionExtensionTests.cs" />
     <Compile Include="Helpers\LeastRecentlyUsedCacheTests.cs" />
     <Compile Include="Extensions\TimeSpanExtensionTests.cs" />
     <Compile Include="Extensions\IntExtensionTests.cs" />
