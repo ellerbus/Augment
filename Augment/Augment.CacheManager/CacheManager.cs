@@ -209,7 +209,7 @@ namespace Augment.Cache
         /// Removes the cached object. If found from cache (by the key) then the cached object is returned.
         /// Otherwise, null is returned
         /// </summary>
-        T Remove { get; }
+        T Remove();
 
         /// <summary>
         /// Retrieves the cached object. If found from cache (by the key) then the cached object is returned.
@@ -412,14 +412,11 @@ namespace Augment.Cache
                 return this;
             }
 
-            T ICacheRetrieval<T>.Remove
+            T ICacheRetrieval<T>.Remove()
             {
-                get
-                {
-                    string key = _key.Key;
+                string key = _key.Key;
 
-                    return (T)_provider.Remove(key);
-                }
+                return (T)_provider.Remove(key);
             }
 
             T ICacheRetrieval<T>.CachedObject

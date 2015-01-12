@@ -233,7 +233,7 @@ namespace Augment.Tests.Cache
             MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(user);
 
             //  act
-            var actual = SubjectUnderTest.Find<User>().By(123).Remove;
+            var actual = SubjectUnderTest.Find<User>().By(123).Remove();
 
             //  assert
             Assert.IsNotNull(actual);
@@ -267,7 +267,7 @@ namespace Augment.Tests.Cache
             MockProvider.Setup(x => x.Remove(AnyKey)).Returns(user);
 
             //  act
-            var actual = SubjectUnderTest.Find<User>().Remove;
+            var actual = SubjectUnderTest.Find<User>().Remove();
 
             //  assert
             Assert.IsNotNull(actual);
@@ -284,7 +284,7 @@ namespace Augment.Tests.Cache
             MockProvider.Setup(x => x.Remove(AnyKey)).Returns(null as User);
 
             //  act
-            var actual = SubjectUnderTest.Find<User>().Remove;
+            var actual = SubjectUnderTest.Find<User>().Remove();
 
             //  assert
             Assert.IsNull(actual);
