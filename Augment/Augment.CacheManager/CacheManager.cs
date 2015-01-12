@@ -350,13 +350,16 @@ namespace Augment.Cache
                 {
                     result = _loader();
 
-                    if (_absoluteExpiration == null)
+                    if (result != null)
                     {
-                        _provider.Add(key, _loader(), _slidingExpiration.Value, _priority);
-                    }
-                    else
-                    {
-                        _provider.Add(key, _loader(), DateTime.UtcNow.Add(_absoluteExpiration.Value), _priority);
+                        if (_absoluteExpiration == null)
+                        {
+                            _provider.Add(key, result, _slidingExpiration.Value, _priority);
+                        }
+                        else
+                        {
+                            _provider.Add(key, result, DateTime.UtcNow.Add(_absoluteExpiration.Value), _priority);
+                        }
                     }
                 }
 
