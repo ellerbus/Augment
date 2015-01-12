@@ -225,6 +225,25 @@ namespace Augment.Tests.Cache
         }
 
         [TestMethod]
+        public void CacheManger_Should_Find_Remove_Object_By_Key()
+        {
+            //  arrange
+            var user = Builder<User>.CreateNew().Build();
+
+            MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(user);
+
+            //  act
+            var actual = SubjectUnderTest.Find<User>().By(123).Remove;
+
+            //  assert
+            Assert.IsNotNull(actual);
+
+            Assert.AreSame(user, actual);
+
+            MockProvider.VerifyAll();
+        }
+
+        [TestMethod]
         public void CacheManger_Should_Not_Find_Object()
         {
             //  arrange

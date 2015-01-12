@@ -203,7 +203,7 @@ namespace Augment.Cache
         /// </summary>
         /// <param name="cacheKeys">The cache keys</param>
         /// <returns>Fluent interface for further configuring the cache</returns>
-        ICacheObject<T> By(params object[] cacheKeys);
+        ICacheRetrieval<T> By(params object[] cacheKeys);
 
         /// <summary>
         /// Removes the cached object. If found from cache (by the key) then the cached object is returned.
@@ -339,9 +339,33 @@ namespace Augment.Cache
                 _provider = provider;
             }
 
+            private T GetObject()
+            {
+                string key = _key.Key;
+
+                // try to get the query result from the cache
+                T result = (T)_provider.Get(key);
+
+                if (result == null && _loader != null)
+                {
+                    result = _loader();
+
+                    if (_absoluteExpiration == null)
+                    {
+                        _provider.Add(key, _loader(), _slidingExpiration.Value, _priority);
+                    }
+                    else
+                    {
+                        _provider.Add(key, _loader(), DateTime.UtcNow.Add(_absoluteExpiration.Value), _priority);
+                    }
+                }
+
+                return result;
+            }
+
             #endregion
 
-            #region ICacheObject<T>, ICacheRetrieval<T> Members
+            #region ICacheObject<T> Members
 
             public ICacheObject<T> By(params object[] cacheKeys)
             {
@@ -375,34 +399,20 @@ namespace Augment.Cache
                 return this;
             }
 
-            public T CachedObject
+            public T CachedObject { get { return GetObject(); } }
+
+            #endregion
+
+            #region ICacheRetrieval<T> Members
+
+            ICacheRetrieval<T> ICacheRetrieval<T>.By(params object[] cacheKeys)
             {
-                get
-                {
-                    string key = _key.Key;
+                _key.Add(cacheKeys);
 
-                    // try to get the query result from the cache
-                    T result = (T)_provider.Get(key);
-
-                    if (result == null && _loader != null)
-                    {
-                        result = _loader();
-
-                        if (_absoluteExpiration == null)
-                        {
-                            _provider.Add(key, _loader(), _slidingExpiration.Value, _priority);
-                        }
-                        else
-                        {
-                            _provider.Add(key, _loader(), DateTime.UtcNow.Add(_absoluteExpiration.Value), _priority);
-                        }
-                    }
-
-                    return result;
-                }
+                return this;
             }
 
-            public T Remove
+            T ICacheRetrieval<T>.Remove
             {
                 get
                 {
@@ -410,6 +420,11 @@ namespace Augment.Cache
 
                     return (T)_provider.Remove(key);
                 }
+            }
+
+            T ICacheRetrieval<T>.CachedObject
+            {
+                get { return GetObject(); }
             }
 
             #endregion
