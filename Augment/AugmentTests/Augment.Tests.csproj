@@ -90,9 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Augment.Cache\Augment.Cache.csproj">
+    <ProjectReference Include="..\Augment.CacheManager\Augment.CacheManager.csproj">
       <Project>{b9f72f9d-fada-4abb-b7e6-438cdab744c4}</Project>
-      <Name>Augment.Cache</Name>
+      <Name>Augment.CacheManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Augment\Augment.csproj">
       <Project>{937b672a-3534-480f-b9b2-34e1094bddad}</Project>
@@ -102,9 +102,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="License.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

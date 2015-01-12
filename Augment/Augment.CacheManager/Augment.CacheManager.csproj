@@ -7,8 +7,8 @@
     <ProjectGuid>{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Augment.Cache</RootNamespace>
-    <AssemblyName>Augment.Cache</AssemblyName>
+    <RootNamespace>Augment.CacheManager</RootNamespace>
+    <AssemblyName>Augment.CacheManager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Augment.Cache.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Augment.CacheManager.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
@@ -38,8 +38,8 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HttpRuntimeCacheProvider.cs" />
-    <Compile Include="CachingSingleFile.cs" />
+    <Compile Include="CacheManager.cs" />
+    <Compile Include="CacheProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
