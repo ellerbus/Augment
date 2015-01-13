@@ -26,8 +26,9 @@ namespace Augment.Tests.Cache
 
         private string AnyKey { get { return It.IsAny<string>(); } }
         private object AnyObject { get { return It.IsAny<object>(); } }
-        private DateTime AnyDateTime { get { return It.IsAny<DateTime>(); } }
         private TimeSpan AnyTimeSpan { get { return It.IsAny<TimeSpan>(); } }
+        private CacheExpiration AnyCacheExpiration { get { return It.IsAny<CacheExpiration>(); } }
+        private CachePriority AnyCachePriority { get { return It.IsAny<CachePriority>(); } }
 
         private string UserKey { get { return "Augment.Tests.Cache.CacheManagerTests+User;"; } }
         private string UserListKey { get { return "Augment.Tests.Cache.CacheManagerTests+User;Enumerable;"; } }
@@ -54,10 +55,12 @@ namespace Augment.Tests.Cache
 
             MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyDateTime, CachePriority.Normal));
+            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Absolute, CachePriority.Normal));
 
             //  act
-            var actual = SubjectUnderTest.Cache<User>(() => user).CachedObject;
+            var actual = SubjectUnderTest.Cache<User>(() => user)
+                .Expires(20.Minutes(), CacheExpiration.Absolute)
+                .CachedObject;
 
             //  assert
             Assert.IsNotNull(actual);
@@ -75,11 +78,12 @@ namespace Augment.Tests.Cache
 
             MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyDateTime, CachePriority.High));
+            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Absolute, CachePriority.High));
 
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
+                .Expires(20.Minutes(), CacheExpiration.Absolute)
                 .Priority(CachePriority.High)
                 .CachedObject;
 
@@ -99,12 +103,12 @@ namespace Augment.Tests.Cache
 
             MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CachePriority.Normal));
+            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Sliding, CachePriority.Normal));
 
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .ForSliding(TimeSpan.FromMinutes(20))
+                .Expires(20.Minutes(), CacheExpiration.Sliding)
                 .CachedObject;
 
             //  assert
@@ -123,12 +127,12 @@ namespace Augment.Tests.Cache
 
             MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CachePriority.High));
+            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Sliding, CachePriority.High));
 
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .ForSliding(TimeSpan.FromMinutes(20))
+                .Expires(20.Minutes(), CacheExpiration.Sliding)
                 .Priority(CachePriority.High)
                 .CachedObject;
 
@@ -302,7 +306,7 @@ namespace Augment.Tests.Cache
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Add(UserKey, user, AnyDateTime, CachePriority.Normal));
+            MockProvider.Setup(x => x.Add(UserKey, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).CachedObject;
@@ -318,7 +322,7 @@ namespace Augment.Tests.Cache
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Add(UserKey + "123;", user, AnyDateTime, CachePriority.Normal));
+            MockProvider.Setup(x => x.Add(UserKey + "123;", user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).By(123).CachedObject;
@@ -334,7 +338,7 @@ namespace Augment.Tests.Cache
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
 
-            MockProvider.Setup(x => x.Add(UserListKey, users, AnyDateTime, CachePriority.Normal));
+            MockProvider.Setup(x => x.Add(UserListKey, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).CachedObject;
@@ -350,7 +354,7 @@ namespace Augment.Tests.Cache
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
 
-            MockProvider.Setup(x => x.Add(UserListKey + "123,456;", users, AnyDateTime, CachePriority.Normal));
+            MockProvider.Setup(x => x.Add(UserListKey + "123,456;", users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).By(123, 456).CachedObject;

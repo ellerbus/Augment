@@ -13,6 +13,22 @@ namespace Augment.Cache
     /// Specifies the relative priority of items stored in the System.Web.Caching.Cache
     /// object.
     /// </summary>
+    public enum CacheExpiration
+    {
+        /// <summary>
+        /// Absolute Cache Duration
+        /// </summary>
+        Absolute,
+        /// <summary>
+        /// Sliding Cache Duration
+        /// </summary>
+        Sliding
+    }
+
+    /// <summary>
+    /// Specifies the relative priority of items stored in the System.Web.Caching.Cache
+    /// object.
+    /// </summary>
     public enum CachePriority
     {
         /// <summary>
@@ -72,34 +88,15 @@ namespace Augment.Cache
     /// </summary>
     public interface ICacheProvider
     {
-        #region Members
-
-        /// <summary>
-        /// Determins if a cache entry exists
-        /// </summary>
-        /// <param name="key">A unique identifier for the cache entry.</param>
-        /// <returns><c>true</c> if found, otherwise <c>false</c></returns>
-        bool Contains(string key);
-
         /// <summary>
         /// Inserts a cache entry into the cache without overwriting any existing cache entry.
         /// </summary>
         /// <param name="key">A unique identifier for the cache entry.</param>
         /// <param name="value">The object to insert.</param>
-        /// <param name="absoluteExpiration">Absolute expiration value</param>
+        /// <param name="expirationTime">Absolute expiration value</param>
+        /// <param name="expires">Cache Expiration logic</param>
         /// <param name="priority">Cache Removal Priority</param>
-        /// <returns><c>true</c> if insertion succeeded, or <c>false</c> if there is an already an entry in the cache that has the same key as key.</returns>
-        void Add(string key, object value, DateTime absoluteExpiration, CachePriority priority);
-
-        /// <summary>
-        /// Inserts a cache entry into the cache without overwriting any existing cache entry.
-        /// </summary>
-        /// <param name="key">A unique identifier for the cache entry.</param>
-        /// <param name="value">The object to insert.</param>
-        /// <param name="slidingExpiration">Sliding expiration value</param>
-        /// <param name="priority">Cache Removal Priority</param>
-        /// <returns><c>true</c> if insertion succeeded, or <c>false</c> if there is an already an entry in the cache that has the same key as key.</returns>
-        void Add(string key, object value, TimeSpan slidingExpiration, CachePriority priority);
+        void Add(string key, object value, TimeSpan expirationTime, CacheExpiration expires, CachePriority priority);
 
         /// <summary>
         /// Gets the cache value for the specified key
@@ -120,8 +117,6 @@ namespace Augment.Cache
         /// </summary>
         /// <returns></returns>
         IEnumerable<string> GetAllKeys();
-
-        #endregion
     }
 
     /// <summary>
@@ -166,17 +161,12 @@ namespace Augment.Cache
         ICacheObject<T> By(params object[] cacheKeys);
 
         /// <summary>
-        /// Specifies the absolute duration of the cache.
+        /// Specifies the duration and duration type of the cache.
         /// </summary>
+        /// <param name="cacheDuration">Duration before cache expires</param>
+        /// <param name="cacheExpiration">Duration rule before cache expires</param>
         /// <returns>Fluent interface for further configuring the cache</returns>
-        ICacheObject<T> For(TimeSpan cacheTime);
-
-        /// <summary>
-        /// Specifies the sliding duration of the cache, i.e., the time after which the cache will be removed
-        /// if it has not been accessed.
-        /// </summary>
-        /// <returns>Fluent interface for further configuring the cache</returns>
-        ICacheObject<T> ForSliding(TimeSpan cacheTime);
+        ICacheObject<T> Expires(TimeSpan cacheDuration, CacheExpiration cacheExpiration);
 
         /// <summary>
         /// Specifies the cache priority. 
@@ -316,10 +306,12 @@ namespace Augment.Cache
 
             private Func<T> _loader;
 
-            private CachePriority _priority = CachePriority.Normal;
 
-            private TimeSpan? _absoluteExpiration = TimeSpan.FromMinutes(20);
-            private TimeSpan? _slidingExpiration;
+            private TimeSpan? _expirationDuration = TimeSpan.FromMinutes(20);
+
+            private CacheExpiration _expires = CacheExpiration.Absolute;
+
+            private CachePriority _priority = CachePriority.Normal;
 
             #endregion
 
@@ -352,14 +344,7 @@ namespace Augment.Cache
 
                     if (result != null)
                     {
-                        if (_absoluteExpiration == null)
-                        {
-                            _provider.Add(key, result, _slidingExpiration.Value, _priority);
-                        }
-                        else
-                        {
-                            _provider.Add(key, result, DateTime.UtcNow.Add(_absoluteExpiration.Value), _priority);
-                        }
+                        _provider.Add(key, result, _expirationDuration.Value, _expires, _priority);
                     }
                 }
 
@@ -377,20 +362,11 @@ namespace Augment.Cache
                 return this;
             }
 
-            public ICacheObject<T> For(TimeSpan cacheTime)
+            public ICacheObject<T> Expires(TimeSpan cacheDuration, CacheExpiration cacheExpiration)
             {
-                _absoluteExpiration = cacheTime;
+                _expirationDuration = cacheDuration;
 
-                _slidingExpiration = null;
-
-                return this;
-            }
-
-            public ICacheObject<T> ForSliding(TimeSpan cacheTime)
-            {
-                _slidingExpiration = cacheTime;
-
-                _absoluteExpiration = null;
+                _expires = cacheExpiration;
 
                 return this;
             }

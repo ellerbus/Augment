@@ -22,34 +22,23 @@ namespace Augment.Cache
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <returns></returns>
-        public bool Contains(string key)
-        {
-            return Get(key) != null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
         /// <param name="value"></param>
-        /// <param name="absoluteExpiration"></param>
+        /// <param name="duration"></param>
+        /// <param name="expires"></param>
         /// <param name="priority"></param>
-        public void Add(string key, object value, DateTime absoluteExpiration, CachePriority priority)
+        public void Add(string key, object value, TimeSpan duration, CacheExpiration expires, CachePriority priority)
         {
-            HttpRuntime.Cache.Add(key, value, null, absoluteExpiration, NoSliding, (CacheItemPriority)priority, null);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="slidingExpiration"></param>
-        /// <param name="priority"></param>
-        public void Add(string key, object value, TimeSpan slidingExpiration, CachePriority priority)
-        {
-            HttpRuntime.Cache.Add(key, value, null, NoExpiration, slidingExpiration, (CacheItemPriority)priority, null);
+            switch (expires)
+            {
+                case CacheExpiration.Absolute:
+                    HttpRuntime.Cache.Add(key, value, null, DateTime.UtcNow.Add(duration), NoSliding, (CacheItemPriority)priority, null);
+                    break;
+                case CacheExpiration.Sliding:
+                    HttpRuntime.Cache.Add(key, value, null, NoExpiration, duration, (CacheItemPriority)priority, null);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown Cache Expiration " + expires);
+            }
         }
 
         /// <summary>
