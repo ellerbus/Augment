@@ -59,7 +59,7 @@ namespace Augment.Tests.Cache
 
             //  act
             var actual = SubjectUnderTest.Cache<User>(() => user)
-                .Expires(20.Minutes(), CacheExpiration.Absolute)
+                .WithDurationOf(20.Minutes())
                 .CachedObject;
 
             //  assert
@@ -83,8 +83,7 @@ namespace Augment.Tests.Cache
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .Expires(20.Minutes(), CacheExpiration.Absolute)
-                .Priority(CachePriority.High)
+                .WithDurationOf(20.Minutes(), cachePriority: CachePriority.High)
                 .CachedObject;
 
             //  assert
@@ -108,7 +107,7 @@ namespace Augment.Tests.Cache
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .Expires(20.Minutes(), CacheExpiration.Sliding)
+                .WithDurationOf(20.Minutes(), CacheExpiration.Sliding)
                 .CachedObject;
 
             //  assert
@@ -132,8 +131,7 @@ namespace Augment.Tests.Cache
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .Expires(20.Minutes(), CacheExpiration.Sliding)
-                .Priority(CachePriority.High)
+                .WithDurationOf(20.Minutes(), CacheExpiration.Sliding, CachePriority.High)
                 .CachedObject;
 
             //  assert

@@ -165,15 +165,9 @@ namespace Augment.Cache
         /// </summary>
         /// <param name="cacheDuration">Duration before cache expires</param>
         /// <param name="cacheExpiration">Duration rule before cache expires</param>
+        /// <param name="cachePriority">Priority for cache removal</param>
         /// <returns>Fluent interface for further configuring the cache</returns>
-        ICacheObject<T> Expires(TimeSpan cacheDuration, CacheExpiration cacheExpiration);
-
-        /// <summary>
-        /// Specifies the cache priority. 
-        /// </summary>
-        /// <seealso cref="CachePriority"/>
-        /// <returns>Fluent interface for further configuring the cache</returns>
-        ICacheObject<T> Priority(CachePriority cachePriority);
+        ICacheObject<T> WithDurationOf(TimeSpan cacheDuration, CacheExpiration cacheExpiration = CacheExpiration.Absolute, CachePriority cachePriority = CachePriority.Normal);
 
         /// <summary>
         /// Retrieves the cached object. If found from cache (by the key) then the cached object is returned.
@@ -362,18 +356,13 @@ namespace Augment.Cache
                 return this;
             }
 
-            public ICacheObject<T> Expires(TimeSpan cacheDuration, CacheExpiration cacheExpiration)
+            public ICacheObject<T> WithDurationOf(TimeSpan cacheDuration, CacheExpiration cacheExpiration = CacheExpiration.Absolute, CachePriority cachePriority = CachePriority.Normal)
             {
                 _expirationDuration = cacheDuration;
 
                 _expires = cacheExpiration;
 
-                return this;
-            }
-
-            public ICacheObject<T> Priority(CachePriority priority)
-            {
-                _priority = priority;
+                _priority = cachePriority;
 
                 return this;
             }
