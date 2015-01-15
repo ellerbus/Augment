@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace Augment.Caching
 {
     /// <summary>
@@ -20,8 +15,8 @@ namespace Augment.Caching
         ICacheRetrieval<T> By(params object[] cacheKeys);
 
         /// <summary>
-        /// Removes the cached object. If found from cache (by the key) then the cached object is returned.
-        /// Otherwise, null is returned
+        /// Removes all cached objects where the start of the cache key
+        /// match the wildcard provided by the cache retreival
         /// </summary>
         void RemoveAll();
 
