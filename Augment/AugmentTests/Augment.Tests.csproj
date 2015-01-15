@@ -90,9 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Augment.CacheManager\Augment.CacheManager.csproj">
+    <ProjectReference Include="..\Augment.Caching\Augment.Caching.csproj">
       <Project>{b9f72f9d-fada-4abb-b7e6-438cdab744c4}</Project>
-      <Name>Augment.CacheManager</Name>
+      <Name>Augment.Caching</Name>
     </ProjectReference>
     <ProjectReference Include="..\Augment\Augment.csproj">
       <Project>{937b672a-3534-480f-b9b2-34e1094bddad}</Project>

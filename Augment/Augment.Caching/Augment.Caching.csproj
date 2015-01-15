@@ -7,8 +7,8 @@
     <ProjectGuid>{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Augment.CacheManager</RootNamespace>
-    <AssemblyName>Augment.CacheManager</AssemblyName>
+    <RootNamespace>Augment.Caching</RootNamespace>
+    <AssemblyName>Augment.Caching</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,19 +30,37 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Augment.CacheManager.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Augment.Caching.xml</DocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheExpiration.cs" />
+    <Compile Include="CacheImplementation.cs" />
+    <Compile Include="CacheKey.cs" />
+    <Compile Include="ICacheRetrieval.cs" />
+    <Compile Include="ICacheObject.cs" />
+    <Compile Include="ICacheManager.cs" />
+    <Compile Include="ICacheProvider.cs" />
+    <Compile Include="CachePriority.cs" />
     <Compile Include="CacheManager.cs" />
-    <Compile Include="CacheProviders.cs" />
+    <Compile Include="MemoryCacheProvider.cs" />
+    <Compile Include="HttpRuntimeCacheProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto end
+
+cd $(ProjectDir)
+$(SolutionDir)NuGet.exe pack $(ProjectFileName) -OutputDirectory "$(SolutionDir)nuspecs" -Properties Configuration=Release
+
+:end</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

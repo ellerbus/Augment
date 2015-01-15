@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Augment.Cache;
+using Augment.Caching;
 using AutoMoq;
 using FizzWare.NBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -59,7 +59,7 @@ namespace Augment.Tests.Cache
 
             //  act
             var actual = SubjectUnderTest.Cache<User>(() => user)
-                .WithDurationOf(20.Minutes())
+                .DurationOf(20.Minutes())
                 .CachedObject;
 
             //  assert
@@ -83,7 +83,7 @@ namespace Augment.Tests.Cache
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .WithDurationOf(20.Minutes(), cachePriority: CachePriority.High)
+                .DurationOf(20.Minutes(), cachePriority: CachePriority.High)
                 .CachedObject;
 
             //  assert
@@ -107,7 +107,7 @@ namespace Augment.Tests.Cache
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .WithDurationOf(20.Minutes(), CacheExpiration.Sliding)
+                .DurationOf(20.Minutes(), CacheExpiration.Sliding)
                 .CachedObject;
 
             //  assert
@@ -131,7 +131,7 @@ namespace Augment.Tests.Cache
             //  act
             var actual = SubjectUnderTest
                 .Cache<User>(() => user)
-                .WithDurationOf(20.Minutes(), CacheExpiration.Sliding, CachePriority.High)
+                .DurationOf(20.Minutes(), CacheExpiration.Sliding, CachePriority.High)
                 .CachedObject;
 
             //  assert
@@ -376,7 +376,7 @@ namespace Augment.Tests.Cache
             MockProvider.Setup(x => x.Remove(UserListKey)).Returns(null as User);
 
             //  act
-            SubjectUnderTest.RemoveAll<User>();
+            SubjectUnderTest.Find<User>().RemoveAll();
 
             //  assert
 
@@ -396,7 +396,52 @@ namespace Augment.Tests.Cache
             MockProvider.Setup(x => x.Remove(UserListKey)).Returns(null as User);
 
             //  act
-            SubjectUnderTest.RemoveAll<IList<User>>();
+            SubjectUnderTest.Find<IList<User>>().RemoveAll();
+
+            //  assert
+
+            MockProvider.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CacheManger_Should_RemoveAll_User_By()
+        {
+            //  arrange
+
+            MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
+                UserKey,
+                UserKey + "123;",
+                UserKey + "456;",
+                UserListKey
+            });
+
+            MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(null as User);
+
+            //  act
+            SubjectUnderTest.Find<User>().By(123).RemoveAll();
+
+            //  assert
+
+            MockProvider.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CacheManger_Should_RemoveAll_User_ByWildcard()
+        {
+            //  arrange
+
+            MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
+                UserKey,
+                UserKey + "123,456;",
+                UserKey + "123,789;",
+                UserListKey
+            });
+
+            MockProvider.Setup(x => x.Remove(UserKey + "123,456;")).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(UserKey + "123,789;")).Returns(null as User);
+
+            //  act
+            SubjectUnderTest.Find<User>().By(123, "*").RemoveAll();
 
             //  assert
 

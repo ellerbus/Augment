@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Caching;
 
-namespace Augment.Cache
+namespace Augment.Caching
 {
     /// <summary>
     /// Implemented for HttpRuntime Cache Provider
