@@ -132,13 +132,26 @@ namespace Augment.Caching
         {
             string key = _key.Key;
 
-            Regex regex = GetRegexWildcard(key);
-
-            foreach (string k in _provider.GetAllKeys())
+            if (key.Contains("*"))
             {
-                if (regex.IsMatch(k))
+                Regex regex = GetRegexWildcard(key);
+
+                foreach (string k in _provider.GetAllKeys())
                 {
-                    _provider.Remove(k);
+                    if (regex.IsMatch(k))
+                    {
+                        _provider.Remove(k);
+                    }
+                }
+            }
+            else
+            {
+                foreach (string k in _provider.GetAllKeys())
+                {
+                    if (k.StartsWith(key))
+                    {
+                        _provider.Remove(k);
+                    }
                 }
             }
         }

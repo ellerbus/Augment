@@ -74,7 +74,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Cache\CacheManagerTests.cs" />
+    <Compile Include="Caching\CacheManagerTests.cs" />
     <Compile Include="Extensions\EnumExtensionTests.cs" />
     <Compile Include="Extensions\DateTimeExtensionTests.cs" />
     <Compile Include="Extensions\CollectionExtensionTests.cs" />

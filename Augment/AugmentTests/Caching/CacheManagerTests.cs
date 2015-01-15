@@ -6,7 +6,7 @@ using FizzWare.NBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Augment.Tests.Cache
+namespace Augment.Tests.Caching
 {
     [TestClass]
     public class CacheManagerTests
@@ -30,8 +30,8 @@ namespace Augment.Tests.Cache
         private CacheExpiration AnyCacheExpiration { get { return It.IsAny<CacheExpiration>(); } }
         private CachePriority AnyCachePriority { get { return It.IsAny<CachePriority>(); } }
 
-        private string UserKey { get { return "Augment.Tests.Cache.CacheManagerTests+User;"; } }
-        private string UserListKey { get { return "Augment.Tests.Cache.CacheManagerTests+User;Enumerable;"; } }
+        private string UserKey { get { return typeof(User).FullName + ";"; } }
+        private string UserListKey { get { return UserKey + "Enumerable;"; } }
 
         [TestInitialize]
         public void TestInitialize()
