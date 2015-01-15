@@ -12,6 +12,8 @@ into a common library and share with anyone who is interested.  This
 is a small collection of common code I've collected over the years
 from various sources (some known, others unfortunately forgotten).
 
+See the [WIKI](https://github.com/ellerbus/Augment/wiki/Augment-Extension-Library) for more details (otherwise check out the code itself)
+
 ### Samples
 
 [DateTime](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/DateTimeExtensionTests.cs), [TimeSpan](https://github.com/ellerbus/Augment/blob/master/Augment/AugmentTests/Extensions/TimeSpanExtensionTests.cs) Extensions
@@ -26,7 +28,8 @@ DateTime.Now.IsWeekend()
 
 DateTime.Now.ToRelativeDateString()	//	3 seconds ago or 3 seconds from now
 
-3.Seconds().Ago()
+3.Seconds()							//	returns TimeSpan
+3.Seconds().Ago()					//	returns DateTime
 
 6.Months().FromNow()
 ```
