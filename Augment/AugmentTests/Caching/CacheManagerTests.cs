@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Augment.Caching;
 using AutoMoq;
 using FizzWare.NBuilder;
@@ -30,9 +32,6 @@ namespace Augment.Tests.Caching
         private CacheExpiration AnyCacheExpiration { get { return It.IsAny<CacheExpiration>(); } }
         private CachePriority AnyCachePriority { get { return It.IsAny<CachePriority>(); } }
 
-        private string UserKey { get { return typeof(User).FullName + ";"; } }
-        private string UserListKey { get { return UserKey + "Enumerable;"; } }
-
         [TestInitialize]
         public void TestInitialize()
         {
@@ -41,6 +40,16 @@ namespace Augment.Tests.Caching
             SubjectUnderTest = Mocker.Create<CacheManager>();
 
             MockProvider = Mocker.GetMock<ICacheProvider>();
+        }
+
+        private string CreateKey(bool isEnumerable, params object[] keys)
+        {
+            StringBuilder key = new StringBuilder(typeof(User).FullName + ";")
+                .Append(keys.Select(x => x.ToString()).Join(","))
+                .Append(";")
+                .AppendIf(isEnumerable, "+");
+
+            return key.ToString();
         }
 
         #endregion
@@ -213,7 +222,7 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(UserKey + "123;")).Returns(user);
+            MockProvider.Setup(x => x.Get(CreateKey(false, 123))).Returns(user);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().By(123).CachedObject;
@@ -232,7 +241,7 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(user);
+            MockProvider.Setup(x => x.Remove(CreateKey(false, 123))).Returns(user);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().By(123).Remove();
@@ -304,7 +313,7 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Add(UserKey, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider.Setup(x => x.Add(CreateKey(false), user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).CachedObject;
@@ -320,7 +329,7 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Add(UserKey + "123;", user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider.Setup(x => x.Add(CreateKey(false, 123), user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).By(123).CachedObject;
@@ -336,7 +345,7 @@ namespace Augment.Tests.Caching
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
 
-            MockProvider.Setup(x => x.Add(UserListKey, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider.Setup(x => x.Add(CreateKey(true), users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).CachedObject;
@@ -352,7 +361,7 @@ namespace Augment.Tests.Caching
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
 
-            MockProvider.Setup(x => x.Add(UserListKey + "123,456;", users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider.Setup(x => x.Add(CreateKey(true, 123, 456), users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).By(123, 456).CachedObject;
@@ -368,12 +377,11 @@ namespace Augment.Tests.Caching
             //  arrange
 
             MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
-                UserKey,
-                UserListKey
+                CreateKey(false), CreateKey(true)
             });
 
-            MockProvider.Setup(x => x.Remove(UserKey)).Returns(null as User);
-            MockProvider.Setup(x => x.Remove(UserListKey)).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(CreateKey(false))).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(CreateKey(true))).Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<User>().RemoveAll();
@@ -389,11 +397,10 @@ namespace Augment.Tests.Caching
             //  arrange
 
             MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
-                UserKey,
-                UserListKey
+                CreateKey(false), CreateKey(true)
             });
 
-            MockProvider.Setup(x => x.Remove(UserListKey)).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(CreateKey(true))).Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<IList<User>>().RemoveAll();
@@ -409,13 +416,11 @@ namespace Augment.Tests.Caching
             //  arrange
 
             MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
-                UserKey,
-                UserKey + "123;",
-                UserKey + "456;",
-                UserListKey
+                CreateKey(false), CreateKey(true),
+                CreateKey(false, 123), CreateKey(false, 456)                
             });
 
-            MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(CreateKey(false, 123))).Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<User>().By(123).RemoveAll();
@@ -431,14 +436,12 @@ namespace Augment.Tests.Caching
             //  arrange
 
             MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
-                UserKey,
-                UserKey + "123,456;",
-                UserKey + "123,789;",
-                UserListKey
+                CreateKey(false), CreateKey(true),
+                CreateKey(false, 123,456), CreateKey(false, 123,789)
             });
 
-            MockProvider.Setup(x => x.Remove(UserKey + "123,456;")).Returns(null as User);
-            MockProvider.Setup(x => x.Remove(UserKey + "123,789;")).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(CreateKey(false, 123, 456))).Returns(null as User);
+            MockProvider.Setup(x => x.Remove(CreateKey(false, 123, 789))).Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<User>().By(123, "*").RemoveAll();

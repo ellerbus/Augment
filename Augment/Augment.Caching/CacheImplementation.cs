@@ -43,7 +43,7 @@ namespace Augment.Caching
 
         private T GetObject()
         {
-            string key = _key.Key;
+            string key = _key.CreateKey();
 
             // try to get the query result from the cache
             T result = (T)_provider.Get(key);
@@ -59,31 +59,6 @@ namespace Augment.Caching
             }
 
             return result;
-        }
-
-        private Regex GetRegexWildcard(string s)
-        {
-            int pos = s.IndexOf("**");
-
-            while (pos >= 0)
-            {
-                s = s.Replace("**", "*");
-
-                pos = s.IndexOf("**");
-            }
-
-            //  escape all regex characters except * and ?
-            s = Regex.Replace(s, @"[\.\$\^\{\[\(\|\)\]\}\+\\]", m => @"\" + m.Value, RegexOptions.Compiled);
-
-            //  replace * with .*
-            s = Regex.Replace(s, @"[\*]", m => "." + m.Value, RegexOptions.Compiled);
-
-            //  replace ? with .
-            s = Regex.Replace(s, @"[\?]", m => ".", RegexOptions.Compiled);
-
-            s = "^" + s;
-
-            return new Regex(s, RegexOptions.Compiled);
         }
 
         #endregion
@@ -123,35 +98,22 @@ namespace Augment.Caching
 
         T ICacheRetrieval<T>.Remove()
         {
-            string key = _key.Key;
+            string key = _key.CreateKey();
 
             return (T)_provider.Remove(key);
         }
 
         void ICacheRetrieval<T>.RemoveAll()
         {
-            string key = _key.Key;
+            string pattern = _key.CreateRemoveAllKeyPattern();
 
-            if (key.Contains("*"))
-            {
-                Regex regex = GetRegexWildcard(key);
+            Regex regex = new Regex(pattern, RegexOptions.Compiled);
 
-                foreach (string k in _provider.GetAllKeys())
-                {
-                    if (regex.IsMatch(k))
-                    {
-                        _provider.Remove(k);
-                    }
-                }
-            }
-            else
+            foreach (string k in _provider.GetAllKeys())
             {
-                foreach (string k in _provider.GetAllKeys())
+                if (regex.IsMatch(k))
                 {
-                    if (k.StartsWith(key))
-                    {
-                        _provider.Remove(k);
-                    }
+                    _provider.Remove(k);
                 }
             }
         }
