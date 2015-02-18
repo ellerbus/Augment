@@ -18,8 +18,22 @@ namespace Augment.Tests.Caching
         private class User
         {
             public int Id { get; set; }
+            public string WindowsId { get; set; }
             public string Name { get; set; }
             public DateTime Date { get; set; }
+        }
+
+        private class UserCollection : MultiKeyCollection<User, int, string>
+        {
+            protected override int GetPrimaryKey(User item)
+            {
+                return item.Id;
+            }
+
+            protected override string GetUniqueKey(User item)
+            {
+                return item.WindowsId;
+            }
         }
 
         private AutoMoqer Mocker { get; set; }
@@ -44,10 +58,15 @@ namespace Augment.Tests.Caching
 
         private string CreateKey(bool isEnumerable, params object[] keys)
         {
-            StringBuilder key = new StringBuilder(typeof(User).FullName + ";")
+            return CreateKey(typeof(User), isEnumerable, keys);
+        }
+
+        private string CreateKey(Type type, bool isEnumerable, params object[] keys)
+        {
+            StringBuilder key = new StringBuilder(type.FullName + ";")
                 .Append(keys.Select(x => x.ToString()).Join(","))
                 .Append(";")
-                .AppendIf(isEnumerable, "+");
+                .AppendIf(isEnumerable, typeof(IEnumerable<>).Name);
 
             return key.ToString();
         }
@@ -313,10 +332,32 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
+            MockProvider.Setup(x => x.Get(CreateKey(false))).Returns(null as User);
+
             MockProvider.Setup(x => x.Add(CreateKey(false), user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).CachedObject;
+
+            //  assert
+
+            MockProvider.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CacheManger_Should_Cache_Item_With_BaseKey_Using_ValueTypes()
+        {
+            //  arrange
+            var idList = Builder<int>.CreateListOfSize(10).Build();
+
+            string key = CreateKey(typeof(IList<int>), true);
+
+            MockProvider.Setup(x => x.Get(key)).Returns(null as IList<int>);
+
+            MockProvider.Setup(x => x.Add(key, idList, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+
+            //  act
+            var actual = SubjectUnderTest.Cache(() => idList).CachedObject;
 
             //  assert
 
@@ -329,7 +370,11 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Add(CreateKey(false, 123), user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            var key = CreateKey(false, 123);
+
+            MockProvider.Setup(x => x.Get(key)).Returns(null as User);
+
+            MockProvider.Setup(x => x.Add(key, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).By(123).CachedObject;
@@ -344,6 +389,8 @@ namespace Augment.Tests.Caching
         {
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
+
+            MockProvider.Setup(x => x.Get(CreateKey(true))).Returns(null as IList<User>);
 
             MockProvider.Setup(x => x.Add(CreateKey(true), users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
@@ -361,12 +408,18 @@ namespace Augment.Tests.Caching
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
 
-            MockProvider.Setup(x => x.Add(CreateKey(true, 123, 456), users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            var key = CreateKey(true, 123, 456);
+
+            MockProvider.Setup(x => x.Get(key)).Returns(null as IList<User>);
+
+            MockProvider.Setup(x => x.Add(key, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).By(123, 456).CachedObject;
 
             //  assert
+
+            System.Diagnostics.Debug.WriteLine(actual.Count);
 
             MockProvider.VerifyAll();
         }
@@ -393,6 +446,25 @@ namespace Augment.Tests.Caching
 
         [TestMethod]
         public void CacheManger_Should_RemoveAll_User_List()
+        {
+            //  arrange
+
+            MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
+                CreateKey(false), CreateKey(true)
+            });
+
+            MockProvider.Setup(x => x.Remove(CreateKey(true))).Returns(null as User);
+
+            //  act
+            SubjectUnderTest.Find<IList<User>>().RemoveAll();
+
+            //  assert
+
+            MockProvider.VerifyAll();
+        }
+
+        [TestMethod]
+        public void CacheManger_Should_RemoveAll_User_Collection()
         {
             //  arrange
 
