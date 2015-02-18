@@ -25,7 +25,7 @@ namespace Augment
         /// <param name="item"></param>
         /// <returns></returns>
         protected abstract TPrimaryKey GetPrimaryKey(TItem item);
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -46,10 +46,27 @@ namespace Augment
         /// </summary>
         /// <param name="index"></param>
         /// <param name="item"></param>
+        protected override void InsertItem(int index, TItem item)
+        {
+            base.InsertItem(index, item);
+
+            UpdateDictionaries(item);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="item"></param>
         protected override void SetItem(int index, TItem item)
         {
             base.SetItem(index, item);
 
+            UpdateDictionaries(item);
+        }
+
+        private void UpdateDictionaries(TItem item)
+        {
             TPrimaryKey pk = GetPrimaryKey(item);
 
             TUniqueKey uq = GetUniqueKey(item);
