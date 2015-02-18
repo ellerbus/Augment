@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,14 +6,28 @@ using System.Text.RegularExpressions;
 
 namespace Augment.Caching
 {
-
     class CacheKey
     {
-        #region Members
+        #region Static Members
+
+        private static object _lock = new object();
+
+        private static Dictionary<Type, TypeMap> _baseTypeMaps = new Dictionary<Type, TypeMap>();
 
         private const string _delimiter = ";";
 
-        private const string _enumerableKey = "+";
+        private static readonly string _enumerableKey = typeof(IEnumerable<>).Name;
+
+        class TypeMap
+        {
+            public Type CacheType;
+            public Type BaseType;
+            public bool IsEnumerable;
+        }
+
+        #endregion
+
+        #region Members
 
         private Type _type;
 
@@ -32,30 +45,55 @@ namespace Augment.Caching
         {
             _type = type;
 
-            _baseType = GetBaseType(type);
+            lock (_lock)
+            {
+                TypeMap bt = null;
+
+                if (!_baseTypeMaps.TryGetValue(type, out bt))
+                {
+                    bt = GetBaseType(type);
+
+                    _baseTypeMaps.Add(type, bt);
+                }
+
+                _baseType = bt.BaseType;
+
+                _isEnumerable = bt.IsEnumerable;
+            }
         }
 
         #endregion
 
         #region Methods
 
-        private Type GetBaseType(Type type)
+        private static TypeMap GetBaseType(Type type)
         {
-            if (!type.IsValueType && type.IsGenericType && IsImplementationOf(type, typeof(IEnumerable)))
+            TypeMap bt = new TypeMap
             {
-                _isEnumerable = true;
+                CacheType = type,
+                BaseType = type
+            };
 
-                Type tg = type.GetGenericArguments().First(x => !x.IsValueType);
+            foreach (Type t in type.GetInterfaces().Where(x => x.IsGenericType))
+            {
+                if (t.Name == typeof(IEnumerable<>).Name)
+                {
+                    bt.IsEnumerable = true;
 
-                return tg;
+                    Type[] types = t.GetGenericArguments();
+
+                    if (types.Length == 1 && types[0].Name == typeof(KeyValuePair<,>).Name)
+                    {
+                        types = types[0].GetGenericArguments();
+                    }
+
+                    bt.BaseType = types.FirstOrDefault(x => !x.IsValueType) ?? type;
+
+                    break;
+                }
             }
 
-            return type;
-        }
-
-        private static bool IsImplementationOf(Type baseType, Type interfaceType)
-        {
-            return baseType.GetInterfaces().Any(interfaceType.Equals);
+            return bt;
         }
 
         public void Add(params object[] cacheKeys)
@@ -78,8 +116,11 @@ namespace Augment.Caching
                 key.Append(_enumerableKey);
             }
 
+            System.Diagnostics.Debug.WriteLine(key.ToString());
+
             return key.ToString();
         }
+
         /// <summary>
         /// Gets the cache-key Namespace.Object;by,*,by;+
         /// </summary>
@@ -87,14 +128,16 @@ namespace Augment.Caching
         {
             StringBuilder key = CreateKey(true);
 
-            key.Append(@"\").Append(_enumerableKey);
-
-            if (!_isEnumerable)
+            if (_isEnumerable)
+            {
+                key.Append(_enumerableKey);
+            }
+            else
             {
                 //  this is the base type and we want to
                 //  remove all, so assuming anything
                 //  of type BaseType
-                key.Append("?");
+                key.Append(".*");
             }
 
             return key.Insert(0, "^").Append("$").ToString();
