@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EnsureThat;
 
 namespace Augment
@@ -18,6 +14,8 @@ namespace Augment
     [DebuggerDisplay("Range=({Start},{End})")]
     public sealed class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
     {
+        #region Constructors
+
         /// <summary>
         /// Creates a new instance.  If end is less than start, the values are reversed.
         /// </summary>
@@ -36,6 +34,10 @@ namespace Augment
                 End = start;
             }
         }
+
+        #endregion
+
+        #region Operators
 
         /// <summary>
         /// Determines whether two specified ranges have the same value. 
@@ -70,6 +72,10 @@ namespace Augment
         {
             return !(a == b);
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Checks to see if the given value is within the current range (inclusive).
@@ -170,6 +176,10 @@ namespace Augment
             return intersection;
         }
 
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// End of range
         /// </summary>
@@ -179,5 +189,7 @@ namespace Augment
         /// Start of range
         /// </summary>
         public T Start { get; private set; }
+
+        #endregion
     }
 }
