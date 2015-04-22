@@ -151,6 +151,21 @@ namespace Augment
         #region Misc
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static DateTime EnsureUtc(this DateTime dt)
+        {
+            if (dt.Kind == DateTimeKind.Unspecified)
+            {
+                return new DateTime(dt.Ticks, DateTimeKind.Utc);
+            }
+
+            return dt.ToUniversalTime();
+        }
+
+        /// <summary>
         /// Returns true if the day is Saturday or Sunday
         /// </summary>
         /// <param name="dt">DateTime Base, from where the calculation will be preformed.</param>

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Augment.Tests
@@ -8,6 +6,29 @@ namespace Augment.Tests
     [TestClass]
     public class DateTimeExtensionTests
     {
+        [TestMethod]
+        public void DateTimeExtensions_EnsureUtcUnspecified_Test()
+        {
+            DateTime unspecified = new DateTime(2010, 1, 1, 15, 18, 19, DateTimeKind.Unspecified);
+            DateTime utc = new DateTime(2010, 1, 1, 15, 18, 19, DateTimeKind.Utc);
+
+            Assert.AreEqual(unspecified.EnsureUtc(), utc);
+            Assert.AreEqual(unspecified.EnsureUtc().Kind, utc.Kind);
+        }
+
+        [TestMethod]
+        public void DateTimeExtensions_EnsureUtcLocal_Test()
+        {
+            DateTime local = new DateTime(2010, 1, 1, 15, 18, 19, DateTimeKind.Local);
+
+            local = local.Add(TimeZone.CurrentTimeZone.GetUtcOffset(local));
+
+            DateTime utc = new DateTime(2010, 1, 1, 15, 18, 19, DateTimeKind.Utc);
+
+            Assert.AreEqual(local.EnsureUtc(), utc);
+            Assert.AreEqual(local.EnsureUtc().Kind, utc.Kind);
+        }
+
         [TestMethod]
         public void DateTimeExtensions_StartEnd_Test()
         {
