@@ -9,10 +9,8 @@
     <projectUrl>https://github.com/ellerbus/Augment</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Copyright 2014</copyright>
+    <copyright>Copyright 2015</copyright>
     <tags>extension methods dry DateTime</tags>
-    <releaseNotes>  
-      * 1.0    - Initial Release
-    </releaseNotes>
+    <releaseNotes></releaseNotes>
   </metadata>
 </package>
