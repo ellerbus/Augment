@@ -88,6 +88,7 @@
     <Compile Include="Extensions\ComparableExtensionTests.cs" />
     <Compile Include="Helpers\RangeTests.cs" />
     <Compile Include="Helpers\MultiKeyCollectionTests.cs" />
+    <Compile Include="Helpers\ReflectionHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

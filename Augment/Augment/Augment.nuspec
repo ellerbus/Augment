@@ -11,6 +11,9 @@
     <description>$description$</description>
     <copyright>Copyright 2015</copyright>
     <tags>extension methods dry DateTime</tags>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>
+      1.1 - Added Reflection Helper for get/set properties
+      1.0 - Initial Release
+    </releaseNotes>
   </metadata>
 </package>
