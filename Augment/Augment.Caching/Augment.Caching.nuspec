@@ -10,9 +10,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright 2015</copyright>
-    <tags>extension methods dry DateTime</tags>
+    <tags>simple cache caching</tags>
     <releaseNotes>
-1.1 - Added Reflection Helper for get/set properties
+1.1 - Added Cache.Manifest HTTP Handler
 1.0 - Initial Release
     </releaseNotes>
   </metadata>
