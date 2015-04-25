@@ -9,6 +9,15 @@ namespace Augment.Tests.Helpers
         public class Child { public Parent Parent { get; set; } public int ID { get; set; } }
 
         [TestMethod]
+        public void ReflectionHelper_HasProperty()
+        {
+            var p = new Parent { ID = 99 };
+
+            Assert.IsTrue(ReflectionHelper.HasProperty(p, "ID"));
+            Assert.IsFalse(ReflectionHelper.HasProperty(p, "IDx"));
+        }
+
+        [TestMethod]
         public void ReflectionHelper_GetProperty_Should_Succeed()
         {
             var p = new Parent { ID = 99 };

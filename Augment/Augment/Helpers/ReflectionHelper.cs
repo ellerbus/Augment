@@ -121,6 +121,11 @@ namespace Augment
                 }
             }
 
+            public bool HasProperty(string name)
+            {
+                return _properties.ContainsKey(name);
+            }
+
             public object GetValue(object instance, string name)
             {
                 Methods mappings = GetMapping(instance, name);
@@ -167,6 +172,19 @@ namespace Augment
         private static PropertyWrapper GetPropertyWrapper(Type t)
         {
             return _wrappers.GetOrAdd(t, x => new PropertyWrapper(x));
+        }
+
+        /// <summary>
+        /// Determines if a property exists for the typeof instance
+        /// </summary>
+        /// <param name="instance">Instance of an object</param>
+        /// <param name="propertyName">Name of Property to Get value from</param>
+        /// <returns></returns>
+        public static bool HasProperty(object instance, string propertyName)
+        {
+            PropertyWrapper pw = GetPropertyWrapper(instance.GetType());
+
+            return pw.HasProperty(propertyName);
         }
 
         /// <summary>
