@@ -12,6 +12,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>extension methods dry DateTime</tags>
     <releaseNotes>
+1.2 - EnsureThat 3.2
 1.1 - Added Reflection Helper for get/set properties
 1.0 - Initial Release
     </releaseNotes>

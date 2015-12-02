@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Augment
 {
@@ -7,11 +8,11 @@ namespace Augment
     /// A non-thread safe collection that provides lookups for both a primary key
     /// and unique key (obviously lending terminology from your DB knowledge)
     /// </summary>
-    public abstract class MultiKeyCollection<TItem, TPrimaryKey, TUniqueKey> : SingleKeyCollection<TItem, TPrimaryKey>
+    public abstract class SingleKeyCollection<TItem, TPrimaryKey> : Collection<TItem>
     {
         #region Members
 
-        private Dictionary<TUniqueKey, TItem> _byUniqueKey = new Dictionary<TUniqueKey, TItem>();
+        private Dictionary<TPrimaryKey, TItem> _byPrimaryKey = new Dictionary<TPrimaryKey, TItem>();
 
         #endregion
 
@@ -22,7 +23,7 @@ namespace Augment
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        protected abstract TUniqueKey GetUniqueKey(TItem item);
+        protected abstract TPrimaryKey GetPrimaryKey(TItem item);
 
         /// <summary>
         /// 
@@ -31,7 +32,7 @@ namespace Augment
         {
             base.ClearItems();
 
-            _byUniqueKey.Clear();
+            _byPrimaryKey.Clear();
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Augment
         {
             base.InsertItem(index, item);
 
-            UpdateUniqueKey(item);
+            UpdatePrimaryKey(item);
         }
 
         /// <summary>
@@ -55,21 +56,21 @@ namespace Augment
         {
             base.SetItem(index, item);
 
-            UpdateUniqueKey(item);
+            UpdatePrimaryKey(item);
         }
 
-        private void UpdateUniqueKey(TItem item)
+        private void UpdatePrimaryKey(TItem item)
         {
-            TUniqueKey uq = GetUniqueKey(item);
+            TPrimaryKey pk = GetPrimaryKey(item);
 
-            if (_byUniqueKey.ContainsKey(uq))
+            if (_byPrimaryKey.ContainsKey(pk))
             {
-                string msg = "Item already exists for Unique Key '{0}' on '{1}'".FormatArgs(uq, typeof(TItem).Name);
+                string msg = "Item already exists for Primary Key '{0}' on '{1}'".FormatArgs(pk, typeof(TItem).Name);
 
                 throw new InvalidOperationException(msg);
             }
 
-            _byUniqueKey[uq] = item;
+            _byPrimaryKey[pk] = item;
         }
 
         /// <summary>
@@ -82,32 +83,32 @@ namespace Augment
 
             base.RemoveItem(index);
 
-            TUniqueKey uq = GetUniqueKey(item);
+            TPrimaryKey pk = GetPrimaryKey(item);
 
-            if (_byUniqueKey.ContainsKey(uq))
+            if (_byPrimaryKey.ContainsKey(pk))
             {
-                _byUniqueKey.Remove(uq);
+                _byPrimaryKey.Remove(pk);
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="uq"></param>
+        /// <param name="pk"></param>
         /// <returns></returns>
-        public bool ContainsUniqueKey(TUniqueKey uq)
+        public bool ContainsPrimaryKey(TPrimaryKey pk)
         {
-            return _byUniqueKey.ContainsKey(uq);
+            return _byPrimaryKey.ContainsKey(pk);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="uq"></param>
+        /// <param name="pk"></param>
         /// <returns></returns>
-        public TItem GetByUniqueKey(TUniqueKey uq)
+        public TItem GetByPrimaryKey(TPrimaryKey pk)
         {
-            return _byUniqueKey[uq];
+            return _byPrimaryKey[pk];
         }
 
         #endregion
