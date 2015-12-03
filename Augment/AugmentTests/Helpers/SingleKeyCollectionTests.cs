@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Augment.Tests.Helpers
 {
     [TestClass]
-    public class MultiKeyCollectionTests
+    public class SingleKeyCollectionTests
     {
         #region Helpers/Test Initializers
 
@@ -18,7 +18,7 @@ namespace Augment.Tests.Helpers
             public DateTime Date { get; set; }
         }
 
-        private class UserCollection : MultiKeyCollection<User, int, string>
+        private class UserCollection : SingleKeyCollection<User, int>
         {
             public UserCollection(IEnumerable<User> users)
             {
@@ -32,11 +32,6 @@ namespace Augment.Tests.Helpers
             {
                 return item.Id;
             }
-
-            protected override string GetUniqueKey(User item)
-            {
-                return item.WindowsId;
-            }
         }
 
         #endregion
@@ -44,7 +39,7 @@ namespace Augment.Tests.Helpers
         #region Methods
 
         [TestMethod]
-        public void MultiKeyCollection_Should_IndexByPrimaryKey()
+        public void SingleKeyCollection_Should_IndexByPrimaryKey()
         {
             var users = Builder<User>.CreateListOfSize(3).Build();
 
@@ -65,7 +60,7 @@ namespace Augment.Tests.Helpers
         }
 
         [TestMethod]
-        public void MultiKeyCollection_Should_TryGetByPrimaryKey()
+        public void SingleKeyCollection_Should_TryGetByPrimaryKey()
         {
             var users = Builder<User>.CreateListOfSize(3).Build();
 
@@ -75,54 +70,24 @@ namespace Augment.Tests.Helpers
 
             var sut = new UserCollection(users);
 
-            var byPk = null as User;
-            var byUq = null as User;
+            var ux = null as User;
 
-            var hasPk = sut.TryGetByPrimaryKey(u2.Id, out byPk);
-            var hasUq = sut.TryGetByUniqueKey(u2.WindowsId, out byUq);
+            var actual = sut.TryGetByPrimaryKey(u2.Id, out ux);
 
-            Assert.IsTrue(hasPk);
-            Assert.IsTrue(hasUq);
-            Assert.AreEqual(u2.Id, byPk.Id);
-            Assert.AreEqual(u2.WindowsId, byUq.WindowsId);
-            Assert.AreSame(u2, byPk);
-            Assert.AreSame(u2, byUq);
+            Assert.IsTrue(actual);
+            Assert.AreEqual(u2.Id, ux.Id);
+            Assert.AreSame(u2, ux);
 
-            byPk = null as User;
-            byUq = null as User;
+            ux = null as User;
 
-            hasPk = sut.TryGetByPrimaryKey(99, out byPk);
-            hasUq = sut.TryGetByUniqueKey("X", out byUq);
+            actual = sut.TryGetByPrimaryKey(99, out ux);
 
-            Assert.IsFalse(hasPk);
-            Assert.IsFalse(hasUq);
-            Assert.IsNull(byPk);
-            Assert.IsNull(byUq);
+            Assert.IsFalse(actual);
+            Assert.IsNull(ux);
         }
 
         [TestMethod]
-        public void MultiKeyCollection_Should_IndexByUniqueKey()
-        {
-            var users = Builder<User>.CreateListOfSize(3).Build();
-
-            var u1 = users[0];
-            var u2 = users[1];
-            var u3 = users[2];
-
-            var sut = new UserCollection(users);
-
-            Assert.IsTrue(sut.ContainsUniqueKey(u1.WindowsId));
-            Assert.IsTrue(sut.ContainsUniqueKey(u2.WindowsId));
-            Assert.IsTrue(sut.ContainsUniqueKey(u3.WindowsId));
-            Assert.IsFalse(sut.ContainsUniqueKey(u3.WindowsId + "X"));
-
-            Assert.AreEqual(u1, sut.GetByUniqueKey(u1.WindowsId));
-            Assert.AreEqual(u2, sut.GetByUniqueKey(u2.WindowsId));
-            Assert.AreEqual(u3, sut.GetByUniqueKey(u3.WindowsId));
-        }
-
-        [TestMethod]
-        public void MultiKeyCollection_Should_RemoveAtIndex()
+        public void SingleKeyCollection_Should_RemoveAtIndex()
         {
             var users = Builder<User>.CreateListOfSize(3).Build();
 
@@ -133,12 +98,10 @@ namespace Augment.Tests.Helpers
             sut.RemoveAt(1);
 
             Assert.IsFalse(sut.ContainsPrimaryKey(u2.Id));
-
-            Assert.IsFalse(sut.ContainsUniqueKey(u2.WindowsId));
         }
 
         [TestMethod]
-        public void MultiKeyCollection_Should_RemoveItem()
+        public void SingleKeyCollection_Should_RemoveItem()
         {
             var users = Builder<User>.CreateListOfSize(3).Build();
 
@@ -149,8 +112,6 @@ namespace Augment.Tests.Helpers
             sut.Remove(u2);
 
             Assert.IsFalse(sut.ContainsPrimaryKey(u2.Id));
-
-            Assert.IsFalse(sut.ContainsUniqueKey(u2.WindowsId));
         }
 
         #endregion

@@ -86,6 +86,7 @@
     <Compile Include="Extensions\StringExtensionTests.cs" />
     <Compile Include="Extensions\DoubleExtensionTests.cs" />
     <Compile Include="Extensions\ComparableExtensionTests.cs" />
+    <Compile Include="Helpers\SingleKeyCollectionTests.cs" />
     <Compile Include="Helpers\RangeTests.cs" />
     <Compile Include="Helpers\MultiKeyCollectionTests.cs" />
     <Compile Include="Helpers\ReflectionHelperTests.cs" />

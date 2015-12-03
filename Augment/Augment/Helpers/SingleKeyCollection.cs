@@ -111,6 +111,17 @@ namespace Augment
             return _byPrimaryKey[pk];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pk"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool TryGetByPrimaryKey(TPrimaryKey pk, out TItem item)
+        {
+            return _byPrimaryKey.TryGetValue(pk, out item);
+        }
+
         #endregion
     }
 }

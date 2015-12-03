@@ -110,6 +110,17 @@ namespace Augment
             return _byUniqueKey[uq];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uq"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool TryGetByUniqueKey(TUniqueKey uq, out TItem item)
+        {
+            return _byUniqueKey.TryGetValue(uq, out item);
+        }
+
         #endregion
     }
 }
