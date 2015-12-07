@@ -25,5 +25,25 @@ namespace Augment
 
             return value.CompareTo(low) > 0 && value.CompareTo(high) < 0;
         }
+
+        /// <summary>
+        /// Determine if the comparable value is contained in a list of arguments
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static bool IsIn<T>(this T value, params T[] items) where T : IComparable<T>
+        {
+            foreach (T item in items)
+            {
+                if (item.CompareTo(value) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
