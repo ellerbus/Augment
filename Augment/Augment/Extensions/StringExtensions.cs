@@ -229,14 +229,17 @@ namespace Augment
         {
             string t = typeof(T).FullName;
 
-            if (!_stringToEnum.ContainsKey(t))
+            lock (_stringToEnum)
             {
-                _stringToEnum.Add(t, new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase));
-            }
+                if (!_stringToEnum.ContainsKey(t))
+                {
+                    _stringToEnum.Add(t, new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase));
+                }
 
-            if (!_stringToEnum[t].ContainsKey(stringOrDescription))
-            {
-                _stringToEnum[t].Add(stringOrDescription, EnumExtensions.GetEnumObject(typeof(T), stringOrDescription));
+                if (!_stringToEnum[t].ContainsKey(stringOrDescription))
+                {
+                    _stringToEnum[t].Add(stringOrDescription, EnumExtensions.GetEnumObject(typeof(T), stringOrDescription));
+                }
             }
 
             return (T)_stringToEnum[t][stringOrDescription];
