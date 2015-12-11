@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Augment.Caching
@@ -105,17 +107,59 @@ namespace Augment.Caching
 
         void ICacheRetrieval<T>.RemoveAll()
         {
-            string pattern = _key.CreateRemoveAllKeyPattern();
+            IList<string> keys = _provider.GetAllKeys().ToList();
 
-            Regex regex = new Regex(pattern, RegexOptions.Compiled);
+            string key = _key.CreateKey();
 
-            foreach (string k in _provider.GetAllKeys())
+            if (key.Contains("*"))
             {
-                if (regex.IsMatch(k))
+                string pattern = GetRegexPattern(key);
+
+                Regex regex = new Regex(pattern, RegexOptions.Compiled);
+
+                foreach (string k in keys)
                 {
-                    _provider.Remove(k);
+                    if (regex.IsMatch(k))
+                    {
+                        _provider.Remove(k);
+                    }
                 }
             }
+            else
+            {
+                foreach (string k in keys)
+                {
+                    if (k.StartsWith(key))
+                    {
+                        _provider.Remove(k);
+                    }
+                }
+            }
+        }
+
+        private string GetRegexPattern(string key)
+        {
+            string pattern = key;
+
+            int pos = pattern.IndexOf("**");
+
+            while (pos >= 0)
+            {
+                pattern = pattern.Replace("**", "*");
+
+                pos = pattern.IndexOf("**");
+            }
+
+            //  escape all regex characters except * and ?
+            pattern = Regex.Replace(pattern, @"[\.\$\^\{\[\(\|\)\]\}\+\\]", m => @"\" + m.Value, RegexOptions.Compiled);
+
+            //  replace * with .*
+            pattern = Regex.Replace(pattern, @"[\*]", m => "." + m.Value, RegexOptions.Compiled);
+
+            //  replace * with .*
+            pattern = Regex.Replace(pattern, @"[\?]", m => ".", RegexOptions.Compiled);
+
+            return "^" + pattern + "$";
         }
 
         T ICacheRetrieval<T>.CachedObject

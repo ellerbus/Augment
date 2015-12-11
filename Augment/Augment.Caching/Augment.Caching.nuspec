@@ -12,6 +12,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>simple cache caching</tags>
     <releaseNotes>
+1.2 - Change Caching Key Pattern to fix "RemoveAll()" bug
 1.1 - Added Cache.Manifest HTTP Handler
 1.0 - Initial Release
     </releaseNotes>

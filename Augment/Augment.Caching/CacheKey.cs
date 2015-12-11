@@ -1,39 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Augment.Caching
 {
     class CacheKey
     {
-        #region Static Members
-
-        private static object _lock = new object();
-
-        private static Dictionary<Type, TypeMap> _baseTypeMaps = new Dictionary<Type, TypeMap>();
-
-        private const string _delimiter = ";";
-
-        private static readonly string _enumerableKey = typeof(IEnumerable<>).Name;
-
-        class TypeMap
-        {
-            public Type CacheType;
-            public Type BaseType;
-            public bool IsEnumerable;
-        }
-
-        #endregion
-
         #region Members
-
-        private Type _type;
-
-        private Type _baseType;
-
-        private bool _isEnumerable;
 
         private List<string> _keys = new List<string>();
 
@@ -43,22 +18,16 @@ namespace Augment.Caching
 
         public CacheKey(Type type)
         {
-            _type = type;
+            Type baseType = GetBaseType(type);
 
-            lock (_lock)
+            if (type == baseType)
             {
-                TypeMap bt = null;
-
-                if (!_baseTypeMaps.TryGetValue(type, out bt))
-                {
-                    bt = GetBaseType(type);
-
-                    _baseTypeMaps.Add(type, bt);
-                }
-
-                _baseType = bt.BaseType;
-
-                _isEnumerable = bt.IsEnumerable;
+                Add(type.FullName);
+            }
+            else
+            {
+                Add(baseType.FullName);
+                Add("Enumerable");
             }
         }
 
@@ -66,132 +35,74 @@ namespace Augment.Caching
 
         #region Methods
 
-        private static TypeMap GetBaseType(Type type)
+        private Type GetBaseType(Type type)
         {
-            TypeMap bt = new TypeMap
+            if (!type.IsValueType && IsImplementationOf(type, typeof(IEnumerable)))
             {
-                CacheType = type,
-                BaseType = type
-            };
-
-            foreach (Type t in type.GetInterfaces().Where(x => x.IsGenericType))
-            {
-                if (t.Name == typeof(IEnumerable<>).Name)
+                if (type.IsGenericType)
                 {
-                    bt.IsEnumerable = true;
+                    Type[] args = type.GetGenericArguments();
 
-                    Type[] types = t.GetGenericArguments();
-
-                    if (types.Length == 1 && types[0].Name == typeof(KeyValuePair<,>).Name)
+                    if (args.All(x => x.IsValueType))
                     {
-                        types = types[0].GetGenericArguments();
+                        return args[0];
                     }
 
-                    bt.BaseType = types.FirstOrDefault(x => !x.IsValueType) ?? type;
+                    Type tg = args.First(x => !x.IsValueType);
 
-                    break;
+                    return tg;
+                }
+
+                if (type.BaseType.IsGenericType)
+                {
+                    Type tg = type.BaseType.GetGenericArguments().First(x => !x.IsValueType);
+
+                    return tg;
                 }
             }
 
-            return bt;
+            return type;
+        }
+
+        private static bool IsImplementationOf(Type baseType, Type interfaceType)
+        {
+            return baseType.GetInterfaces().Any(interfaceType.Equals);
         }
 
         public void Add(params object[] cacheKeys)
         {
             if (cacheKeys != null)
             {
-                _keys.AddRange(cacheKeys.Select(x => x.ToString()));
+                if (cacheKeys.Length == 1)
+                {
+                    _keys.Add(cacheKeys[0].ToString());
+                }
+                else
+                {
+                    bool delim = false;
+
+                    StringBuilder key = new StringBuilder();
+
+                    foreach (object o in cacheKeys)
+                    {
+                        if (delim) key.Append(",");
+
+                        key.Append(o.ToString());
+
+                        delim = true;
+                    }
+
+                    _keys.Add(key.ToString());
+                }
             }
         }
 
         /// <summary>
-        /// Gets the cache-key Namespace.Object;by,by,by;+
+        /// 
         /// </summary>
         public string CreateKey()
         {
-            StringBuilder key = CreateKey(false);
-
-            if (_isEnumerable)
-            {
-                key.Append(_enumerableKey);
-            }
-
-            System.Diagnostics.Debug.WriteLine(key.ToString());
-
-            return key.ToString();
-        }
-
-        /// <summary>
-        /// Gets the cache-key Namespace.Object;by,*,by;+
-        /// </summary>
-        public string CreateRemoveAllKeyPattern()
-        {
-            StringBuilder key = CreateKey(true);
-
-            if (_isEnumerable)
-            {
-                key.Append(_enumerableKey);
-            }
-            else
-            {
-                //  this is the base type and we want to
-                //  remove all, so assuming anything
-                //  of type BaseType
-                key.Append(".*");
-            }
-
-            return key.Insert(0, "^").Append("$").ToString();
-        }
-
-        private StringBuilder CreateKey(bool forRegexPattern)
-        {
-            string baseKey = _baseType.FullName;
-
-            if (forRegexPattern)
-            {
-                baseKey = CreateRegexPattern(baseKey);
-            }
-
-            StringBuilder sb = new StringBuilder(baseKey)
-                .Append(_delimiter)
-                .Append(GetFilterKey(forRegexPattern))
-                .Append(_delimiter);
-
-            return sb;
-        }
-
-        private string GetFilterKey(bool forRegexPattern)
-        {
-            string key = string.Join(",", _keys);
-
-            if (forRegexPattern)
-            {
-                key = CreateRegexPattern(key);
-            }
-
-            return key;
-        }
-
-        private string CreateRegexPattern(string s)
-        {
-            string pattern = s;
-
-            int pos = pattern.IndexOf("**");
-
-            while (pos >= 0)
-            {
-                pattern = pattern.Replace("**", "*");
-
-                pos = pattern.IndexOf("**");
-            }
-
-            //  escape all regex characters except *
-            pattern = Regex.Replace(pattern, @"[\.\$\^\{\[\(\|\)\]\}\+\\\?]", m => @"\" + m.Value, RegexOptions.Compiled);
-
-            //  replace * with .*
-            pattern = Regex.Replace(pattern, @"\*", m => "." + m.Value, RegexOptions.Compiled);
-
-            return pattern;
+            return string.Join(";", _keys) + ";";
         }
 
         #endregion
