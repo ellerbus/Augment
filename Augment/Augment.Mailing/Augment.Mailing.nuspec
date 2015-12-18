@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package >
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
@@ -10,13 +10,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright 2015</copyright>
-    <tags>simple cache caching</tags>
+    <tags>simple fluent mailing library</tags>
     <releaseNotes>
-  1.2 - Change Caching Key Pattern to fix "RemoveAll()" bug
-  1.1 - Added Cache.Manifest HTTP Handler
-  1.0 - Initial Release
+1.0 - Initial Release
     </releaseNotes>
     <dependencies>
+      <dependency id="DotLiquid" version="[1.8,2)" />
       <dependency id="Ensure.That" version="[4,5)" />
       <dependency id="Augment" version="[1,2)" />
     </dependencies>
