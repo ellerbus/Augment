@@ -20,7 +20,7 @@ namespace Augment.Mailing
         /// Creates an instance of <see cref="Mailer"/>
         /// </summary>
         /// <returns></returns>
-        public IMailer Create()
+        public static IMailer Create()
         {
             return new Mailer();
         }

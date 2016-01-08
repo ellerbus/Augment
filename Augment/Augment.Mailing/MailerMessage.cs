@@ -16,6 +16,11 @@ namespace Augment.Mailing
         /// </summary>
         public MailerMessage()
         {
+            To = new HashSet<string>();
+
+            Cc = new HashSet<string>();
+
+            Bcc = new HashSet<string>();
         }
 
         #endregion
@@ -26,7 +31,7 @@ namespace Augment.Mailing
         {
             MailMessage mm = new MailMessage();
 
-            if (!string.IsNullOrEmpty(From))
+            if (From.IsNotEmpty())
             {
                 mm.From = ValidateEMail("From", From);
             }
@@ -69,9 +74,12 @@ namespace Augment.Mailing
 
         private IEnumerable<MailAddress> ValidateEMail(string variable, IEnumerable<string> emails)
         {
-            foreach (string email in emails)
+            if (emails.IsNotEmpty())
             {
-                yield return ValidateEMail(variable, email);
+                foreach (string email in emails)
+                {
+                    yield return ValidateEMail(variable, email);
+                }
             }
         }
 

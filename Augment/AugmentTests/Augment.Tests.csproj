@@ -80,7 +80,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -102,12 +104,17 @@
     <Compile Include="Helpers\RangeTests.cs" />
     <Compile Include="Helpers\MultiKeyCollectionTests.cs" />
     <Compile Include="Helpers\ReflectionHelperTests.cs" />
+    <Compile Include="Mailing\MailerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Augment.Caching\Augment.Caching.csproj">
       <Project>{b9f72f9d-fada-4abb-b7e6-438cdab744c4}</Project>
       <Name>Augment.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Augment.Mailing\Augment.Mailing.csproj">
+      <Project>{810420e6-e3ae-4fb0-a3f8-9ac1820b8fcc}</Project>
+      <Name>Augment.Mailing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Augment\Augment.csproj">
       <Project>{937b672a-3534-480f-b9b2-34e1094bddad}</Project>
