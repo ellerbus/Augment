@@ -12,13 +12,14 @@
     <copyright>Copyright 2015</copyright>
     <tags>simple cache caching</tags>
     <releaseNotes>
+  2.0 - Bumped to .NET 4.6.1
   1.2 - Change Caching Key Pattern to fix "RemoveAll()" bug
   1.1 - Added Cache.Manifest HTTP Handler
   1.0 - Initial Release
     </releaseNotes>
     <dependencies>
-      <dependency id="Ensure.That" version="[4,5)" />
-      <dependency id="Augment" version="[1,2)" />
+      <dependency id="Ensure.That" version="[5,6)" />
+      <dependency id="Augment" version="[2,3)" />
     </dependencies>
   </metadata>
   <files>

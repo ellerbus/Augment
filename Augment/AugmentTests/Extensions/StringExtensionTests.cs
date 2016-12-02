@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Augment.Tests
 {
@@ -125,6 +122,24 @@ namespace Augment.Tests
             string[] values = new[] { "1", "2" };
 
             Assert.AreEqual("1,2", values.Join(","));
+        }
+
+        [TestMethod]
+        public void StringExtension_StartsWithSameAs_Test()
+        {
+            var s = "hello";
+
+            Assert.IsTrue(s.StartsWithSameAs("h"));
+            Assert.IsTrue(s.StartsWithNotSameAs("0"));
+        }
+
+        [TestMethod]
+        public void StringExtension_EndsWithSameAs_Test()
+        {
+            var s = "hello";
+
+            Assert.IsTrue(s.EndsWithSameAs("o"));
+            Assert.IsTrue(s.EndsWithNotSameAs("h"));
         }
     }
 }

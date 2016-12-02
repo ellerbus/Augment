@@ -11,26 +11,6 @@ namespace Augment
     {
         #region Misc
 
-        ///// <summary>
-        ///// Shortcut for string.IsNullOrEmpty()
-        ///// </summary>
-        ///// <param name="s"></param>
-        ///// <returns></returns>
-        //public static bool IsNullOrEmpty(this string s)
-        //{
-        //    return string.IsNullOrEmpty(s);
-        //}
-
-        ///// <summary>
-        ///// Shortcut for !string.IsNullOrEmpty()
-        ///// </summary>
-        ///// <param name="s"></param>
-        ///// <returns></returns>
-        //public static bool IsNotEmpty(this string s)
-        //{
-        //    return !string.IsNullOrEmpty(s);
-        //}
-
         /// <summary>
         /// Shortcut for string.IsNullOrWhiteSpace()
         /// </summary>
@@ -53,6 +33,17 @@ namespace Augment
             Ensure.That(other).IsNotNull();
 
             return string.Compare(s, other, StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
+        /// <summary>
+        /// Shortcut for !IsSameAs
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public static bool IsNotSameAs(this string s, string other)
+        {
+            return !IsSameAs(s, other);
         }
 
         /// <summary>
@@ -129,77 +120,77 @@ namespace Augment
         /// <summary>
         /// Left 'x' characters
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="s"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string Left(this string value, int length)
+        public static string Left(this string s, int length)
         {
-            Ensure.That(value).IsNotNull();
+            Ensure.That(s).IsNotNull();
 
-            if (value.Length < length)
+            if (s.Length < length)
             {
-                return value;
+                return s;
             }
 
-            return value.Substring(0, length);
+            return s.Substring(0, length);
         }
 
         /// <summary>
         /// Gets the left of a specified string, or the string if NOT found
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="s"></param>
         /// <param name="leftOf"></param>
         /// <returns></returns>
-        public static string GetLeftOf(this string value, string leftOf)
+        public static string GetLeftOf(this string s, string leftOf)
         {
-            Ensure.That(value).IsNotNull();
+            Ensure.That(s).IsNotNull();
 
-            int index = value.IndexOf(leftOf);
+            int index = s.IndexOf(leftOf);
 
             if (index > -1)
             {
-                return value.Substring(0, index);
+                return s.Substring(0, index);
             }
 
-            return value;
+            return s;
         }
 
         /// <summary>
         /// Right 'x' characters of string
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="s"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string Right(this string value, int length)
+        public static string Right(this string s, int length)
         {
-            Ensure.That(value).IsNotNull();
+            Ensure.That(s).IsNotNull();
 
-            if (value.Length < length)
+            if (s.Length < length)
             {
-                return value;
+                return s;
             }
 
-            return value.Substring(value.Length - length);
+            return s.Substring(s.Length - length);
         }
 
         /// <summary>
         /// Gets the right of a specified string, or the string if NOT found
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="s"></param>
         /// <param name="rightOf"></param>
         /// <returns></returns>
-        public static string GetRightOf(this string value, string rightOf)
+        public static string GetRightOf(this string s, string rightOf)
         {
-            Ensure.That(value).IsNotNull();
+            Ensure.That(s).IsNotNull();
 
-            int index = value.IndexOf(rightOf);
+            int index = s.IndexOf(rightOf);
 
             if (index > -1)
             {
-                return value.Substring(index + rightOf.Length);
+                return s.Substring(index + rightOf.Length);
             }
 
-            return value;
+            return s;
         }
 
         /// <summary>
@@ -211,6 +202,56 @@ namespace Augment
         public static string Join(this IEnumerable<string> values, string separator)
         {
             return string.Join(separator, values);
+        }
+
+        /// <summary>
+        /// Case insensitive StartsWith shortcut
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="startsWith"></param>
+        /// <returns></returns>
+        public static bool StartsWithSameAs(this string s, string startsWith)
+        {
+            Ensure.That(s).IsNotNull();
+            Ensure.That(startsWith).IsNotNull();
+
+            return s.StartsWith(startsWith, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Shortcut for !StartsWithSameAs
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="startsWith"></param>
+        /// <returns></returns>
+        public static bool StartsWithNotSameAs(this string s, string startsWith)
+        {
+            return !StartsWithSameAs(s, startsWith);
+        }
+
+        /// <summary>
+        /// Case insensitive EndsWith shortcut
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="endsWith"></param>
+        /// <returns></returns>
+        public static bool EndsWithSameAs(this string s, string endsWith)
+        {
+            Ensure.That(s).IsNotNull();
+            Ensure.That(endsWith).IsNotNull();
+
+            return s.EndsWith(endsWith, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Shortcut for !EndsWithSameAs
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="endsWith"></param>
+        /// <returns></returns>
+        public static bool EndsWithNotSameAs(this string s, string endsWith)
+        {
+            return !EndsWithSameAs(s, endsWith);
         }
 
         #endregion

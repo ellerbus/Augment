@@ -12,12 +12,13 @@
     <copyright>Copyright 2015</copyright>
     <tags>simple fluent mailing library</tags>
     <releaseNotes>
-1.0 - Initial Release
+      2.0 - Bumped to .NET 4.6.1
+      1.0 - Initial Release
     </releaseNotes>
     <dependencies>
-      <dependency id="DotLiquid" version="[1.8,2)" />
-      <dependency id="Ensure.That" version="[4,5)" />
-      <dependency id="Augment" version="[1,2)" />
+      <dependency id="DotLiquid" version="[2,3)" />
+      <dependency id="Ensure.That" version="[5,6)" />
+      <dependency id="Augment" version="[2,3)" />
     </dependencies>
   </metadata>
   <files>

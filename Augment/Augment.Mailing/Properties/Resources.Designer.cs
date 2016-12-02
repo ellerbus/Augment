@@ -67,15 +67,13 @@ namespace Augment.Mailing.Properties {
         ///on all major devices and responsive for smartphones
         ///that support media queries.
         ///
-        ///** NOTE **
-        ///This template comes with a lot of standard features
-        ///that has been thoroughly tested on major platforms
-        ///and devices, it is extremely flexible to use and
-        ///can be easily customized by removing any row that
-        ///you do not need.
-        ///
-        ///it is gauranteed to work 95% without any major flaws,
-        ///any changes or adjustment [rest of string was truncated]&quot;;.
+        ///** Profile **
+        ///Licensed under MIT (https://github.com/charlesmudy/responsive-html-email-template/blob/master/LICENSE)
+        ///Designed by Shina Charles Memud
+        ///Respmail v1.2 (http://charlesmudy.com/respmail/)
+        ///--&gt;
+        ///&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+        ///&lt;html xmlns= [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EMailShell {
             get {
@@ -98,7 +96,7 @@ namespace Augment.Mailing.Properties {
         ///you do not need.
         ///
         ///it is gauranteed to work 95% without any major flaws,
-        ///any changes or adjustment [rest of string was truncated]&quot;;.
+        ///any changes or adjustments should thoro [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EMailTemplate {
             get {

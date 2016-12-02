@@ -12,12 +12,13 @@
     <copyright>Copyright 2015</copyright>
     <tags>extension methods dry DateTime</tags>
     <releaseNotes>
-1.5 - Added Exception Extensions (and IsIn extension verfication)
-1.4 - Added Try/Get to Single/Multi Key Collections
-1.3 - Added Single Key Collection
-1.2 - EnsureThat 3.2
-1.1 - Added Reflection Helper for get/set properties
-1.0 - Initial Release
+      2.0 - Bumped to .NET 4.6.1, Added StartsWithSameAs, EndsWithSameAs (added NotSame Extensions)
+      1.5 - Added Exception Extensions (and IsIn extension verfication)
+      1.4 - Added Try/Get to Single/Multi Key Collections
+      1.3 - Added Single Key Collection
+      1.2 - EnsureThat 3.2
+      1.1 - Added Reflection Helper for get/set properties
+      1.0 - Initial Release
     </releaseNotes>
     <dependencies>
       <dependency id="Ensure.That" version="[4,5)" />
