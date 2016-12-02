@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment", "Augment\Augment.csproj", "{937B672A-3534-480F-B9B2-34E1094BDDAD}"
 EndProject
@@ -9,6 +9,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Caching", "Augment.Caching\Augment.Caching.csproj", "{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Mailing", "Augment.Mailing\Augment.Mailing.csproj", "{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{58F9C475-3E8B-469E-81F2-97CB871CA232}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.bat = nuget.bat
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

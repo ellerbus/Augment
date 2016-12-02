@@ -70,12 +70,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not "$(ConfigurationName)" == "Release" goto end
-
-cd $(ProjectDir)
-$(SolutionDir)NuGet.exe pack $(ProjectFileName) -OutputDirectory "$(SolutionDir)nuspecs" -Properties Configuration=Release
-
-:end</PostBuildEvent>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Release" $(SolutionDir)nuget.bat $(ProjectName)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
