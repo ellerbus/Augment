@@ -12,8 +12,8 @@
     <copyright>Copyright 2015</copyright>
     <tags>simple fluent mailing library</tags>
     <releaseNotes>
-      2.0 - Bumped to .NET 4.6.1
-      1.0 - Initial Release
+2.0 - Bumped to .NET 4.6.1
+1.0 - Initial Release
     </releaseNotes>
     <dependencies>
       <dependency id="DotLiquid" version="[2,3)" />
