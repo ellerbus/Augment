@@ -8,12 +8,12 @@ setlocal
 
 	set proj_nm=%~1
 
-	set cs_proj=%sln_path%\%proj_nm%\%proj_nm%.csproj
+	set cs_proj=%sln_path%%proj_nm%\%proj_nm%.csproj
 	
 	echo ... Project: %cs_proj%
 	echo .
 
-	set pkg_path=%nu_path%NuGetPackages
+	set pkg_path=%sln_path%NuGetPackages
 
 	if not exist %pkg_path% (
 		echo Making %pkg_path%
