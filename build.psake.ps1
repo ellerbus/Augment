@@ -87,6 +87,10 @@ function Get-Assembly-Version($project) {
 
     $version = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($path).ProductVersion
 
+    $parts = $version -split '\.'
+
+    $version = $parts[0..($parts.Length-3)] -join '.'
+
     return $version
 }
 

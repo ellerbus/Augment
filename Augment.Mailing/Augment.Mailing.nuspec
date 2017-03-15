@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>Augment.Mailing</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>Augment.Mailing</title>
     <authors>Stu Ellerbusch</authors>
     <licenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/ellerbus/Augment</projectUrl>
@@ -12,6 +12,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>simple fluent mailing library</tags>
     <releaseNotes>
+2.1 - Support .NET 461 and 451
 2.0 - Bumped to .NET 4.6.1
 1.0 - Initial Release
     </releaseNotes>
@@ -22,7 +23,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\$id$.dll" target="lib\net45" />
-    <file src="bin\$configuration$\$id$.xml" target="lib\net45" />
+    <file src="NET451\Augment.Mailing.dll" target="lib\net451" />
+    <file src="NET451\Augment.Mailing.xml" target="lib\net451" />
+    <file src="NET461\Augment.Mailing.dll" target="lib\net461" />
+    <file src="NET461\Augment.Mailing.xml" target="lib\net461" />
   </files>
 </package>

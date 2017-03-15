@@ -1,17 +1,18 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>$id$</id>
+    <id>Augment</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>Augment</title>
+    <description>$description$</description>
     <authors>Stu Ellerbusch</authors>
     <licenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/ellerbus/Augment</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
     <copyright>Copyright 2015</copyright>
     <tags>extension methods dry DateTime</tags>
     <releaseNotes>
+2.1 - Support .NET 461 and 451
 2.0 - Bumped to .NET 4.6.1, Added StartsWithSameAs, EndsWithSameAs (added NotSame Extensions)
 1.5 - Added Exception Extensions (and IsIn extension verfication)
 1.4 - Added Try/Get to Single/Multi Key Collections
@@ -25,7 +26,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\$id$.dll" target="lib\net45" />
-    <file src="bin\$configuration$\$id$.xml" target="lib\net45" />
+    <file src="NET451\Augment.dll" target="lib\net451" />
+    <file src="NET451\Augment.xml" target="lib\net451" />
+    <file src="NET461\Augment.dll" target="lib\net461" />
+    <file src="NET461\Augment.xml" target="lib\net461" />
   </files>
 </package>

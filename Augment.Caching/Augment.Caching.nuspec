@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>$id$</id>
+    <id>Augment.Caching</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>Augment.Caching</title>
+    <description>$description$</description>
     <authors>Stu Ellerbusch</authors>
     <licenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/ellerbus/Augment</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
     <copyright>Copyright 2015</copyright>
     <tags>simple cache caching</tags>
     <releaseNotes>
-2.0 - Bumped to .NET 4.6.1
-1.2 - Change Caching Key Pattern to fix "RemoveAll()" bug
-1.1 - Added Cache.Manifest HTTP Handler
-1.0 - Initial Release
+  2.1 - Support .NET 461 and 451
+  2.0 - Bumped to .NET 4.6.1
+  1.2 - Change Caching Key Pattern to fix "RemoveAll()" bug
+  1.1 - Added Cache.Manifest HTTP Handler
+  1.0 - Initial Release
     </releaseNotes>
     <dependencies>
       <dependency id="Ensure.That" version="[5,6)" />
@@ -23,7 +24,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\$id$.dll" target="lib\net45" />
-    <file src="bin\$configuration$\$id$.xml" target="lib\net45" />
+    <file src="NET451\Augment.Caching.dll" target="lib\net451" />
+    <file src="NET451\Augment.Caching.xml" target="lib\net451" />
+    <file src="NET461\Augment.Caching.dll" target="lib\net461" />
+    <file src="NET461\Augment.Caching.xml" target="lib\net461" />
   </files>
 </package>
