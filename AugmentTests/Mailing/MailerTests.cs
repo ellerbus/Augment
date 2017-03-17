@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Augment.Mailing;
 using FluentAssertions;
@@ -9,6 +10,80 @@ namespace Augment.Tests.Mailing
     [TestClass]
     public class MailerTests
     {
+        #region Members
+
+        public class MessageContainer<T>
+        {
+            public string Subject { get; set; }
+            public string Message { get; set; }
+            public T Item { get; set; }
+        }
+
+        public class Person
+        {
+            public string Name { get; set; }
+        }
+
+        #endregion
+
+        #region Templating
+
+        [TestMethod]
+        public void Mailer_Should_RenderWithAnonymousObjectProperty()
+        {
+            var list = new List<int> { 1, 2, 3 };
+
+            var item = new { numbers = list };
+
+            var mc = GetMessageContainer(item);
+
+            var template = "{{ subject }} {{ message }} {% for x in item.numbers %}{{ x }}{% endfor %}";
+
+            var msg = Mailer.Create()
+                .From("a@b.c")
+                .To("d@e.f")
+                .Subject("Subject")
+                .RenderBodyWith(mc, template)
+                .ToMessage();
+
+            msg.Body.Should().Be("Hello Ya'll Alot of Stuff 123");
+        }
+
+        [TestMethod]
+        public void Mailer_Should_RenderWithAnonymousObjectProperty_AndGenericList()
+        {
+            var list = new[] { new Person() { Name = "bob" } };
+
+            var item = new { people = list };
+
+            var mc = GetMessageContainer(item);
+
+            var template = "{{ subject }} {{ message }} {% for x in item.people %}{{ x.name }}{% endfor %}";
+
+            var msg = Mailer.Create()
+                .From("a@b.c")
+                .To("d@e.f")
+                .Subject("Subject")
+                .RenderBodyWith(mc, template)
+                .ToMessage();
+
+            msg.Body.Should().Be("Hello Ya'll Alot of Stuff bob");
+        }
+
+        private MessageContainer<T> GetMessageContainer<T>(T item)
+        {
+            var mc = new MessageContainer<T>()
+            {
+                Subject = "Hello Ya'll",
+                Message = "Alot of Stuff",
+                Item = item
+            };
+
+            return mc;
+        }
+
+        #endregion
+
         #region Addressing
 
         [TestMethod]

@@ -16,6 +16,11 @@ namespace Augment.Mailing
 
         private static readonly object _lock = new object();
 
+        static TemplateRegistry()
+        {
+            Template.RegisterFilter(typeof(LiquidFilters));
+        }
+
         #endregion
 
         #region Template Methods
@@ -24,6 +29,8 @@ namespace Augment.Mailing
         {
             lock (_lock)
             {
+                AddAsSafe<T>();
+
                 int key = template.GetHashCode();
 
                 Template tmpl = null;
@@ -34,8 +41,6 @@ namespace Augment.Mailing
 
                     _templates.Add(key, tmpl);
                 }
-
-                AddAsSafe<T>();
 
                 return tmpl.Render(Hash.FromAnonymousObject(item));
             }
@@ -52,14 +57,6 @@ namespace Augment.Mailing
                 Type t = typeof(T);
 
                 AddAsSafe(t);
-            }
-        }
-
-        private static IEnumerable<PropertyInfo> PropertiesOf(Type t)
-        {
-            foreach (PropertyInfo p in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
-            {
-                yield return p;
             }
         }
 
@@ -82,7 +79,28 @@ namespace Augment.Mailing
                             AddAsSafe(pt);
                         }
                     }
+
+                    if (t.IsGenericType)
+                    {
+                        foreach (Type x in t.GetGenericArguments())
+                        {
+                            AddAsSafe(x);
+                        }
+                    }
+
+                    if (t.IsArray)
+                    {
+                        AddAsSafe(t.GetElementType());
+                    }
                 }
+            }
+        }
+
+        private static IEnumerable<PropertyInfo> PropertiesOf(Type t)
+        {
+            foreach (PropertyInfo p in t.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                yield return p;
             }
         }
 
@@ -99,5 +117,32 @@ namespace Augment.Mailing
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Enhancements to existing liquid filters
+    /// </summary>
+    public static class LiquidFilters
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public static string Format(object input, string format)
+        {
+            if (input == null)
+            {
+                return null;
+            }
+
+            if (format.IsNullOrWhiteSpace())
+            {
+                return input.ToString();
+            }
+
+            return string.Format("{0:" + format + "}", input);
+        }
     }
 }
