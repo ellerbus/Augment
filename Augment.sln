@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment", "Augment\Augment.csproj", "{937B672A-3534-480F-B9B2-34E1094BDDAD}"
 EndProject
@@ -18,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Json", "Augment.Json\Augment.Json.csproj", "{401CAD13-D083-40E8-A6FA-26667867CC20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.SqlServer", "Augment.SqlServer\Augment.SqlServer.csproj", "{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.SqlServer.Sample", "Augment.SqlServer.Sample\Augment.SqlServer.Sample.csproj", "{408361FD-1A55-4A5A-BA60-834DBCF020D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +44,14 @@ Global
 		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{401CAD13-D083-40E8-A6FA-26667867CC20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{401CAD13-D083-40E8-A6FA-26667867CC20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{401CAD13-D083-40E8-A6FA-26667867CC20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{401CAD13-D083-40E8-A6FA-26667867CC20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

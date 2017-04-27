@@ -81,3 +81,9 @@ string d = so.AssertNotNull("abc");
 ### Supported .NET Framework Versions
 
 -	The [NuGet Package](http://www.nuget.org/packages/Augment) is compiled against 4.5
+
+
+## NOTES
+
+https://github.com/xin9le/DeclarativeSql
+https://github.com/jonwagner/Insight.Database.Schema

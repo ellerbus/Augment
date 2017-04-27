@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Augment.SqlServer</RootNamespace>
+    <AssemblyName>Augment.SqlServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Ensure.That, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.5.0.0\lib\net45\Ensure.That.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Development\Comparer.cs" />
+    <Compile Include="Development\IdGenerator.cs" />
+    <Compile Include="Development\Installer.cs" />
+    <Compile Include="Development\Logger.cs" />
+    <Compile Include="Development\Models\Action.cs" />
+    <Compile Include="Development\Models\RegistryObject.cs" />
+    <Compile Include="Development\Models\SqlObject.cs" />
+    <Compile Include="Development\Models\RegistryCollection.cs" />
+    <Compile Include="Development\Models\SqlObjectCollection.cs" />
+    <Compile Include="Development\Parsers\Scanner.cs" />
+    <Compile Include="Development\Parsers\ScriptParser.cs" />
+    <Compile Include="Development\Parsers\ScriptRecognizer.cs" />
+    <Compile Include="Development\Parsers\Token.cs" />
+    <Compile Include="Development\Parsers\Tokenizer.cs" />
+    <Compile Include="Development\Parsers\TokenTypes.cs" />
+    <Compile Include="Mapping\ColumnMap.cs" />
+    <Compile Include="Mapping\DapperMapper.cs" />
+    <Compile Include="Mapping\SqlBuilder.cs" />
+    <Compile Include="Mapping\TableMap.cs" />
+    <Compile Include="Mapping\TypeMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Development\SchemaTypes.cs" />
+    <Compile Include="Development\StringExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Augment\Augment.csproj">
+      <Project>{937b672a-3534-480f-b9b2-34e1094bddad}</Project>
+      <Name>Augment</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Development\Scripts\ColumnScript.sql" />
+    <Content Include="Development\Scripts\RegistryMergeScript.sql" />
+    <Content Include="Development\Scripts\RegistryScript.sql" />
+    <Content Include="Development\Scripts\DatabaseScripts.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
