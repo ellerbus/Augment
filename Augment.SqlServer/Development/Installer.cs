@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,12 +11,20 @@ using Augment.SqlServer.Development.Parsers;
 using Augment.SqlServer.Mapping;
 using Augment.SqlServer.Properties;
 using Dapper;
+using EnsureThat;
 
 namespace Augment.SqlServer.Development
 {
     public class Installer
     {
         #region Members
+
+        [DebuggerDisplay("{Entity,nq} {Impacts,nq}")]
+        class EntityImpact
+        {
+            public string Entity { get; set; }
+            public string Impacts { get; set; }
+        }
 
         private static readonly Regex _userScriptRegex = new Regex("^[0-9]{8}_");
 
@@ -35,6 +44,8 @@ namespace Augment.SqlServer.Development
             LoadSystemObjects();
             LoadSourceObjects(source);
             LoadTargetObjects(target);
+
+            CreateImpactChain();
 
             OverlayTargetWithRegistry();
         }
@@ -93,7 +104,7 @@ namespace Augment.SqlServer.Development
         {
             _targetConnection = target;
 
-            string sql = Resources.DatabaseScripts;
+            string sql = Resources.DatabaseScript;
 
             string script = _targetConnection.Query<string>(sql).Join(Environment.NewLine + "go" + Environment.NewLine);
 
@@ -105,6 +116,29 @@ namespace Augment.SqlServer.Development
             }
 
             Logger.Info($"Found {Target.Count} Target Objects");
+        }
+
+        private void CreateImpactChain()
+        {
+            string sql = Resources.EntityImpactScript;
+
+            IList<EntityImpact> entities = _targetConnection.Query<EntityImpact>(sql).ToList();
+
+            foreach (EntityImpact e in entities)
+            {
+                SqlObject entity = Target.Find(e.Entity);
+                SqlObject impacts = Target.Find(e.Impacts);
+
+                Ensure.That(entity, "Sql Entity")
+                    .WithExtraMessageOf(() => $"Missing SqlObject '{e.Entity}'")
+                    .IsNotNull();
+
+                Ensure.That(impacts, "Sql Impact")
+                    .WithExtraMessageOf(() => $"Missing SqlObject '{e.Impacts}'")
+                    .IsNotNull();
+
+                entity.Impacts.Add(impacts);
+            }
         }
 
         private void OverlayTargetWithRegistry()
@@ -125,6 +159,8 @@ namespace Augment.SqlServer.Development
                     {
                         sqlObj.OriginalSql = regObj.SqlScript;
                     }
+
+                    Registry.Add(regObj);
                 }
             }
             else
@@ -133,6 +169,14 @@ namespace Augment.SqlServer.Development
                 foreach (SqlObject target in Target)
                 {
                     Registry.Add(target);
+                }
+
+                //  the source will get added, but lets
+                //  at least make sure SQL matches when
+                //  changes aren't identified (ie. tables)
+                foreach (SqlObject source in Source)
+                {
+                    Registry.Add(source);
                 }
             }
         }
@@ -147,17 +191,19 @@ namespace Augment.SqlServer.Development
 
             try
             {
-                Comparer c = new Comparer(Source, Target, Registry, _targetConnection);
+                Analyzer c = new Analyzer(Source, Target, Registry, _targetConnection);
 
-                IList<SqlObject> operations = c.Compare().ToList();
+                IList<SqlObject> operations = c.Analyze().ToList();
 
                 foreach (SqlObject sqlObj in operations)
                 {
                     _targetConnection.Execute(sqlObj.OriginalSql);
                 }
 
-                foreach (RegistryObject regObj in Registry)
+                foreach (RegistryObject regObj in Registry.Where(x => x.IsModified))
                 {
+                    Logger.Registering(regObj);
+
                     _targetConnection.Execute(regObj.ToMergeSql());
                 }
 

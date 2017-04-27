@@ -1,7 +1,7 @@
 ﻿create table dbo.MemberHistory
 (
 	member_id			int not null,
-	last_seen			datetime not null
+	last_seen			datetime not null default getdate()
 )
 go
 

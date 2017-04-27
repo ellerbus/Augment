@@ -27,6 +27,16 @@ namespace Augment.SqlServer.Development.Models
             return Dictionary.ContainsKey(sqlObj.NormalizedName);
         }
 
+        internal SqlObject Find(string name)
+        {
+            SqlObject found = null;
+
+            Dictionary.TryGetValue(name.ToLower(), out found);
+
+            return found;
+        }
+
+
         public SqlObject Find(SqlObject sqlObj)
         {
             SqlObject found = null;

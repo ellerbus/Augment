@@ -77,7 +77,11 @@ namespace Augment.SqlServer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to select	definition
+        ///   Looks up a localized string similar to --
+        ///--	CREATES A SCRIPT FOR ALL OBJECTS UTILIZED BY Augment.SqlServer
+        ///--
+        ///
+        ///select	definition
         ///from	sys.sql_modules
         ///union
         ///select	&apos;create table &apos; + s.name + &apos;.&apos; + t.name+ &apos; (&apos; + left(col.list, len(col.list) - 1) + &apos;)&apos;
@@ -90,29 +94,60 @@ namespace Augment.SqlServer.Properties {
         ///						when c.is_computed = 1 then &apos;as &apos; + cc.definition
         ///						else tp.name +
         ///						case
-        ///							when tp.name in (&apos;varchar&apos;, &apos;char&apos;, &apos;varbinary&apos;, &apos;binary&apos;) then &apos;(&apos; + case when c.max_length = -1 then &apos;max&apos; else cast(c.max_length as varc [rest of string was truncated]&quot;;.
+        ///							when tp.name in (&apos;varchar&apos;, &apos;char&apos;, &apos;varbinary&apos;, &apos;binary&apos;) the [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DatabaseScripts {
+        internal static string DatabaseScript {
             get {
-                return ResourceManager.GetString("DatabaseScripts", resourceCulture);
+                return ResourceManager.GetString("DatabaseScript", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to create table dbo.AugmentRegistry
+        ///   Looks up a localized string similar to --
+        ///--	LIST ALL OBJECTS AFFECTED BY CHANGES TO A PARENT OBJECT
+        ///--
+        ///select	distinct e.referenced_schema_name + &apos;.&apos; + e.referenced_entity_name				entity,
+        ///		object_schema_name(e.referencing_id) + &apos;.&apos; + object_name(e.referencing_id)		impacts
+        ///from	sys.sql_expression_dependencies e
+        ///where	e.referenced_id != e.referencing_id
+        ///union
+        ///select	object_schema_name(k.parent_object_id) + &apos;.&apos; + object_name(k.parent_object_id),
+        ///		object_schema_name(k.object_id) + &apos;.&apos; + object_name(k.parent_object_id) + &apos;.&apos; + object_name [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EntityImpactScript {
+            get {
+                return ResourceManager.GetString("EntityImpactScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to merge dbo.AugmentRegistry as tgt
+        ///using
         ///(
-        ///	registry_name			varchar(250) not null,
-        ///	sql_script				varchar(max) not null,
-        ///	action_enum				varchar(20) not null,
-        ///	updated_utc				datetime not null
+        ///	select
+        ///		&apos;RegistryName&apos;	registry_name,
+        ///		&apos;SqlScript&apos;		sql_script,
+        ///		&apos;Action&apos;		action_enum
         ///)
-        ///go
-        ///
-        ///alter table dbo.AugmentRegistry
-        ///	add constraint PK_AugmentRegistry
-        ///	primary key(registry_name)
-        ///go
-        ///.
+        ///as x
+        ///on
+        ///(
+        ///	tgt.registry_name = x.registry_name
+        ///)
+        ///when matched then update set
+        ///	tgt.sql_script	= x.sql_script,
+        ///	tgt.action_enum	= case when x.action_enum = &apos;Deleted&apos; then &apos;Deleted&apos; else &apos;Updated&apos; end,
+        ///	tgt.updated_utc	= getutcdate()
+        ///when not matched by target then insert
+        ///(
+        ///	registry_name,
+        ///	sql_script,
+        ///	action_enum,
+        ///	updated_utc
+        ///)
+        ///values
+        ///(
+        ///	x.registry_ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RegistryMergeScript {
             get {

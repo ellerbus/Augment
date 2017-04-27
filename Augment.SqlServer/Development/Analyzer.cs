@@ -10,7 +10,7 @@ using Dapper;
 
 namespace Augment.SqlServer.Development
 {
-    public class Comparer
+    public class Analyzer
     {
         #region Members
 
@@ -35,7 +35,7 @@ namespace Augment.SqlServer.Development
 
         #region Constructor
 
-        public Comparer(SqlObjectCollection source, SqlObjectCollection target, RegistryObjectCollection registry, IDbConnection connection)
+        public Analyzer(SqlObjectCollection source, SqlObjectCollection target, RegistryObjectCollection registry, IDbConnection connection)
         {
             _source = source;
             _target = target;
@@ -50,7 +50,7 @@ namespace Augment.SqlServer.Development
 
         #region Methods
 
-        public IEnumerable<SqlObject> Compare()
+        public IEnumerable<SqlObject> Analyze()
         {
             Logger.Info("Analyzing Differences...");
 
@@ -58,18 +58,18 @@ namespace Augment.SqlServer.Development
 
             FindAdds();
 
-            FindDifferences();
+            AnalyzeDifferences();
 
             foreach (SqlObject drop in _drops.OrderByDescending(x => x.Type))
             {
-                Logger.Info($"Dropping {drop.ToString()}");
+                Logger.Dropping(drop);
 
                 yield return drop;
             }
 
             foreach (SqlObject add in _adds.OrderBy(x => x.Type))
             {
-                Logger.Info($"Creating {add.ToString()}");
+                Logger.Adding(add);
 
                 yield return add;
             }
@@ -137,13 +137,26 @@ namespace Augment.SqlServer.Development
                     sql = $"drop table {sqlObj.SchemaName}.{sqlObj.ObjectName}";
                     break;
 
+                case SchemaTypes.Trigger:
+                    sql = $"drop trigger {sqlObj.SchemaName}.{sqlObj.ObjectName}";
+                    break;
+
+                case SchemaTypes.Index:
+                    sql = $"drop index {sqlObj.ObjectName} on {sqlObj.SchemaName}.{sqlObj.OwnerName}";
+                    break;
+
                 case SchemaTypes.PrimaryKey:
                 case SchemaTypes.UniqueKey:
+                case SchemaTypes.ForeignKey:
                     sql = $"alter table {sqlObj.SchemaName}.{sqlObj.OwnerName} drop constraint {sqlObj.ObjectName}";
                     break;
 
+                case SchemaTypes.SystemScript:
+                    sql = sqlObj.OriginalSql;
+                    break;
+
                 default:
-                    throw sqlObj.Type.UnsupportedException("Comparer.DropOf");
+                    throw sqlObj.Type.UnsupportedException();
             }
 
             return new SqlObject(sqlObj.Type, sqlObj.OriginalName, sql);
@@ -153,29 +166,27 @@ namespace Augment.SqlServer.Development
 
         #region Diffs
 
-        private void FindDifferences()
+        private void AnalyzeDifferences()
         {
             //  in target not in source
             foreach (SqlObject target in _target)
             {
-                if (_source.Contains(target))
+                AnalyzeDifferences(target);
+            }
+        }
+
+        private void AnalyzeDifferences(SqlObject target)
+        {
+            if (_source.Contains(target))
+            {
+                Logger.Info($"Analyzing {target.ToString()}");
+
+                //  has the SQL changed
+                SqlObject source = _source.Find(target);
+
+                if (source.NormalizedSql.IsNotSameAs(target.NormalizedSql))
                 {
-                    Logger.Info($"Analyzing {target.ToString()}");
-
-                    //  has the SQL changed
-                    SqlObject source = _source.Find(target);
-
-                    if (source.NormalizedSql.IsNotSameAs(target.NormalizedSql))
-                    {
-                        if (source.Type == SchemaTypes.Table)
-                        {
-                            CompareTable(source, target);
-                        }
-                        else
-                        {
-                            ApplyDifferences(source, target);
-                        }
-                    }
+                    ApplyDifferences(source, target);
                 }
             }
         }
@@ -187,16 +198,36 @@ namespace Augment.SqlServer.Development
                 case SchemaTypes.StoredProcedure:
                 case SchemaTypes.PrimaryKey:
                 case SchemaTypes.UniqueKey:
+                case SchemaTypes.ForeignKey:
                     Drop(target);
                     Add(source);
+                    ApplyImpacts(target);
+                    break;
+
+                case SchemaTypes.Table:
+                    AnalyzeTable(source, target);
                     break;
 
                 default:
-                    throw source.Type.UnsupportedException("Comparer.ApplyDifference");
+                    throw source.Type.UnsupportedException();
+            }
+
+        }
+
+        private void ApplyImpacts(SqlObject target)
+        {
+            foreach (SqlObject impacted in target.Impacts)
+            {
+                SqlObject source = _source.Find(impacted);
+
+                if (source != null)
+                {
+                    ApplyDifferences(source, impacted);
+                }
             }
         }
 
-        private void CompareTable(SqlObject source, SqlObject target)
+        private void AnalyzeTable(SqlObject source, SqlObject target)
         {
             SqlObject tempObj = CreateTempSource(source);
 
@@ -216,17 +247,19 @@ namespace Augment.SqlServer.Development
                 //  rename existing table ZA*
                 //  insert into accounting for identity, calculations, rowversions
 
-                string tempName = $"dbo.ZC{IdGenerator.Random()}_{source.ObjectName}";
+                string tempName = $"ZD{IdGenerator.Random()}_{source.ObjectName}";
 
                 SqlObject rename = CreateTableRename(tempName, source);
 
                 SqlObject xfer = CreateTableTransfer(tempName, source, sourceColumns, targetColumns);
 
-                Add(rename);
+                Drop(rename);
 
                 Add(source);
 
                 Add(xfer);
+
+                ApplyImpacts(target);
             }
 
             DropTempSource(tempObj);
@@ -238,30 +271,50 @@ namespace Augment.SqlServer.Development
                 .Intersect(targetColumns.Select(x => x.Key))
                 .ToList();
 
-            StringBuilder xferSql = new StringBuilder($"insert into {source.SchemaName}.{source.ObjectName}").AppendLine()
+            string tableName = $"{source.SchemaName}.{source.ObjectName}";
+
+            bool hasIdentity = sourceColumns.Any(x => x.Value.IsIdentity);
+
+            StringBuilder xferSql = new StringBuilder();
+
+            if (hasIdentity)
+            {
+                xferSql.Append($"set identity_insert {tableName} on").AppendLine().AppendLine();
+            }
+
+            xferSql.Append($"insert into {tableName}").AppendLine()
                 .Append("      (").Append(columns.Join(", ")).Append(")").AppendLine()
                 .Append("select ").Append(columns.Join(", ")).AppendLine()
-                .Append("from   ").Append(tempName)
-                .AppendLine()
-                .AppendLine()
-                .Append($"drop table {tempName}");
+                .Append("from   dbo.").Append(tempName)
+                .AppendLine().AppendLine()
+                .Append($"drop table dbo.{tempName}").AppendLine().AppendLine();
 
-            SqlObject xfer = new SqlObject(SchemaTypes.SystemPostScript, "syspost." + source.OriginalName, xferSql.ToString());
+            if (hasIdentity)
+            {
+                xferSql.Append($"set identity_insert {tableName} off").AppendLine().AppendLine();
+            }
+
+            SqlObject xfer = new SqlObject(SchemaTypes.SystemScript, "data." + source.OriginalName, xferSql.ToString());
 
             return xfer;
         }
 
         private SqlObject CreateTableRename(string tempName, SqlObject source)
         {
-            string renameSql = $"exec sp_rename '{source.SchemaName}.{source.ObjectName}' '{tempName}'";
+            string renameSql = $"exec sp_rename '{source.SchemaName}.{source.ObjectName}', '{tempName}'";
 
-            SqlObject rename = new SqlObject(SchemaTypes.SystemPreScript, "syspre." + source.OriginalName, renameSql);
+            SqlObject rename = new SqlObject(SchemaTypes.SystemScript, "rename." + source.OriginalName, renameSql);
 
             return rename;
         }
 
         private bool TablesAreDifferent(IDictionary<string, ColumnDefinition> sourceColumns, IDictionary<string, ColumnDefinition> targetColumns)
         {
+            //  requires tighter analysis 
+            //  if this is the first comparison and the object already exists
+            //  the SQL gen'd by the script contains more parens than the original
+            //  scripts - once registered we can rely more on the SQL comparison
+            //  but this is still performed
             if (sourceColumns.Count == targetColumns.Count)
             {
                 IDictionary<string, ColumnDefinition> source = new Dictionary<string, ColumnDefinition>(sourceColumns);

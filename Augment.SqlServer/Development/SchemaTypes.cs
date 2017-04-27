@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Augment.SqlServer.Development
 {
     static class SchemaTypeExtensions
     {
-        public static InvalidOperationException UnsupportedException(this SchemaTypes type, string location)
+        public static InvalidOperationException UnsupportedException(this SchemaTypes schemaType)
         {
-            string msg = $"Unsupported Schema Type '{type}' found '{location}'";
+            StackFrame frame = new StackFrame(1, false);
+            MethodBase method = frame.GetMethod();
+            Type type = method.DeclaringType;
+
+            string msg = $"Unsupported Schema Type '{schemaType}' found '{type.Name}.{method.Name}'";
 
             return new InvalidOperationException(msg);
         }
@@ -18,10 +24,6 @@ namespace Augment.SqlServer.Development
     /// <remarks>These are in the order that objects need to be created</remarks>
     public enum SchemaTypes
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        SystemPreScript,
         ///// <summary>
         ///// A user defined type
         ///// </summary>
@@ -30,6 +32,10 @@ namespace Augment.SqlServer.Development
         /// A table in the database
         /// </summary>
         Table,
+        /// <summary>
+        /// 
+        /// </summary>
+        SystemScript,
         ///// <summary>
         ///// A default in the database
         ///// </summary>
@@ -58,10 +64,10 @@ namespace Augment.SqlServer.Development
         ///// A user defined function
         ///// </summary>
         //Function,
-        ///// <summary>
-        ///// An index
-        ///// </summary>
-        //Index,
+        /// <summary>
+        /// An index
+        /// </summary>
+        Index,
         ///// <summary>
         ///// A view on one or more tables
         ///// </summary>
@@ -70,10 +76,10 @@ namespace Augment.SqlServer.Development
         /// A stored procedure
         /// </summary>
         StoredProcedure,
-        ///// <summary>
-        ///// A table trigger
-        ///// </summary>
-        //Trigger,
+        /// <summary>
+        /// A table trigger
+        /// </summary>
+        Trigger,
         ///// <summary>
         ///// General padding things added by SQL Server scripter like SET ANSI NULLS ON
         ///// </summary>
@@ -82,10 +88,6 @@ namespace Augment.SqlServer.Development
         ///// 
         ///// </summary>
         //PostScript,
-        /// <summary>
-        /// 
-        /// </summary>
-        SystemPostScript,
         /// <summary>
         /// An object that contains SQL that we don't support.
         /// </summary>

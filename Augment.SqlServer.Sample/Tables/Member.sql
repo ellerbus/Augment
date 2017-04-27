@@ -18,3 +18,15 @@ alter table dbo.Member
 	add constraint UQ_Member
 	unique (full_name)
 go
+
+create index Member_name on dbo.Member (full_name)
+go
+
+create trigger dbo.MemberAfterInsert on dbo.Member after insert
+as
+
+	insert into dbo.MemberHistory (member_id)
+	select	i.member_id
+	from	inserted i
+
+go

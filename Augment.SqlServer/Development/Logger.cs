@@ -1,4 +1,5 @@
 ﻿using System;
+using Augment.SqlServer.Development.Models;
 
 namespace Augment.SqlServer.Development
 {
@@ -15,13 +16,35 @@ namespace Augment.SqlServer.Development
             Console.ForegroundColor = c;
         }
 
-        public static void Note(string message)
+        public static void Dropping(SqlObject sqlObj)
+        {
+            ConsoleColor c = Console.ForegroundColor;
+
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+
+            Console.WriteLine($"Dropping {sqlObj.ToString()}");
+
+            Console.ForegroundColor = c;
+        }
+
+        public static void Adding(SqlObject sqlObj)
         {
             ConsoleColor c = Console.ForegroundColor;
 
             Console.ForegroundColor = ConsoleColor.Green;
 
-            Console.WriteLine(message);
+            Console.WriteLine($"Creating {sqlObj.ToString()}");
+
+            Console.ForegroundColor = c;
+        }
+
+        public static void Registering(RegistryObject regObj)
+        {
+            ConsoleColor c = Console.ForegroundColor;
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+
+            Console.WriteLine($"Registering {regObj.ToString()}");
 
             Console.ForegroundColor = c;
         }

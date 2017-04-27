@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Development\Comparer.cs" />
+    <Compile Include="Development\Analyzer.cs" />
     <Compile Include="Development\IdGenerator.cs" />
     <Compile Include="Development\Installer.cs" />
     <Compile Include="Development\Logger.cs" />
@@ -87,9 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Development\Scripts\ColumnScript.sql" />
+    <Content Include="Development\Scripts\EntityImpactScript.sql" />
     <Content Include="Development\Scripts\RegistryMergeScript.sql" />
     <Content Include="Development\Scripts\RegistryScript.sql" />
-    <Content Include="Development\Scripts\DatabaseScripts.sql" />
+    <Content Include="Development\Scripts\DatabaseScript.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -7,6 +8,7 @@ namespace Augment.SqlServer.Development.Parsers
     /// <summary>
     /// A parser that detects the type and name of a sql object from a script.
     /// </summary>
+    [DebuggerDisplay("{Type,nq} {Regex,nq}")]
     public class ScriptRecognizer
     {
         #region Static Members
@@ -22,50 +24,50 @@ namespace Augment.SqlServer.Development.Parsers
         /// </summary>
         private static IEnumerable<ScriptRecognizer> CreateRecognizers()
         {
-            yield return new ScriptRecognizer(SchemaTypes.Unsupported, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern}).+ADD\s+(CONSTRAINT\s+)?((CHECK\s*\()|(PRIMARY KEY)|(FOREIGN KEY))", "$1 : Unnamed CONSTRAINTs are not supported");
-            yield return new ScriptRecognizer(SchemaTypes.Unsupported, $@"CREATE\s+TABLE\s+(?<tablename>{SqlNamePattern}).+(CONSTRAINT\s+)?((CHECK\s*\()|(PRIMARY KEY)|(FOREIGN KEY))", "$1 : Inline CONSTRAINTs are not supported");
+            yield return new ScriptRecognizer(SchemaTypes.Unsupported, $@"ALTER TABLE (?<tablename>{SqlNamePattern}).+ADD (CONSTRAINT )?((CHECK\s*\()|(PRIMARY KEY)|(FOREIGN KEY))", "$1 : Unnamed CONSTRAINTs are not supported");
+            yield return new ScriptRecognizer(SchemaTypes.Unsupported, $@"CREATE TABLE (?<tablename>{SqlNamePattern}).+(CONSTRAINT )?((CHECK\s*\()|(PRIMARY KEY)|(FOREIGN KEY))", "$1 : Inline CONSTRAINTs are not supported");
 
-            //yield return new ScriptRecognizer(SchemaTypes.IndexedView, $@"--\s*INDEXEDVIEW.+CREATE\s+VIEW\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.UserPreScript, $@"--\s*PRESCRIPT\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.UserScript, $@"--\s*SCRIPT\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.UserDefinedType, $@"CREATE\s+TYPE\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.UserDefinedType, $@"EXEC(UTE)?\s+sp_addtype\s+'?(?<name>{SqlNamePattern})'?");
-            //yield return new ScriptRecognizer(SchemaTypes.MasterKey, $@"CREATE\s+MASTER\s+KEY\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Certificate, $@"CREATE\s+CERTIFICATE\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.SymmetricKey, $@"CREATE\s+SYMMETRIC\s+KEY\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.PartitionFunction, $@"CREATE\s+PARTITION\s+FUNCTION\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.PartitionScheme, $@"CREATE\s+PARTITION\s+SCHEME\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.MessageType, $@"CREATE\s+MESSAGE TYPE\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Contract, $@"CREATE\s+CONTRACT\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.BrokerPriority, $@"CREATE\s+BROKER\s+PRIORITY\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Queue, $@"CREATE\s+QUEUE\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Service, $@"CREATE\s+SERVICE\s+(?<name>{SqlNamePattern})");
-            yield return new ScriptRecognizer(SchemaTypes.Table, $@"CREATE\s+TABLE\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Trigger, $@"CREATE\s+TRIGGER\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Index, $@"CREATE\s+(UNIQUE\s+)?(((CLUSTERED)|(NONCLUSTERED))\s+)?INDEX\s+(?<indname>{SqlNamePattern})\s+ON\s+(?<tablename>{SqlNamePattern})", "$2.$1");
-            //yield return new ScriptRecognizer(SchemaTypes.View, $@"CREATE\s+VIEW\s+(?<name>{SqlNamePattern})");
-            yield return new ScriptRecognizer(SchemaTypes.StoredProcedure, $@"CREATE\s+PROC(EDURE)?\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Permission, $@"GRANT\s+(?<permission>\w+(\s*,\s*\w+)*)\s+ON\s+(?<name>{SqlNamePattern})\s+TO\s+(?<grantee>{SqlNamePattern})", "$1 ON $2 TO $3");
-            yield return new ScriptRecognizer(SchemaTypes.PrimaryKey, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern})\s+(WITH\s+(NO)?CHECK\s+)?ADD\s+CONSTRAINT\s*\(?(?<name>{SqlNamePattern})\)?\s+PRIMARY\s+", "$1.$2");
-            yield return new ScriptRecognizer(SchemaTypes.UniqueKey, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern})\s+(WITH\s+(NO)?CHECK\s+)?ADD\s+CONSTRAINT\s*\(?(?<name>{SqlNamePattern})\)?\s+UNIQUE\s+", "$1.$2");
-            yield return new ScriptRecognizer(SchemaTypes.ForeignKey, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern})\s+(WITH\s+(NO)?CHECK\s+)?ADD\s+CONSTRAINT\s*\(?(?<name>{SqlNamePattern})\)?\s+FOREIGN\s+KEY\s*\(?(?<name>{SqlNamePattern})\)?", "$1.$2");
-            //yield return new ScriptRecognizer(SchemaTypes.Constraint, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern})\s+(WITH\s+(NO)?CHECK\s+)?ADD\s+((CHECK\s+)?CONSTRAINT)\s*\(?(?<name>{SqlNamePattern})\)?", "$1.$2");
-            //yield return new ScriptRecognizer(SchemaTypes.Default, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern})\s+ADD\s+(CONSTRAINT\s+(?<name>{SqlNamePattern})\s+)?DEFAULT\s*\(?.*\)?FOR\s+(?<column>{SqlNamePattern})", "$1.$3");
-            //yield return new ScriptRecognizer(SchemaTypes.Function, $@"CREATE\s+FUNCTION\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.PrimaryXmlIndex, $@"CREATE\s+PRIMARY\s+XML\s+INDEX\s+(?<name>{SqlNamePattern})\s+ON\s+(?<tablename>{SqlNamePattern})", "$2.$1");
-            //yield return new ScriptRecognizer(SchemaTypes.SecondaryXmlIndex, $@"CREATE\s+XML\s+INDEX\s+(?<name>{SqlNamePattern})\s+ON\s+(?<tablename>{SqlNamePattern})", "$2.$1");
-            //yield return new ScriptRecognizer(SchemaTypes.Login, $@"CREATE\s+LOGIN\s+(?<name>{SqlNamePattern})", "$1");
-            //yield return new ScriptRecognizer(SchemaTypes.User, $@"CREATE\s+USER\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Role, $@"CREATE\s+ROLE\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Schema, $@"CREATE\s+SCHEMA\s+(?<name>{SqlNamePattern})");
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+ANSI_NULLS", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+QUOTED_IDENTIFIER", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+ARITHABORT", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+CONCAT_NULL_YIELDS_NULL", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+ANSI_PADDING", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+ANSI_WARNINGS", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET\s+NUMERIC_ROUNDABORT", null);
-            //yield return new ScriptRecognizer(SchemaTypes.Script, $@"ALTER\s+TABLE\s+(?<tablename>{SqlNamePattern})\s+(WITH\s+(NO)?CHECK\s+)?(?!ADD\s+)(((CHECK\s+)?CONSTRAINT)|(DEFAULT))\s*\(?(?<name>{SqlNamePattern})\)?", "SCRIPT $1.$2");
+            //yield return new ScriptRecognizer(SchemaTypes.IndexedView, $@"--\s*INDEXEDVIEW.+CREATE VIEW (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.UserPreScript, $@"--\s*PRESCRIPT (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.UserScript, $@"--\s*SCRIPT (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.UserDefinedType, $@"CREATE TYPE (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.UserDefinedType, $@"EXEC(UTE)? sp_addtype '?(?<name>{SqlNamePattern})'?");
+            //yield return new ScriptRecognizer(SchemaTypes.MasterKey, $@"CREATE MASTER KEY (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Certificate, $@"CREATE CERTIFICATE (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.SymmetricKey, $@"CREATE SYMMETRIC KEY (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.PartitionFunction, $@"CREATE PARTITION FUNCTION (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.PartitionScheme, $@"CREATE PARTITION SCHEME (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.MessageType, $@"CREATE MESSAGE TYPE (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Contract, $@"CREATE CONTRACT (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.BrokerPriority, $@"CREATE BROKER PRIORITY (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Queue, $@"CREATE QUEUE (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Service, $@"CREATE SERVICE (?<name>{SqlNamePattern})");
+            yield return new ScriptRecognizer(SchemaTypes.Table, $@"CREATE TABLE (?<name>{SqlNamePattern})");
+            yield return new ScriptRecognizer(SchemaTypes.Trigger, $@"CREATE TRIGGER (?<name>{SqlNamePattern}) ON");
+            yield return new ScriptRecognizer(SchemaTypes.Index, $@"CREATE (UNIQUE )?(((CLUSTERED)|(NONCLUSTERED)) )?INDEX (?<indname>{SqlNamePattern}) ON (?<tablename>{SqlNamePattern})", "$2.$1");
+            //yield return new ScriptRecognizer(SchemaTypes.View, $@"CREATE VIEW (?<name>{SqlNamePattern})");
+            yield return new ScriptRecognizer(SchemaTypes.StoredProcedure, $@"CREATE PROC(EDURE)? (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Permission, $@"GRANT (?<permission>\w+(\s*,\s*\w+)*) ON (?<name>{SqlNamePattern}) TO (?<grantee>{SqlNamePattern})", "$1 ON $2 TO $3");
+            yield return new ScriptRecognizer(SchemaTypes.ForeignKey, $@"ALTER TABLE (?<tablename>{SqlNamePattern}) (WITH (NO)?CHECK )?ADD CONSTRAINT (?<name>{SqlNamePattern}) FOREIGN KEY\s*", "$1.$2");
+            yield return new ScriptRecognizer(SchemaTypes.PrimaryKey, $@"ALTER TABLE (?<tablename>{SqlNamePattern}) (WITH (NO)?CHECK )?ADD CONSTRAINT (?<name>{SqlNamePattern}) PRIMARY KEY\s*", "$1.$2");
+            yield return new ScriptRecognizer(SchemaTypes.UniqueKey, $@"ALTER TABLE (?<tablename>{SqlNamePattern}) (WITH (NO)?CHECK )?ADD CONSTRAINT (?<name>{SqlNamePattern}) UNIQUE\s*", "$1.$2");
+            //yield return new ScriptRecognizer(SchemaTypes.Constraint, $@"ALTER TABLE (?<tablename>{SqlNamePattern}) (WITH (NO)?CHECK )?ADD ((CHECK )?CONSTRAINT)\s*\(?(?<name>{SqlNamePattern})\)?", "$1.$2");
+            //yield return new ScriptRecognizer(SchemaTypes.Default, $@"ALTER TABLE (?<tablename>{SqlNamePattern}) ADD (CONSTRAINT (?<name>{SqlNamePattern}) )?DEFAULT\s*\(?.*\)?FOR (?<column>{SqlNamePattern})", "$1.$3");
+            //yield return new ScriptRecognizer(SchemaTypes.Function, $@"CREATE FUNCTION (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.PrimaryXmlIndex, $@"CREATE PRIMARY XML INDEX (?<name>{SqlNamePattern}) ON (?<tablename>{SqlNamePattern})", "$2.$1");
+            //yield return new ScriptRecognizer(SchemaTypes.SecondaryXmlIndex, $@"CREATE XML INDEX (?<name>{SqlNamePattern}) ON (?<tablename>{SqlNamePattern})", "$2.$1");
+            //yield return new ScriptRecognizer(SchemaTypes.Login, $@"CREATE LOGIN (?<name>{SqlNamePattern})", "$1");
+            //yield return new ScriptRecognizer(SchemaTypes.User, $@"CREATE USER (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Role, $@"CREATE ROLE (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Schema, $@"CREATE SCHEMA (?<name>{SqlNamePattern})");
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET ANSI_NULLS", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET QUOTED_IDENTIFIER", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET ARITHABORT", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET CONCAT_NULL_YIELDS_NULL", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET ANSI_PADDING", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET ANSI_WARNINGS", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Unused, $@"SET NUMERIC_ROUNDABORT", null);
+            //yield return new ScriptRecognizer(SchemaTypes.Script, $@"ALTER TABLE (?<tablename>{SqlNamePattern}) (WITH (NO)?CHECK )?(?!ADD )(((CHECK )?CONSTRAINT)|(DEFAULT))\s*\(?(?<name>{SqlNamePattern})\)?", "SCRIPT $1.$2");
             //yield return new ScriptRecognizer(SchemaTypes.AutoProc, AutoProc.AutoProcRegexString, "$0");
             //// make sure that they are sorted in the order of likelihood
             //parsers.Sort((p1, p2) => p1.SchemaTypes.CompareTo(p2.SchemaTypes);
@@ -106,7 +108,7 @@ namespace Augment.SqlServer.Development.Parsers
         {
             Type = type;
 
-            Regex = new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.ExplicitCapture);
+            Regex = new Regex(pattern.Replace(" ", @"\s+"), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.ExplicitCapture);
 
             NamePattern = namePattern;
         }

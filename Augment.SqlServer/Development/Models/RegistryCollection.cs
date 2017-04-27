@@ -15,16 +15,29 @@ namespace Augment.SqlServer.Development.Models
 
         public void Add(SqlObject sqlObj)
         {
-            RegistryObject regObj = null;
-
-            if (!Dictionary.TryGetValue(sqlObj.NormalizedName, out regObj))
+            switch (sqlObj.Type)
             {
-                regObj = new RegistryObject(sqlObj);
+                case SchemaTypes.SystemScript:
+                    break;
 
-                Add(regObj);
+                default:
+                    RegistryObject regObj = null;
+
+                    if (Dictionary.TryGetValue(sqlObj.NormalizedName, out regObj))
+                    {
+                        //  get the script updated
+                        regObj.SqlScript = sqlObj.OriginalSql;
+                    }
+                    else
+                    {
+                        regObj = new RegistryObject(sqlObj);
+
+                        Add(regObj);
+                    }
+
+                    regObj.Action = Action.Updated;
+                    break;
             }
-
-            regObj.Action = Action.Updated;
         }
 
         public void Drop(SqlObject sqlObj)

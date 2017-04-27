@@ -44,6 +44,7 @@ namespace Augment.SqlServer.Development.Models
             switch (Type)
             {
                 case SchemaTypes.Table:
+                case SchemaTypes.Trigger:
                 case SchemaTypes.StoredProcedure:
                     VerifyName(2, Identifiers, "schema.object");
 
@@ -54,6 +55,7 @@ namespace Augment.SqlServer.Development.Models
                 case SchemaTypes.PrimaryKey:
                 case SchemaTypes.UniqueKey:
                 case SchemaTypes.ForeignKey:
+                case SchemaTypes.Index:
                     VerifyName(3, Identifiers, "schema.parent.object");
 
                     SchemaName = Identifiers[0];
@@ -61,12 +63,11 @@ namespace Augment.SqlServer.Development.Models
                     ObjectName = Identifiers[2];
                     break;
 
-                case SchemaTypes.SystemPreScript:
-                case SchemaTypes.SystemPostScript:
+                case SchemaTypes.SystemScript:
                     break;
 
                 default:
-                    throw Type.UnsupportedException("SqlObject.VerifyNaming");
+                    throw Type.UnsupportedException();
             }
         }
 
@@ -135,6 +136,11 @@ namespace Augment.SqlServer.Development.Models
         /// 
         /// </summary>
         public string NormalizedSql { get; private set; }
+
+        /// <summary>
+        /// Those object impacted by changes 'this' object
+        /// </summary>
+        public SqlObjectCollection Impacts { get; } = new SqlObjectCollection();
 
         #endregion
     }

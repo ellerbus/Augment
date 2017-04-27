@@ -121,8 +121,11 @@
   <data name="ColumnScript" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\development\scripts\columnscript.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="DatabaseScripts" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\development\scripts\databasescripts.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="DatabaseScript" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\development\scripts\databasescript.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="EntityImpactScript" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\development\scripts\entityimpactscript.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="RegistryMergeScript" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\development\scripts\registrymergescript.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

@@ -17,6 +17,7 @@ namespace Augment.Tests.SqlServer.Development
 
             ro.RegistryName.Should().Be(so.NormalizedName);
             ro.SqlScript.Should().Be(so.OriginalSql);
+            ro.IsModified.Should().BeTrue();
         }
     }
 }
