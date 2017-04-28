@@ -12,6 +12,7 @@
     <copyright>Copyright 2015</copyright>
     <tags>simple fluent mailing library</tags>
     <releaseNotes>
+2.2 - Better Object Traversing for DotLiquid Safe Registry
 2.1 - Support .NET 461 and 451
 2.0 - Bumped to .NET 4.6.1
 1.0 - Initial Release
