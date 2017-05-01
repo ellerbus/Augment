@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
-using Augment.SqlServer.Properties;
+using Dapper;
 
 namespace Augment.SqlServer.Development.Models
 {
@@ -12,18 +12,19 @@ namespace Augment.SqlServer.Development.Models
     {
         #region Constructors
 
-        public RegistryObject(string registryName, string sqlScript, string actionEnum, DateTime updatedUtc)
+        [ExplicitConstructor]
+        public RegistryObject(string registryName, string sqlScript, string statusEnum)
         {
             _registryName = registryName;
             _sqlScript = sqlScript;
-            _actionEnum = actionEnum;
-            _updatedUtc = updatedUtc;
+            _statusEnum = statusEnum;
         }
 
         public RegistryObject(SqlObject sqlObj)
         {
             RegistryName = sqlObj.NormalizedName;
             SqlScript = sqlObj.OriginalSql;
+            Status = Status.Updated;
         }
 
         #endregion
@@ -33,16 +34,6 @@ namespace Augment.SqlServer.Development.Models
         public override string ToString()
         {
             return RegistryName + (IsModified ? " *" : "");
-        }
-
-        public string ToMergeSql()
-        {
-            string sql = Resources.RegistryMergeScript
-                .Replace("RegistryName", GetSafeString(RegistryName))
-                .Replace("SqlScript", GetSafeString(SqlScript))
-                .Replace("Action", GetSafeString(ActionEnum));
-
-            return sql;
         }
 
         private static string GetSafeString(string text)
@@ -89,25 +80,25 @@ namespace Augment.SqlServer.Development.Models
         /// <summary>
         /// 
         /// </summary>
-        [Required, Column("action_enum")]
-        public string ActionEnum
+        [Required, Column("status_enum")]
+        public string StatusEnum
         {
-            get { return _actionEnum; }
-            private set { UpdateModifiedFlag(ref _actionEnum, value); }
+            get { return _statusEnum; }
+            private set { UpdateModifiedFlag(ref _statusEnum, value); }
         }
-        private string _actionEnum;
+        private string _statusEnum;
 
         /// <summary>
         /// 
         /// </summary>
         [NotMapped]
-        public Action Action
+        public Status Status
         {
             get
             {
-                return ActionEnum.AssertNotNull("None").ToEnum<Action>();
+                return StatusEnum.AssertNotNull("None").ToEnum<Status>();
             }
-            set { ActionEnum = value.ToString(); }
+            set { StatusEnum = value.ToString(); }
         }
 
         /// <summary>
@@ -116,10 +107,21 @@ namespace Augment.SqlServer.Development.Models
         [Required, Column("updated_utc")]
         public DateTime UpdatedUtc
         {
-            get { return _updatedUtc; }
+            get { return DateTime.UtcNow; }
             private set { UpdateModifiedFlag(ref _updatedUtc, value); }
         }
         private DateTime _updatedUtc;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Required, Column("updated_by")]
+        public string UpdatedBy
+        {
+            get { return Environment.UserName; }
+            private set { UpdateModifiedFlag(ref _updatedBy, value); }
+        }
+        private string _updatedBy;
 
         /// <summary>
         /// 

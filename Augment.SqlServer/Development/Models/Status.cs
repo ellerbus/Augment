@@ -1,9 +1,8 @@
 ﻿namespace Augment.SqlServer.Development.Models
 {
-    public enum Action
+    public enum Status
     {
         None,
-        Inserted,
         Updated,
         Deleted
     }

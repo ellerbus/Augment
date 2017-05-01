@@ -35,7 +35,7 @@ namespace Augment.SqlServer.Development.Models
                         Add(regObj);
                     }
 
-                    regObj.Action = Action.Updated;
+                    regObj.Status = Status.Updated;
                     break;
             }
         }
@@ -46,7 +46,7 @@ namespace Augment.SqlServer.Development.Models
 
             if (Dictionary.TryGetValue(sqlObj.NormalizedName, out regObj))
             {
-                regObj.Action = Action.Deleted;
+                regObj.Status = Status.Deleted;
             }
         }
 

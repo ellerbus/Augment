@@ -6,23 +6,10 @@ using Dapper;
 
 namespace Augment.SqlServer.Mapping
 {
-    public static class TypeMapper
+    static class TypeMapper
     {
-        public static void Initialize(Assembly assembly, string namespacePath)
+        public static void Initialize(Type type, TableMap tableMap)
         {
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (type.IsClass && type.Namespace.IsSameAs(namespacePath))
-                {
-
-                }
-            }
-        }
-
-        public static void Initialize(Type type)
-        {
-            TableMap tableMap = TableMap.Create(type);
-
             SqlMapper.ITypeMap typeMap = SqlMapper.GetTypeMap(type);
 
             CustomTypeMap mapper = new CustomTypeMap(type, typeMap, tableMap);
@@ -67,12 +54,12 @@ namespace Augment.SqlServer.Mapping
 
             foreach (ConstructorInfo ctor in constructors)
             {
-                ParameterInfo[] ctorParameters = ctor.GetParameters();
-
-                if (ctorParameters.Length == 0)
+                if (ctor.GetCustomAttribute<ExplicitConstructorAttribute>() != null)
                 {
                     return ctor;
                 }
+
+                ParameterInfo[] ctorParameters = ctor.GetParameters();
 
                 if (ctorParameters.Length != types.Length)
                 {
@@ -83,23 +70,22 @@ namespace Augment.SqlServer.Mapping
 
                 for (; i < ctorParameters.Length; i++)
                 {
-                    string parmName = ctorParameters[i].Name;
+                    Type parmType = ctorParameters[i].ParameterType;
 
-                    if (parmName.IsNotSameAs(names[i].Replace("_", "")))
+                    if (parmType.IsPrimitive || parmType.IsValueType || parmType == typeof(string))
                     {
+                        string parmName = ctorParameters[i].Name;
+
+                        if (parmName.IsNotSameAs(names[i].Replace("_", "")))
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        //  parm is a "class" not something filled by DB
                         break;
                     }
-
-                    //if (types[i] == typeof(byte[]) && ctorParameters[i].ParameterType.FullName == SqlMapper.LinqBinary)
-                    //    continue;
-                    //var unboxedType = Nullable.GetUnderlyingType(ctorParameters[i].ParameterType) ?? ctorParameters[i].ParameterType;
-                    //if ((unboxedType != types[i] && !SqlMapper.HasTypeHandler(unboxedType))
-                    //    && !(unboxedType.IsEnum() && Enum.GetUnderlyingType(unboxedType) == types[i])
-                    //    && !(unboxedType == typeof(char) && types[i] == typeof(string))
-                    //    && !(unboxedType.IsEnum() && types[i] == typeof(string)))
-                    //{
-                    //    break;
-                    //}
                 }
 
                 if (i == ctorParameters.Length)
@@ -113,7 +99,7 @@ namespace Augment.SqlServer.Mapping
 
         public ConstructorInfo FindExplicitConstructor()
         {
-            return _originalMap.FindExplicitConstructor();
+            return null;
         }
 
         public SqlMapper.IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
@@ -122,12 +108,15 @@ namespace Augment.SqlServer.Mapping
 
             if (map != null)
             {
-                ParameterInfo parm = constructor.GetParameters().First(x => x.Name.IsSameAs(map.Name));
+                ParameterInfo parm = constructor.GetParameters().FirstOrDefault(x => x.Name.IsSameAs(map.Name));
 
-                return new CustomMemberMap(map, parm);
+                if (parm != null)
+                {
+                    return new CustomMemberMap(map, parm);
+                }
             }
 
-            return _originalMap.GetConstructorParameter(constructor, columnName);
+            return null;
         }
 
         public SqlMapper.IMemberMap GetMember(string columnName)
@@ -174,15 +163,7 @@ namespace Augment.SqlServer.Mapping
 
         public Type MemberType
         {
-            get
-            {
-                if (Parameter == null)
-                {
-                    return Parameter.ParameterType;
-                }
-
-                return _map.Type;
-            }
+            get { return _map.Type; }
         }
 
         public FieldInfo Field { get { return null; } }

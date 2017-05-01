@@ -151,6 +151,26 @@ namespace Augment.SqlServer.Mapping
         /// </summary>
         public bool IsTimestamp { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsForInsert { get { return !IsIdentity && !IsCalculated && !IsTimestamp; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsForUpdate { get { return !IsPrimaryKey && !IsIdentity && !IsCalculated && !IsTimestamp; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsForDelete { get { return !IsPrimaryKey; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsForOutput { get { return IsIdentity || IsCalculated || IsTimestamp; } }
+
         #endregion
     }
 }

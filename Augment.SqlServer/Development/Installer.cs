@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Augment.SqlServer.Data;
 using Augment.SqlServer.Development.Models;
 using Augment.SqlServer.Development.Parsers;
 using Augment.SqlServer.Mapping;
@@ -18,6 +19,13 @@ namespace Augment.SqlServer.Development
     public class Installer
     {
         #region Members
+
+        static Installer()
+        {
+            Type type = typeof(RegistryObject);
+
+            TypeMapper.Initialize(type, TableMap.Create(type));
+        }
 
         [DebuggerDisplay("{Entity,nq} {Impacts,nq}")]
         class EntityImpact
@@ -33,11 +41,6 @@ namespace Augment.SqlServer.Development
         #endregion
 
         #region Constructors
-
-        static Installer()
-        {
-            TypeMapper.Initialize(typeof(RegistryObject));
-        }
 
         public Installer(Assembly source, IDbConnection target)
         {
@@ -204,7 +207,9 @@ namespace Augment.SqlServer.Development
                 {
                     Logger.Registering(regObj);
 
-                    _targetConnection.Execute(regObj.ToMergeSql());
+                    //_targetConnection.Execute(regObj.ToMergeSql());
+
+                    _targetConnection.Merge(regObj);
                 }
 
                 _targetConnection.Execute("commit");

@@ -121,47 +121,14 @@ namespace Augment.SqlServer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to merge dbo.AugmentRegistry as tgt
-        ///using
-        ///(
-        ///	select
-        ///		&apos;RegistryName&apos;	registry_name,
-        ///		&apos;SqlScript&apos;		sql_script,
-        ///		&apos;Action&apos;		action_enum
-        ///)
-        ///as x
-        ///on
-        ///(
-        ///	tgt.registry_name = x.registry_name
-        ///)
-        ///when matched then update set
-        ///	tgt.sql_script	= x.sql_script,
-        ///	tgt.action_enum	= case when x.action_enum = &apos;Deleted&apos; then &apos;Deleted&apos; else &apos;Updated&apos; end,
-        ///	tgt.updated_utc	= getutcdate()
-        ///when not matched by target then insert
-        ///(
-        ///	registry_name,
-        ///	sql_script,
-        ///	action_enum,
-        ///	updated_utc
-        ///)
-        ///values
-        ///(
-        ///	x.registry_ [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string RegistryMergeScript {
-            get {
-                return ResourceManager.GetString("RegistryMergeScript", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to create table dbo.AugmentRegistry
         ///(
         ///	registry_name			varchar(250) not null,
         ///	sql_script				varchar(max) not null,
-        ///	action_enum				varchar(20) not null,
-        ///	updated_utc				datetime not null
+        ///	status_enum				varchar(20) not null,
+        ///	updated_utc				datetime not null,
+        ///	updated_at              as dateadd(mi, datediff(mi, getutcdate(), getdate()), updated_utc),
+        ///	updated_by				varchar(50) not null
         ///)
         ///go
         ///

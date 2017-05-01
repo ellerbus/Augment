@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -73,6 +74,10 @@ namespace Augment.SqlServer.Mapping
                         .Select(x => ColumnMap.Create(x))
                         .ToArray();
 
+                    map.OutputColumns = map.Columns.Where(x => x.IsForOutput).ToArray();
+
+                    TypeMapper.Initialize(type, map);
+
                     _cache.Add(type, map);
                 }
             }
@@ -108,6 +113,11 @@ namespace Augment.SqlServer.Mapping
         /// 
         /// </summary>
         public IReadOnlyList<ColumnMap> Columns { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IReadOnlyList<ColumnMap> OutputColumns { get; private set; }
 
         /// <summary>
         /// 
