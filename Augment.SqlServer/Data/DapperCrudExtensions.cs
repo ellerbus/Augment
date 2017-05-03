@@ -8,35 +8,63 @@ namespace Augment.SqlServer.Data
 {
     static class DapperCrudExtensions
     {
-        public static void Merge<TEntity>(this IDbConnection conn, TEntity entity)
+        public static void MergeOne<TEntity>(this IDbConnection conn, TEntity entity)
         {
-            string sql = SqlStatementBuilder.CreateMerge<TEntity>();
+            string sql = SqlStatementBuilder.CreateMergeOne<TEntity>();
 
-            ExecuteAndMapOutput(conn, entity, sql);
+            ExecuteAndMapOutput(conn, sql, entity);
         }
 
-        public static void Insert<TEntity>(this IDbConnection conn, TEntity entity)
+        public static void MergeMany<TEntity>(this IDbConnection conn, TEntity entity)
         {
-            string sql = SqlStatementBuilder.CreateInsert<TEntity>();
-
-            ExecuteAndMapOutput(conn, entity, sql);
-        }
-
-        public static void Update<TEntity>(this IDbConnection conn, TEntity entity)
-        {
-            string sql = SqlStatementBuilder.CreateUpdate<TEntity>();
-
-            ExecuteAndMapOutput(conn, entity, sql);
-        }
-
-        public static void Delete<TEntity>(this IDbConnection conn, TEntity entity)
-        {
-            string sql = SqlStatementBuilder.CreateDelete<TEntity>();
+            string sql = SqlStatementBuilder.CreateMergeMany<TEntity>();
 
             conn.Execute(sql, entity);
         }
 
-        public static TEntity SelectByPrimaryKey<TEntity>(this IDbConnection conn, TEntity entity)
+        public static void InsertOne<TEntity>(this IDbConnection conn, TEntity entity)
+        {
+            string sql = SqlStatementBuilder.CreateInsertOne<TEntity>();
+
+            ExecuteAndMapOutput(conn, sql, entity);
+        }
+
+        public static void InsertMany<TEntity>(this IDbConnection conn, TEntity entity)
+        {
+            string sql = SqlStatementBuilder.CreateInsertMany<TEntity>();
+
+            conn.Execute(sql, entity);
+        }
+
+        public static void UpdateOne<TEntity>(this IDbConnection conn, TEntity entity)
+        {
+            string sql = SqlStatementBuilder.CreateUpdateOne<TEntity>();
+
+            ExecuteAndMapOutput(conn, sql, entity);
+        }
+
+        public static void UpdateMany<TEntity>(this IDbConnection conn, TEntity entity)
+        {
+            string sql = SqlStatementBuilder.CreateUpdateMany<TEntity>();
+
+            conn.Execute(sql, entity);
+        }
+
+        public static void DeleteOne<TEntity>(this IDbConnection conn, TEntity entity)
+        {
+            string sql = SqlStatementBuilder.CreateDeleteOne<TEntity>();
+
+            conn.Execute(sql, entity);
+        }
+
+        public static void DeleteMany<TEntity>(this IDbConnection conn, TEntity entity)
+        {
+            string sql = SqlStatementBuilder.CreateDeleteMany<TEntity>();
+
+            conn.Execute(sql, entity);
+        }
+
+        public static TEntity SelectOne<TEntity>(this IDbConnection conn, TEntity entity)
         {
             string sql = SqlStatementBuilder.CreateSelectOne<TEntity>();
 
@@ -45,16 +73,16 @@ namespace Augment.SqlServer.Data
             return results;
         }
 
-        public static IList<TEntity> SelectAll<TEntity>(this IDbConnection conn)
+        public static IList<TEntity> SelectMany<TEntity>(this IDbConnection conn)
         {
-            string sql = SqlStatementBuilder.CreateSelectAll<TEntity>();
+            string sql = SqlStatementBuilder.CreateSelectMany<TEntity>();
 
             IList<TEntity> results = conn.Query<TEntity>(sql).ToList();
 
             return results;
         }
 
-        private static void ExecuteAndMapOutput<TEntity>(IDbConnection conn, TEntity entity, string sql)
+        private static void ExecuteAndMapOutput<TEntity>(IDbConnection conn, string sql, TEntity entity)
         {
             TableMap map = TableMap.Create<TEntity>();
 

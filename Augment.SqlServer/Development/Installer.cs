@@ -215,12 +215,7 @@ namespace Augment.SqlServer.Development
                     _targetConnection.Execute(sqlObj.OriginalSql);
                 }
 
-                foreach (RegistryObject regObj in Registry.Where(x => x.IsModified))
-                {
-                    Logger.Registering(regObj);
-
-                    _targetConnection.Merge(regObj);
-                }
+                _targetConnection.MergeMany(Registry.Where(x => x.IsModified));
 
                 _targetConnection.Execute("commit");
             }
