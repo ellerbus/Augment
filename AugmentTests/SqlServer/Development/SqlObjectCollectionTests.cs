@@ -11,7 +11,7 @@ namespace Augment.Tests.SqlServer.Development
         [TestMethod]
         public void SqlObjectCollection_Should_ByNormalizedName()
         {
-            var so = new SqlObject(SchemaTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
+            var so = new SqlObject(ObjectTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
 
             var col = new SqlObjectCollection() { so };
 

@@ -63,5 +63,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Procedures\MemberSelectMany.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ChangeScripts\00000000_MemberLoad.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

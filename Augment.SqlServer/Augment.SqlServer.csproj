@@ -52,8 +52,10 @@
   <ItemGroup>
     <Compile Include="Data\DapperCrudExtensions.cs" />
     <Compile Include="Data\SqlStatementBuilder.cs" />
-    <Compile Include="Development\Analyzer.cs" />
-    <Compile Include="Development\IdGenerator.cs" />
+    <Compile Include="Development\Analyzers\AnalyzerNames.cs" />
+    <Compile Include="Development\Analyzers\DatabaseAnalyzer.cs" />
+    <Compile Include="Development\Analyzers\UserTypeAnalyzer.cs" />
+    <Compile Include="Development\Analyzers\TableAnalyzer.cs" />
     <Compile Include="Development\Installer.cs" />
     <Compile Include="Development\Logger.cs" />
     <Compile Include="Development\Models\Status.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="Development\Models\SqlObject.cs" />
     <Compile Include="Development\Models\RegistryCollection.cs" />
     <Compile Include="Development\Models\SqlObjectCollection.cs" />
+    <Compile Include="Development\ObjectTypes.cs" />
     <Compile Include="Development\Parsers\Scanner.cs" />
     <Compile Include="Development\Parsers\ScriptParser.cs" />
     <Compile Include="Development\Parsers\ScriptRecognizer.cs" />
@@ -74,7 +77,6 @@
     <Compile Include="Mapping\TypeExtensions.cs" />
     <Compile Include="Mapping\TypeMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Development\SchemaTypes.cs" />
     <Compile Include="Development\StringExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -96,6 +98,7 @@
     <Content Include="Development\Scripts\EntityImpactScript.sql" />
     <Content Include="Development\Scripts\RegistryScript.sql" />
     <Content Include="Development\Scripts\DatabaseScript.sql" />
+    <Content Include="Development\Scripts\UserTypeScript.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

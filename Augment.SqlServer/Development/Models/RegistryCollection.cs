@@ -17,7 +17,7 @@ namespace Augment.SqlServer.Development.Models
         {
             switch (sqlObj.Type)
             {
-                case SchemaTypes.SystemScript:
+                case ObjectTypes.SystemScript:
                     break;
 
                 default:

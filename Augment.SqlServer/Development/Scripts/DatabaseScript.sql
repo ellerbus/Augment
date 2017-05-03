@@ -59,6 +59,86 @@ from	sys.tables t
 			for xml path('')
 		) col (list)
 union
+select	'create type ' + s.name + '.' + t.name+ ' as table (' + left(col.list, len(col.list) - 1) + ')'
+from	sys.table_types t
+		inner join sys.schemas s
+			on	t.schema_id = s.schema_id
+			and	t.is_table_type = 1
+		cross apply
+		(
+			select	c.name + ' ' + case
+						when c.is_computed = 1 then 'as ' + cc.definition
+						else tp.name +
+						case
+							when tp.name in ('varchar', 'char', 'varbinary', 'binary') then '(' + case when c.max_length = -1 then 'max' else cast(c.max_length as varchar) end + ')'
+							when tp.name in ('nvarchar', 'nchar') then '(' + case when c.max_length = -1 then 'max' else cast(c.max_length/2 as varchar) end + ')'
+							when tp.name in ('datetime2', 'time1', 'datetimeoffset') then '(' + cast(c.scale as varchar) + ')'
+							when tp.name in ('decimal') then '(' + cast(c.precision as varchar) + ', ' + cast(c.scale as varchar) + ')'
+							else ''
+						end +
+						case
+							when c.collation_name is not null and c.collation_name != 'SQL_Latin1_General_CP1_CI_AS' then ' collate ' + c.collation_name
+							else ''
+						end +
+						case
+							when c.is_nullable = 0 then ' not'
+							else ''
+						end + ' null' +
+						case
+							when dc.definition is not null then ' default' + dc.definition
+							else ''
+						end +
+						case
+							when c.is_identity = 1 then ' identity(' + cast(isnull(ic.seed_value, 0) as varchar) + ', ' + cast(isnull(ic.increment_value, 0) as varchar) + ')'
+							else ''
+						end +
+						''
+					end + ', '
+			from	sys.columns c
+					inner join sys.types tp
+						on	c.user_type_id = tp.user_type_id
+					left join sys.identity_columns ic
+						on	c.is_identity = 1
+						and	c.object_id = ic.object_id
+						and	c.column_id = ic.column_id
+					left join sys.default_constraints dc
+						on	c.default_object_id != 0
+						and	c.object_id = dc.parent_object_id
+						and	c.column_id = dc.parent_column_id
+					left join sys.computed_columns cc
+						on	c.is_computed = 1
+						and	c.object_id = cc.object_id
+						and	c.column_id = cc.column_id
+			where	c.object_id = t.type_table_object_id
+			order by c.column_id
+			for xml path('')
+		) col (list)
+union
+select	'create type ' + s.name + '.' + t.name + ' from ' + st.name +
+		case
+			when st.name in ('varchar', 'char', 'varbinary', 'binary') then '(' + case when t.max_length = -1 then 'max' else cast(t.max_length as varchar) end + ')'
+			when st.name in ('nvarchar', 'nchar') then '(' + case when t.max_length = -1 then 'max' else cast(t.max_length/2 as varchar) end + ')'
+			when st.name in ('datetime2', 'time1', 'datetimeoffset') then '(' + cast(t.scale as varchar) + ')'
+			when st.name in ('decimal') then '(' + cast(t.precision as varchar) + ', ' + cast(t.scale as varchar) + ')'
+			else ''
+		end +
+		case
+			when t.is_nullable = 0 then ' not'
+			else ''
+		end + ' null' +
+		case
+			when t.collation_name is not null and t.collation_name != 'SQL_Latin1_General_CP1_CI_AS' then ' collate ' + t.collation_name
+			else ''
+		end
+from	sys.types t
+		inner join sys.schemas s
+			on	t.schema_id = s.schema_id
+		inner join sys.types st
+			on	t.system_type_id = st.user_type_id
+where	t.is_table_type = 0
+  and	t.is_user_defined = 1
+union
+
 select	'alter table ' + s.name + '.' + t.name +
 		' add constraint ' + k.name + ' ' +
 		case k.type

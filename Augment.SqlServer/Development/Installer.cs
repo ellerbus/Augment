@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Augment.SqlServer.Data;
+using Augment.SqlServer.Development.Analyzers;
 using Augment.SqlServer.Development.Models;
 using Augment.SqlServer.Development.Parsers;
 using Augment.SqlServer.Mapping;
@@ -34,7 +35,7 @@ namespace Augment.SqlServer.Development
             public string Impacts { get; set; }
         }
 
-        private static readonly Regex _userScriptRegex = new Regex("^[0-9]{8}_");
+        private static readonly Regex _userScriptRegex = new Regex(@"^[0-9]{8,}_[A-Z0-9_]+$", RegexOptions.IgnoreCase);
 
         private IDbConnection _targetConnection;
 
@@ -44,7 +45,7 @@ namespace Augment.SqlServer.Development
 
         public Installer(Assembly source, IDbConnection target)
         {
-            LoadSystemObjects();
+            LoadAugmentSystemObjects();
             LoadSourceObjects(source);
             LoadTargetObjects(target);
 
@@ -57,7 +58,7 @@ namespace Augment.SqlServer.Development
 
         #region Object Loaders
 
-        private void LoadSystemObjects()
+        private void LoadAugmentSystemObjects()
         {
             ScriptParser parser = new ScriptParser();
 
@@ -88,7 +89,9 @@ namespace Augment.SqlServer.Development
 
                     if (_userScriptRegex.IsMatch(file))
                     {
-                        //SqlObject so = new SqlObject(SchemaTypes.UserScript, file, script);
+                        SqlObject so = new SqlObject(ObjectTypes.UserScript, file, script);
+
+                        Source.Add(so);
                     }
                     else
                     {
@@ -156,11 +159,20 @@ namespace Augment.SqlServer.Development
 
                 foreach (RegistryObject regObj in registry)
                 {
-                    SqlObject sqlObj = Target.Find(regObj);
-
-                    if (sqlObj != null)
+                    if (_userScriptRegex.IsMatch(regObj.RegistryName))
                     {
-                        sqlObj.OriginalSql = regObj.SqlScript;
+                        SqlObject sqlObj = new SqlObject(ObjectTypes.UserScript, regObj.RegistryName, regObj.SqlScript);
+
+                        Target.Add(sqlObj);
+                    }
+                    else
+                    {
+                        SqlObject sqlObj = Target.Find(regObj);
+
+                        if (sqlObj != null)
+                        {
+                            sqlObj.OriginalSql = regObj.SqlScript;
+                        }
                     }
 
                     Registry.Add(regObj);
@@ -194,7 +206,7 @@ namespace Augment.SqlServer.Development
 
             try
             {
-                Analyzer c = new Analyzer(Source, Target, Registry, _targetConnection);
+                DatabaseAnalyzer c = new DatabaseAnalyzer(Source, Target, Registry, _targetConnection);
 
                 IList<SqlObject> operations = c.Analyze().ToList();
 
@@ -207,8 +219,6 @@ namespace Augment.SqlServer.Development
                 {
                     Logger.Registering(regObj);
 
-                    //_targetConnection.Execute(regObj.ToMergeSql());
-
                     _targetConnection.Merge(regObj);
                 }
 
@@ -217,8 +227,6 @@ namespace Augment.SqlServer.Development
             catch (Exception exp)
             {
                 Logger.Error(exp.ToString());
-
-                _targetConnection.Execute("rollback");
             }
         }
 

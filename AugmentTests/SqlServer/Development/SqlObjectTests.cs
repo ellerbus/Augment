@@ -11,7 +11,7 @@ namespace Augment.Tests.SqlServer.Development
         [TestMethod]
         public void SqlObject_Constructor_Should_NormalizeTheName_WithStoredProcedures()
         {
-            var so = new SqlObject(SchemaTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
+            var so = new SqlObject(ObjectTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
 
             so.OriginalName.Should().Be("dbo.SP");
             so.NormalizedName.Should().Be("dbo.sp");
@@ -21,7 +21,7 @@ namespace Augment.Tests.SqlServer.Development
         [TestMethod]
         public void SqlObject_OriginalSql_Should_SetNormalizedSql()
         {
-            var so = new SqlObject(SchemaTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
+            var so = new SqlObject(ObjectTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
 
             var po = new PrivateObject(so);
 

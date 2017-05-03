@@ -42,14 +42,14 @@ namespace Augment.SqlServer.Development.Parsers
 
                 if (!matched)
                 {
-                    throw new Exception("Cannot Recognize SQL SchemaType: " + sql);
+                    throw new FormatException("Cannot Recognize SQL SchemaType: " + sql);
                 }
             }
         }
 
         private SqlObject CreateSqlObject(ScriptRecognizer recognizer, Match m, string sql)
         {
-            if (recognizer.Type == SchemaTypes.Unsupported)
+            if (recognizer.Type == ObjectTypes.Unsupported)
             {
                 throw new Exception("Unsupported SQL SchemaType: " + sql);
             }

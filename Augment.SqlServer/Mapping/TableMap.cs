@@ -28,7 +28,27 @@ namespace Augment.SqlServer.Mapping
         /// <summary>
         /// 
         /// </summary>
-        private TableMap() { }
+        private TableMap(Type type)
+        {
+            TableAttribute table = type.GetCustomAttribute<TableAttribute>(false);
+
+            Schema = table?.Schema ?? null;
+            TableName = table?.Name ?? type.Name;
+            Type = type;
+
+            Type columnAttribute = typeof(ColumnAttribute);
+
+            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
+
+            Columns = type.GetProperties(flags)
+                .Where(x => x.CustomAttributes.Any(y => y.AttributeType == columnAttribute))
+                .Select(x => ColumnMap.Create(x))
+                .ToArray();
+
+            OutputColumns = Columns.Where(x => x.IsForOutput).ToArray();
+
+            TypeMapper.Initialize(type, this);
+        }
 
         #endregion
 
@@ -57,26 +77,7 @@ namespace Augment.SqlServer.Mapping
             {
                 if (!_cache.TryGetValue(type, out map))
                 {
-                    TableAttribute table = type.GetCustomAttribute<TableAttribute>(false);
-
-                    map = new TableMap();
-
-                    map.Schema = table?.Schema ?? null;
-                    map.TableName = table?.Name ?? type.Name;
-                    map.Type = type;
-
-                    Type columnAttribute = typeof(ColumnAttribute);
-
-                    BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
-
-                    map.Columns = type.GetProperties(flags)
-                        .Where(x => x.CustomAttributes.Any(y => y.AttributeType == columnAttribute))
-                        .Select(x => ColumnMap.Create(x))
-                        .ToArray();
-
-                    map.OutputColumns = map.Columns.Where(x => x.IsForOutput).ToArray();
-
-                    TypeMapper.Initialize(type, map);
+                    map = new TableMap(type);
 
                     _cache.Add(type, map);
                 }

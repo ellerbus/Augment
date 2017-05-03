@@ -1,4 +1,8 @@
-﻿select	c.name								as [Name],
+﻿--
+--	GETS COLUMN DEFINITIONS FOR A GIVEN TABLE{0}
+--
+
+select	c.name								as [name],
 		case
 			when c.is_computed = 1 then 'as ' + cc.definition
 			else tp.name +

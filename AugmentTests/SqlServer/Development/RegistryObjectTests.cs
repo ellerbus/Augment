@@ -11,7 +11,7 @@ namespace Augment.Tests.SqlServer.Development
         [TestMethod]
         public void RegistryObject_Constructor_Should_UseSqlObject()
         {
-            var so = new SqlObject(SchemaTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
+            var so = new SqlObject(ObjectTypes.StoredProcedure, "dbo.SP", "create proc dbo.sp as");
 
             var ro = new RegistryObject(so);
 

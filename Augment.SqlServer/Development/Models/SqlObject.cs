@@ -10,7 +10,7 @@ namespace Augment.SqlServer.Development.Models
     {
         #region Constructors
 
-        public SqlObject(SchemaTypes type, string name, string sql)
+        public SqlObject(ObjectTypes type, string name, string sql)
         {
             Type = type;
 
@@ -43,19 +43,23 @@ namespace Augment.SqlServer.Development.Models
         {
             switch (Type)
             {
-                case SchemaTypes.Table:
-                case SchemaTypes.Trigger:
-                case SchemaTypes.StoredProcedure:
+                case ObjectTypes.UserType:
+                case ObjectTypes.TableType:
+                case ObjectTypes.Table:
+                case ObjectTypes.View:
+                case ObjectTypes.Trigger:
+                case ObjectTypes.StoredProcedure:
+                case ObjectTypes.Function:
                     VerifyName(2, Identifiers, "schema.object");
 
                     SchemaName = Identifiers[0];
                     ObjectName = Identifiers[1];
                     break;
 
-                case SchemaTypes.PrimaryKey:
-                case SchemaTypes.UniqueKey:
-                case SchemaTypes.ForeignKey:
-                case SchemaTypes.Index:
+                case ObjectTypes.PrimaryKey:
+                case ObjectTypes.UniqueKey:
+                case ObjectTypes.ForeignKey:
+                case ObjectTypes.Index:
                     VerifyName(3, Identifiers, "schema.parent.object");
 
                     SchemaName = Identifiers[0];
@@ -63,7 +67,8 @@ namespace Augment.SqlServer.Development.Models
                     ObjectName = Identifiers[2];
                     break;
 
-                case SchemaTypes.SystemScript:
+                case ObjectTypes.SystemScript:
+                case ObjectTypes.UserScript:
                     break;
 
                 default:
@@ -85,7 +90,7 @@ namespace Augment.SqlServer.Development.Models
         /// <summary>
         /// 
         /// </summary>
-        public SchemaTypes Type { get; private set; }
+        public ObjectTypes Type { get; private set; }
 
         /// <summary>
         /// 

@@ -30,3 +30,11 @@ as
 	from	inserted i
 
 go
+
+create type dbo.MemberTableType as table
+(
+	member_id			int not null,
+	first_name			varchar(30),
+	last_name			varchar(30)
+)
+go

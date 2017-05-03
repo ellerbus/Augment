@@ -4,15 +4,15 @@ using System.Reflection;
 
 namespace Augment.SqlServer.Development
 {
-    static class SchemaTypeExtensions
+    static class ObjectTypeExtensions
     {
-        public static InvalidOperationException UnsupportedException(this SchemaTypes schemaType)
+        public static InvalidOperationException UnsupportedException(this ObjectTypes objectType)
         {
             StackFrame frame = new StackFrame(1, false);
             MethodBase method = frame.GetMethod();
             Type type = method.DeclaringType;
 
-            string msg = $"Unsupported Schema Type '{schemaType}' found '{type.Name}.{method.Name}'";
+            string msg = $"Unsupported Object Type '{objectType}' found '{type.Name}.{method.Name}'";
 
             return new InvalidOperationException(msg);
         }
@@ -22,12 +22,16 @@ namespace Augment.SqlServer.Development
     /// The type of a database object
     /// </summary>
     /// <remarks>These are in the order that objects need to be created</remarks>
-    public enum SchemaTypes
+    public enum ObjectTypes
     {
-        ///// <summary>
-        ///// A user defined type
-        ///// </summary>
-        //UserDefinedType,
+        /// <summary>
+        /// A user defined type
+        /// </summary>
+        UserType,
+        /// <summary>
+        /// A tabletype in the database
+        /// </summary>
+        TableType,
         /// <summary>
         /// A table in the database
         /// </summary>
@@ -68,10 +72,14 @@ namespace Augment.SqlServer.Development
         /// An index
         /// </summary>
         Index,
-        ///// <summary>
-        ///// A view on one or more tables
-        ///// </summary>
-        //View,
+        /// <summary>
+        /// A view on one or more tables
+        /// </summary>
+        View,
+        /// <summary>
+        /// A function
+        /// </summary>
+        Function,
         /// <summary>
         /// A stored procedure
         /// </summary>
@@ -84,10 +92,10 @@ namespace Augment.SqlServer.Development
         ///// General padding things added by SQL Server scripter like SET ANSI NULLS ON
         ///// </summary>
         //Unused,
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //PostScript,
+        /// <summary>
+        /// 
+        /// </summary>
+        UserScript,
         /// <summary>
         /// An object that contains SQL that we don't support.
         /// </summary>

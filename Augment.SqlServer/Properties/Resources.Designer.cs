@@ -61,14 +61,18 @@ namespace Augment.SqlServer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to select	c.name								as [Name],
+        ///   Looks up a localized string similar to --
+        ///--	GETS COLUMN DEFINITIONS FOR A GIVEN TABLE{0}
+        ///--
+        ///
+        ///select	c.name								as [name],
         ///		case
         ///			when c.is_computed = 1 then &apos;as &apos; + cc.definition
         ///			else tp.name +
         ///			case
         ///				when tp.name in (&apos;varchar&apos;, &apos;char&apos;, &apos;varbinary&apos;, &apos;binary&apos;) then &apos;(&apos; + case when c.max_length = -1 then &apos;max&apos; else cast(c.max_length as varchar) end + &apos;)&apos;
         ///				when tp.name in (&apos;nvarchar&apos;, &apos;nchar&apos;) then &apos;(&apos; + case when c.max_length = -1 then &apos;max&apos; else cast(c.max_length/2 as varchar) end + &apos;)&apos;
-        ///				when tp.name in (&apos;datetime2&apos;, &apos;time1&apos;, &apos;datetimeoffset&apos;) then &apos;(&apos; + cast(c.scale as va [rest of string was truncated]&quot;;.
+        ///				when tp.name in (&apos;datetime2 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ColumnScript {
             get {
@@ -141,6 +145,24 @@ namespace Augment.SqlServer.Properties {
         internal static string RegistryScript {
             get {
                 return ResourceManager.GetString("RegistryScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --
+        ///--	GETS COLUMN DEFINITIONS FOR A GIVEN TABLE{0}
+        ///--
+        ///
+        ///select	s.name							as [name],
+        ///		case
+        ///			when st.name in (&apos;varchar&apos;, &apos;char&apos;, &apos;varbinary&apos;, &apos;binary&apos;) then &apos;(&apos; + case when t.max_length = -1 then &apos;max&apos; else cast(t.max_length as varchar) end + &apos;)&apos;
+        ///			when st.name in (&apos;nvarchar&apos;, &apos;nchar&apos;) then &apos;(&apos; + case when t.max_length = -1 then &apos;max&apos; else cast(t.max_length/2 as varchar) end + &apos;)&apos;
+        ///			when st.name in (&apos;datetime2&apos;, &apos;time1&apos;, &apos;datetimeoffset&apos;) then &apos;(&apos; + cast(t.scale as varchar) + &apos;)&apos;
+        ///			when st.na [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UserTypeScript {
+            get {
+                return ResourceManager.GetString("UserTypeScript", resourceCulture);
             }
         }
     }

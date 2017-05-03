@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 
-namespace Augment.SqlServer.Development
+namespace Augment.SqlServer.Development.Analyzers
 {
-    static class IdGenerator
+    static class AnalyzerNames
     {
         #region Members
 
@@ -17,11 +17,36 @@ namespace Augment.SqlServer.Development
         #region Methods
 
         /// <summary>
+        /// Convention: This is used to create a temporary object name
+        /// for comparisons
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateCompareName(string baseName)
+        {
+            return $"dbo.ZC{RandomName()}_{ baseName}";
+        }
+
+        /// <summary>
+        /// Convention: This is used to create a temporary object name
+        /// for object manipulation
+        /// ** Notice the missing schema
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateForRename(string baseName)
+        {
+            return $"ZM{RandomName()}_{ baseName}";
+        }
+
+        #endregion
+
+        #region Random Name Methods
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static string Random(int size = 6)
+        private static string RandomName(int size = 6)
         {
             lock (_lock)
             {

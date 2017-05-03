@@ -54,42 +54,17 @@ namespace Augment.SqlServer.Mapping
 
             foreach (ConstructorInfo ctor in constructors)
             {
-                if (ctor.GetCustomAttribute<ExplicitConstructorAttribute>() != null)
+                ParameterInfo[] parameters = ctor.GetParameters();
+
+                if (parameters.Length == 0)
                 {
+                    //  last one so use it (order-by)
                     return ctor;
                 }
 
-                ParameterInfo[] ctorParameters = ctor.GetParameters();
-
-                if (ctorParameters.Length != types.Length)
+                if (parameters.All(x => x.ParameterType.IsPotentialPrimitive()))
                 {
-                    continue;
-                }
-
-                int i = 0;
-
-                for (; i < ctorParameters.Length; i++)
-                {
-                    Type parmType = ctorParameters[i].ParameterType;
-
-                    if (parmType.IsPrimitive || parmType.IsValueType || parmType == typeof(string))
-                    {
-                        string parmName = ctorParameters[i].Name;
-
-                        if (parmName.IsNotSameAs(names[i].Replace("_", "")))
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        //  parm is a "class" not something filled by DB
-                        break;
-                    }
-                }
-
-                if (i == ctorParameters.Length)
-                {
+                    //  all primitives so use it
                     return ctor;
                 }
             }
