@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Augment.SqlServer</id>
+    <version>$version$</version>
+    <title>Augment.SqlServer</title>
+    <authors>Stu Ellerbusch</authors>
+    <licenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ellerbus/Augment</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright 2015</copyright>
+    <tags>simple sql server schema management library</tags>
+    <releaseNotes></releaseNotes>
+    <dependencies>
+      <dependency id="Ensure.That" version="[5,6)" />
+      <dependency id="Augment" version="[2,3)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="NET451\Augment.SqlServer.dll" target="lib\net451" />
+    <file src="NET451\Augment.SqlServer.xml" target="lib\net451" />
+    <file src="NET461\Augment.SqlServer.dll" target="lib\net461" />
+    <file src="NET461\Augment.SqlServer.xml" target="lib\net461" />
+  </files>
+</package>

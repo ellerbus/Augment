@@ -91,6 +91,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Augment.SqlServer.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
