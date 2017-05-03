@@ -13,14 +13,13 @@
     <tags>simple sql server schema management library</tags>
     <releaseNotes></releaseNotes>
     <dependencies>
+      <dependency id="Dapper" version="[1,2)" />
       <dependency id="Ensure.That" version="[5,6)" />
       <dependency id="Augment" version="[2,3)" />
     </dependencies>
   </metadata>
   <files>
     <file src="NET451\Augment.SqlServer.dll" target="lib\net451" />
-    <file src="NET451\Augment.SqlServer.xml" target="lib\net451" />
     <file src="NET461\Augment.SqlServer.dll" target="lib\net461" />
-    <file src="NET461\Augment.SqlServer.xml" target="lib\net461" />
   </files>
 </package>
