@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Augment.SqlServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Easy to Use SQL Server Script Management Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Augment.SqlServer")]
