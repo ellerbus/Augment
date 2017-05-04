@@ -30,51 +30,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
-    </Reference>
     <Reference Include="Ensure.That, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ensure.That.5.0.0\lib\net45\Ensure.That.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\DapperCrudExtensions.cs" />
-    <Compile Include="Data\SqlStatementBuilder.cs" />
-    <Compile Include="Development\Analyzers\AnalyzerNames.cs" />
-    <Compile Include="Development\Analyzers\DatabaseAnalyzer.cs" />
-    <Compile Include="Development\Analyzers\UserTypeAnalyzer.cs" />
-    <Compile Include="Development\Analyzers\TableAnalyzer.cs" />
-    <Compile Include="Development\Installer.cs" />
-    <Compile Include="Development\Logger.cs" />
-    <Compile Include="Development\Models\Status.cs" />
-    <Compile Include="Development\Models\RegistryObject.cs" />
-    <Compile Include="Development\Models\SqlObject.cs" />
-    <Compile Include="Development\Models\RegistryCollection.cs" />
-    <Compile Include="Development\Models\SqlObjectCollection.cs" />
-    <Compile Include="Development\ObjectTypes.cs" />
-    <Compile Include="Development\Parsers\Scanner.cs" />
-    <Compile Include="Development\Parsers\ScriptParser.cs" />
-    <Compile Include="Development\Parsers\ScriptRecognizer.cs" />
-    <Compile Include="Development\Parsers\Token.cs" />
-    <Compile Include="Development\Parsers\Tokenizer.cs" />
-    <Compile Include="Development\Parsers\TokenTypes.cs" />
-    <Compile Include="Mapping\ColumnMap.cs" />
+    <Compile Include="SqlConnectionExtensions.cs" />
+    <Compile Include="SqlStatementBuilder.cs" />
+    <Compile Include="Analyzers\AnalyzerNames.cs" />
+    <Compile Include="Analyzers\ColumnAnalyzer.cs" />
+    <Compile Include="Analyzers\DatabaseAnalyzer.cs" />
+    <Compile Include="Analyzers\UserTypeAnalyzer.cs" />
+    <Compile Include="Analyzers\TableAnalyzer.cs" />
+    <Compile Include="Installer.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\RegistryObject.cs" />
+    <Compile Include="Models\SqlObject.cs" />
+    <Compile Include="Models\RegistryCollection.cs" />
+    <Compile Include="Models\SqlObjectCollection.cs" />
+    <Compile Include="ObjectTypes.cs" />
+    <Compile Include="Parsers\Scanner.cs" />
+    <Compile Include="Parsers\ScriptParser.cs" />
+    <Compile Include="Parsers\ScriptRecognizer.cs" />
+    <Compile Include="Parsers\Token.cs" />
+    <Compile Include="Parsers\Tokenizer.cs" />
+    <Compile Include="Parsers\TokenTypes.cs" />
+    <Compile Include="Mapping\ObjectConstructor.cs" />
+    <Compile Include="Mapping\ParameterMap.cs" />
+    <Compile Include="Mapping\PropertyMap.cs" />
     <Compile Include="Mapping\DapperMapper.cs" />
-    <Compile Include="Mapping\SqlBuilder.cs" />
-    <Compile Include="Mapping\TableMap.cs" />
+    <Compile Include="Mapping\ObjectMap.cs" />
     <Compile Include="Mapping\TypeExtensions.cs" />
     <Compile Include="Mapping\TypeMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Development\StringExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,16 +85,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Development\Scripts\ColumnScript.sql" />
-    <Content Include="Development\Scripts\EntityImpactScript.sql" />
-    <Content Include="Development\Scripts\RegistryScript.sql" />
-    <Content Include="Development\Scripts\DatabaseScript.sql" />
-    <Content Include="Development\Scripts\UserTypeScript.sql" />
+    <Content Include="Scripts\TableDefinitionScript.sql" />
+    <Content Include="Scripts\ColumnScript.sql" />
+    <Content Include="Scripts\EntityImpactScript.sql" />
+    <Content Include="Scripts\RegistryScript.sql" />
+    <Content Include="Scripts\DatabaseScript.sql" />
+    <Content Include="Scripts\UserTypeScript.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

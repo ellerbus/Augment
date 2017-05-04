@@ -1,152 +1,152 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Dapper;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Reflection;
+//using Dapper;
 
-namespace Augment.SqlServer.Mapping
-{
-    static class TypeMapper
-    {
-        public static void Initialize(Type type, TableMap tableMap)
-        {
-            SqlMapper.ITypeMap typeMap = SqlMapper.GetTypeMap(type);
+//namespace Augment.SqlServer.Mapping
+//{
+//    static class TypeMapper
+//    {
+//        public static void Initialize(Type type, ObjectMap tableMap)
+//        {
+//            SqlMapper.ITypeMap typeMap = SqlMapper.GetTypeMap(type);
 
-            CustomTypeMap mapper = new CustomTypeMap(type, typeMap, tableMap);
+//            CustomTypeMap mapper = new CustomTypeMap(type, typeMap, tableMap);
 
-            SqlMapper.SetTypeMap(type, mapper);
-        }
-    }
+//            SqlMapper.SetTypeMap(type, mapper);
+//        }
+//    }
 
-    class CustomTypeMap : SqlMapper.ITypeMap
-    {
-        #region Members
+//    class CustomTypeMap : SqlMapper.ITypeMap
+//    {
+//        #region Members
 
-        private Type _type;
+//        private Type _type;
 
-        private readonly SqlMapper.ITypeMap _originalMap;
+//        private readonly SqlMapper.ITypeMap _originalMap;
 
-        private TableMap _tableMap;
+//        private ObjectMap _tableMap;
 
-        #endregion
+//        #endregion
 
-        #region Constructors
+//        #region Constructors
 
-        public CustomTypeMap(Type type, SqlMapper.ITypeMap originalMap, TableMap tableMap)
-        {
-            _type = type;
+//        public CustomTypeMap(Type type, SqlMapper.ITypeMap originalMap, ObjectMap tableMap)
+//        {
+//            _type = type;
 
-            _originalMap = originalMap;
+//            _originalMap = originalMap;
 
-            _tableMap = tableMap;
-        }
+//            _tableMap = tableMap;
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Methods
+//        #region Methods
 
-        public ConstructorInfo FindConstructor(string[] names, Type[] types)
-        {
-            IEnumerable<ConstructorInfo> constructors = _type
-                .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .OrderByDescending(c => c.GetParameters().Length)
-                .ThenBy(c => c.IsPublic ? 0 : (c.IsPrivate ? 2 : 1));
+//        public ConstructorInfo FindConstructor(string[] names, Type[] types)
+//        {
+//            IEnumerable<ConstructorInfo> constructors = _type
+//                .GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+//                .OrderByDescending(c => c.GetParameters().Length)
+//                .ThenBy(c => c.IsPublic ? 0 : (c.IsPrivate ? 2 : 1));
 
-            foreach (ConstructorInfo ctor in constructors)
-            {
-                ParameterInfo[] parameters = ctor.GetParameters();
+//            foreach (ConstructorInfo ctor in constructors)
+//            {
+//                ParameterInfo[] parameters = ctor.GetParameters();
 
-                if (parameters.Length == 0)
-                {
-                    //  last one so use it (order-by)
-                    return ctor;
-                }
+//                if (parameters.Length == 0)
+//                {
+//                    //  last one so use it (order-by)
+//                    return ctor;
+//                }
 
-                if (parameters.All(x => x.ParameterType.IsPotentialPrimitive()))
-                {
-                    //  all primitives so use it
-                    return ctor;
-                }
-            }
+//                if (parameters.All(x => x.ParameterType.IsPotentialPrimitive()))
+//                {
+//                    //  all primitives so use it
+//                    return ctor;
+//                }
+//            }
 
-            return _originalMap.FindConstructor(names, types);
-        }
+//            return _originalMap.FindConstructor(names, types);
+//        }
 
-        public ConstructorInfo FindExplicitConstructor()
-        {
-            return null;
-        }
+//        public ConstructorInfo FindExplicitConstructor()
+//        {
+//            return null;
+//        }
 
-        public SqlMapper.IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
-        {
-            ColumnMap map = _tableMap.Columns.FirstOrDefault(x => x.ColumnName.IsSameAs(columnName));
+//        public SqlMapper.IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
+//        {
+//            PropertyMap map = _tableMap.Properties.FirstOrDefault(x => x.ColumnName.IsSameAs(columnName));
 
-            if (map != null)
-            {
-                ParameterInfo parm = constructor.GetParameters().FirstOrDefault(x => x.Name.IsSameAs(map.Name));
+//            if (map != null)
+//            {
+//                ParameterInfo parm = constructor.GetParameters().FirstOrDefault(x => x.Name.IsSameAs(map.Name));
 
-                if (parm != null)
-                {
-                    return new CustomMemberMap(map, parm);
-                }
-            }
+//                if (parm != null)
+//                {
+//                    return new CustomMemberMap(map, parm);
+//                }
+//            }
 
-            return null;
-        }
+//            return null;
+//        }
 
-        public SqlMapper.IMemberMap GetMember(string columnName)
-        {
-            ColumnMap map = _tableMap.Columns.FirstOrDefault(x => x.ColumnName.IsSameAs(columnName));
+//        public SqlMapper.IMemberMap GetMember(string columnName)
+//        {
+//            PropertyMap map = _tableMap.Properties.FirstOrDefault(x => x.ColumnName.IsSameAs(columnName));
 
-            if (map != null)
-            {
-                return new CustomMemberMap(map);
-            }
+//            if (map != null)
+//            {
+//                return new CustomMemberMap(map);
+//            }
 
-            return null;
-        }
+//            return null;
+//        }
 
-        #endregion
-    }
+//        #endregion
+//    }
 
-    class CustomMemberMap : SqlMapper.IMemberMap
-    {
-        #region Members
+//    class CustomMemberMap : SqlMapper.IMemberMap
+//    {
+//        #region Members
 
-        private ColumnMap _map;
+//        private PropertyMap _map;
 
-        #endregion
+//        #endregion
 
-        #region Constructors
+//        #region Constructors
 
-        public CustomMemberMap(ColumnMap map)
-        {
-            _map = map;
-        }
+//        public CustomMemberMap(PropertyMap map)
+//        {
+//            _map = map;
+//        }
 
-        public CustomMemberMap(ColumnMap map, ParameterInfo parm)
-            : this(map)
-        {
-            Parameter = parm;
-        }
+//        public CustomMemberMap(PropertyMap map, ParameterInfo parm)
+//            : this(map)
+//        {
+//            Parameter = parm;
+//        }
 
-        #endregion
+//        #endregion
 
-        #region Properties
+//        #region Properties
 
-        public string ColumnName { get { return _map.ColumnName; } }
+//        public string ColumnName { get { return _map.ColumnName; } }
 
-        public Type MemberType
-        {
-            get { return _map.Type; }
-        }
+//        public Type MemberType
+//        {
+//            get { return _map.Type; }
+//        }
 
-        public FieldInfo Field { get { return null; } }
+//        public FieldInfo Field { get { return null; } }
 
-        public ParameterInfo Parameter { get; private set; }
+//        public ParameterInfo Parameter { get; private set; }
 
-        public PropertyInfo Property { get { return _map.Property; } }
+//        public PropertyInfo Property { get { return _map.Property; } }
 
-        #endregion
-    }
-}
+//        #endregion
+//    }
+//}
