@@ -30,3 +30,26 @@ from	sys.types t
 			and	t.user_type_id = c.user_type_id
 where	is_user_defined = 1
   and	is_table_type = 0
+  and	not exists
+		(
+			select	1
+			from	sys.table_types tt
+			where	c.object_id = tt.type_table_object_id
+		)
+union
+select	schema_name(t.schema_id) + '.' + t.name,
+		schema_name(tt.schema_id) + '.' + tt.name
+from	sys.types t
+		inner join sys.columns c
+			on	t.system_type_id = c.system_type_id
+			and	t.user_type_id = c.user_type_id
+		inner join sys.table_types tt
+			on	c.object_id = tt.type_table_object_id
+where	t.is_user_defined = 1
+--  and	is_table_type = 0
+--  and	not exists
+--		(
+--			select	1
+--			from	sys.table_types tt
+--			where	c.object_id = tt.type_table_object_id
+--		)
