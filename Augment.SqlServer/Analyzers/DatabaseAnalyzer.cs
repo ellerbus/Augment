@@ -13,8 +13,11 @@ namespace Augment.SqlServer.Analyzers
         SqlConnection Connection { get; }
 
         SqlObject DropOf(SqlObject drop);
+
         void Drop(SqlObject rename);
+
         void Add(SqlObject source);
+
         void ApplyImpacts(SqlObject target);
     }
 
@@ -75,7 +78,24 @@ namespace Augment.SqlServer.Analyzers
                 yield return drop;
             }
 
-            foreach (SqlObject add in _adds.OrderBy(x => x.Type))
+            //  add all but user scripts
+            IEnumerable<SqlObject> sqlObjects = _adds
+                .Where(x => x.Type != ObjectTypes.UserScript)
+                .OrderBy(x => x.Type);
+
+            foreach (SqlObject add in sqlObjects)
+            {
+                Logger.Adding(add);
+
+                yield return add;
+            }
+
+            //  add all user scripts in name order
+            IEnumerable<SqlObject> userScripts = _adds
+                .Where(x => x.Type == ObjectTypes.UserScript)
+                .OrderBy(x => x.NormalizedName);
+
+            foreach (SqlObject add in userScripts)
             {
                 Logger.Adding(add);
 
@@ -241,7 +261,7 @@ namespace Augment.SqlServer.Analyzers
                     break;
 
                 case ObjectTypes.UserScript:
-                    throw new InvalidOperationException("Once a UserScript has been registred it's SQL cannot be modified");
+                    throw new InvalidOperationException("Once a UserScript has been registred it's SQL should not be modified");
 
                 default:
                     throw source.Type.UnsupportedException();

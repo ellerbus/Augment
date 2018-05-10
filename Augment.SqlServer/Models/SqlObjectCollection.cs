@@ -15,8 +15,7 @@ namespace Augment.SqlServer.Models
 
         public void Add(SqlObject sqlObj)
         {
-            Ensure.That(Contains(sqlObj))
-                .WithExtraMessageOf(() => $"'{sqlObj.ToString()}' Already in Collection")
+            Ensure.That(Contains(sqlObj), "Sql Object", x => x.WithMessage($"'{sqlObj.ToString()}' Already in Collection"))
                 .IsFalse();
 
             Dictionary.Add(sqlObj.NormalizedName, sqlObj);

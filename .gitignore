@@ -173,3 +173,4 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+/.vs/Augment/v15/Server/sqlite3

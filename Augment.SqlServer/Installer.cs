@@ -125,12 +125,10 @@ namespace Augment.SqlServer
                 SqlObject entity = Target.Find(e.Entity);
                 SqlObject impacts = Target.Find(e.Impacts);
 
-                Ensure.That(entity, "Sql Entity")
-                    .WithExtraMessageOf(() => $"Missing SqlObject '{e.Entity}'")
+                Ensure.That(entity, "Sql Entity", x => x.WithMessage($"Missing SqlObject '{e.Entity}'"))
                     .IsNotNull();
 
-                Ensure.That(impacts, "Sql Impact")
-                    .WithExtraMessageOf(() => $"Missing SqlObject '{e.Impacts}'")
+                Ensure.That(impacts, "Sql Impact", x => x.WithMessage($"Missing SqlObject '{e.Impacts}'"))
                     .IsNotNull();
 
                 entity.Impacts.Add(impacts);

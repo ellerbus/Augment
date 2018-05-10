@@ -52,8 +52,7 @@ namespace Augment.SqlServer.Models
 
         public void Add(RegistryObject regObj)
         {
-            Ensure.That(Contains(regObj))
-                .WithExtraMessageOf(() => $"'{regObj.ToString()}' Already in Collection")
+            Ensure.That(Contains(regObj), "Registry Object", x => x.WithMessage($"'{regObj.ToString()}' Already in Collection"))
                 .IsFalse();
 
             Dictionary.Add(regObj.RegistryName, regObj);

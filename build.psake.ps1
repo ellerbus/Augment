@@ -1,15 +1,14 @@
 $psake.use_exit_on_error = $true
 
-Framework 4.6.1
+Framework 4.7.1
 
 properties {
     $base_dir = Split-Path $psake.build_script_file
     $output_dir = "$base_dir\Build"
     $projects = "Augment",
                 "Augment.Caching",
-                "Augment.Mailing",
                 "Augment.SqlServer"
-    $framework_versions = "v4.5.1", "v4.6.1"
+    $framework_versions = "v4.5.1", "v4.6.1", "v4.7.1"
     $latest_framework = $framework_versions[-1]
 }
 

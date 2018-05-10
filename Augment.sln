@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Tests", "AugmentTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Caching", "Augment.Caching\Augment.Caching.csproj", "{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Mailing", "Augment.Mailing\Augment.Mailing.csproj", "{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{58F9C475-3E8B-469E-81F2-97CB871CA232}"
 	ProjectSection(SolutionItems) = preProject
 		build.bat = build.bat
@@ -40,10 +38,6 @@ Global
 		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{810420E6-E3AE-4FB0-A3F8-9AC1820B8FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -55,5 +49,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {438857F8-A47F-4116-94AF-D12B43BDFC25}
 	EndGlobalSection
 EndGlobal

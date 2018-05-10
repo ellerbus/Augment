@@ -11,14 +11,17 @@
     <description>$description$</description>
     <copyright>Copyright 2015</copyright>
     <tags>simple sql server schema management library</tags>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>
+      0.x - Bug Fixes
+    </releaseNotes>
     <dependencies>
-      <dependency id="Ensure.That" version="[5,6)" />
+      <dependency id="Ensure.That" version="[8,9)" />
       <dependency id="Augment" version="[2,3)" />
     </dependencies>
   </metadata>
   <files>
     <file src="NET451\Augment.SqlServer.dll" target="lib\net451" />
     <file src="NET461\Augment.SqlServer.dll" target="lib\net461" />
+    <file src="NET471\Augment.SqlServer.dll" target="lib\net471" />
   </files>
 </package>

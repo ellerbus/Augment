@@ -112,7 +112,6 @@
     <Compile Include="Helpers\RangeTests.cs" />
     <Compile Include="Helpers\MultiKeyCollectionTests.cs" />
     <Compile Include="Helpers\ReflectionHelperTests.cs" />
-    <Compile Include="Mailing\MailerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServer\SqlStatementBuilderTests.cs" />
     <Compile Include="SqlServer\SqlObjectCollectionTests.cs" />
@@ -124,10 +123,6 @@
     <ProjectReference Include="..\Augment.Caching\Augment.Caching.csproj">
       <Project>{b9f72f9d-fada-4abb-b7e6-438cdab744c4}</Project>
       <Name>Augment.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Augment.Mailing\Augment.Mailing.csproj">
-      <Project>{810420e6-e3ae-4fb0-a3f8-9ac1820b8fcc}</Project>
-      <Name>Augment.Mailing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Augment.SqlServer\Augment.SqlServer.csproj">
       <Project>{914a2f31-07e0-4ade-a97e-34afba17df88}</Project>

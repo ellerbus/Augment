@@ -85,8 +85,7 @@ namespace Augment.SqlServer.Parsers
         /// <param name="c"></param>
         public void Match(char c)
         {
-            Ensure.That(CanMatch(c))
-                .WithExtraMessageOf(() => $"{Line}:{Column}: found '{Peek(1)}' expected '{c}'")
+            Ensure.That(CanMatch(c), "Matches", x => x.WithMessage($"{Line}:{Column}: found '{Peek(1)}' expected '{c}'"))
                 .IsTrue();
 
             Consume();
@@ -122,8 +121,7 @@ namespace Augment.SqlServer.Parsers
         {
             string chars = new string(GetRange(Position, text.Length).ToArray());
 
-            Ensure.That(CanMatchSequence(text))
-                .WithExtraMessageOf(() => $"{Line}:{Column}: found '{chars}' expected '{text}'")
+            Ensure.That(CanMatchSequence(text), "Match Sequence", x => x.WithMessage($"{Line}:{Column}: found '{chars}' expected '{text}'"))
                 .IsTrue();
 
             for (int x = 0; x < chars.Length; x++)
@@ -164,8 +162,7 @@ namespace Augment.SqlServer.Parsers
 
             string chars = text.ToCharArray().Select(y => y.ToString()).Join(",");
 
-            Ensure.That(CanMatchAny(text))
-                .WithExtraMessageOf(() => $"{Line}:{Column}: found '{x}' expected one of '{chars}'")
+            Ensure.That(CanMatchAny(text), "Match Any", o => o.WithMessage($"{Line}:{Column}: found '{x}' expected one of '{chars}'"))
                 .IsTrue();
 
             Consume();

@@ -78,8 +78,7 @@ namespace Augment.SqlServer.Models
 
         private void VerifyName(int length, string[] identifiers, string msg)
         {
-            Ensure.That(identifiers.Length)
-                .WithExtraMessageOf(() => $"Expected '{length}:{msg}' identifiers found '{identifiers.Length}' for '{Type}'")
+            Ensure.That(identifiers.Length, "Identifiers", x => x.WithMessage($"Expected '{length}:{msg}' identifiers found '{identifiers.Length}' for '{Type}'"))
                 .Is(length);
         }
 
