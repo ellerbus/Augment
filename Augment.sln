@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.SqlServer", "Augmen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.Caching", "Augment.Caching\Augment.Caching.csproj", "{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.SqlServer.Sample", "Augment.SqlServer.Sample\Augment.SqlServer.Sample.csproj", "{408361FD-1A55-4A5A-BA60-834DBCF020D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
