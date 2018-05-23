@@ -19,7 +19,7 @@ namespace Augment.SqlServer.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -145,6 +145,33 @@ namespace Augment.SqlServer.Properties {
         internal static string RegistryScript {
             get {
                 return ResourceManager.GetString("RegistryScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --
+        ///--	GETS COLUMN DEFINITIONS FOR A GIVEN TABLE{0}
+        ///--	TO BE MAPPED TO AN INTERNAL OBJECT
+        ///--
+        ///
+        ///select	c.name								column_name,
+        ///		isnull(i.is_primary_key, 0)			is_primary_key,
+        ///		c.is_computed						is_computed,
+        ///		case type_name(c.user_type_id)
+        ///			when &apos;timestamp&apos; then 1
+        ///			when &apos;rowversion&apos; then 1
+        ///			else 0
+        ///		end									is_timestamp
+        ///from	sys.columns c
+        ///		left join sys.index_columns ic
+        ///			on	c.object_id = ic.object_id
+        ///			and	c.column_id = ic.column_id
+        ///		left join sys.indexes i
+        ///			on	i.is_prim [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TableDefinitionScript {
+            get {
+                return ResourceManager.GetString("TableDefinitionScript", resourceCulture);
             }
         }
         

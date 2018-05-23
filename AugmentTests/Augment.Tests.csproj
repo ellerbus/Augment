@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Augment.Tests</RootNamespace>
     <AssemblyName>Augment.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -36,47 +36,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMoq, Version=1.8.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMoq.2.0.0\lib\net45\AutoMoq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FizzWare.NBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBuilder.5.1.0\lib\net40\FizzWare.NBuilder.dll</HintPath>
     </Reference>
-    <Reference Include="FizzWare.NBuilder">
-      <HintPath>..\packages\NBuilder.3.0.1.1\lib\FizzWare.NBuilder.dll</HintPath>
+    <Reference Include="FluentAssertions, Version=5.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.5.3.0\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="FluentAssertions, Version=4.17.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.4.17.0\lib\net45\FluentAssertions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FluentAssertions.Core, Version=4.17.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentAssertions.4.17.0\lib\net45\FluentAssertions.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.5.28.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.5.28\lib\net45\Moq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.8.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.8.2\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlClient, Version=4.2.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.4.3\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -112,20 +96,21 @@
     <Compile Include="Helpers\RangeTests.cs" />
     <Compile Include="Helpers\MultiKeyCollectionTests.cs" />
     <Compile Include="Helpers\ReflectionHelperTests.cs" />
+    <Compile Include="Moxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlServer\SqlStatementBuilderTests.cs" />
-    <Compile Include="SqlServer\SqlObjectCollectionTests.cs" />
-    <Compile Include="SqlServer\RegistryObjectTests.cs" />
-    <Compile Include="SqlServer\SqlObjectTests.cs" />
     <Compile Include="SqlServer\Mapping\Person.cs" />
+    <Compile Include="SqlServer\RegistryObjectTests.cs" />
+    <Compile Include="SqlServer\SqlObjectCollectionTests.cs" />
+    <Compile Include="SqlServer\SqlObjectTests.cs" />
+    <Compile Include="SqlServer\SqlStatementBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Augment.Caching\Augment.Caching.csproj">
-      <Project>{b9f72f9d-fada-4abb-b7e6-438cdab744c4}</Project>
+      <Project>{827d75c1-bd27-44b0-99eb-5fea0491cdff}</Project>
       <Name>Augment.Caching</Name>
     </ProjectReference>
     <ProjectReference Include="..\Augment.SqlServer\Augment.SqlServer.csproj">
-      <Project>{914a2f31-07e0-4ade-a97e-34afba17df88}</Project>
+      <Project>{608dc7fc-ddd7-44b5-b6a7-cf3596dfb8ca}</Project>
       <Name>Augment.SqlServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Augment\Augment.csproj">

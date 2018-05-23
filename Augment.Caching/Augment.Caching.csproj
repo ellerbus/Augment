@@ -1,82 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Augment.Caching</RootNamespace>
-    <AssemblyName>Augment.Caching</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net451;net461;net471</TargetFrameworks>
+    <Version>3.0.0</Version>
+    <PackageReleaseNotes>3.0 - Support net45, net46, net47
+2.2 - NuGet's
+2.1 - Support .NET 461 and 451
+2.0 - Bumped to .NET 4.6.1
+1.2 - Change Caching Key Pattern to fix "RemoveAll()" bug
+1.1 - Added Cache.Manifest HTTP Handler
+1.0 - Initial Release</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/ellerbus/Augment</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ellerbus/Augment</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>simple cache caching</PackageTags>
+    <Description>Easy to Use Convention Based Caching Library</Description>
+    <PackageLicenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</PackageLicenseUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Augment.Caching.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Augment.Caching.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <DefineConstants>$(DefineConstants);NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ensure.That, Version=8.0.0.86, Culture=neutral, PublicKeyToken=d7cf9132176ba30b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ensure.That.8.0.0\lib\net451\Ensure.That.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Runtime.Caching" />
+    <PackageReference Include="Ensure.That" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'!='netstandard2.0'">
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CacheExpiration.cs" />
-    <Compile Include="CacheImplementation.cs" />
-    <Compile Include="CacheKey.cs" />
-    <Compile Include="CacheManifestHttpHandler.cs" />
-    <Compile Include="ICacheRetrieval.cs" />
-    <Compile Include="ICacheObject.cs" />
-    <Compile Include="ICacheManager.cs" />
-    <Compile Include="ICacheProvider.cs" />
-    <Compile Include="CachePriority.cs" />
-    <Compile Include="CacheManager.cs" />
-    <Compile Include="MemoryCacheProvider.cs" />
-    <Compile Include="HttpRuntimeCacheProvider.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Reference Include="System.Runtime.Caching" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Augment.Caching.nuspec" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Augment\Augment.csproj">
-      <Project>{937b672a-3534-480f-b9b2-34e1094bddad}</Project>
-      <Name>Augment</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

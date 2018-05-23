@@ -15,6 +15,28 @@ namespace Augment
 
         #endregion
 
+        #region Constructors
+
+        public MultiKeyCollection()
+            : base()
+        {
+            _byUniqueKey = new Dictionary<TUniqueKey, TItem>();
+        }
+
+        public MultiKeyCollection(IEqualityComparer<TUniqueKey> uniqueKeyComparer)
+            : base()
+        {
+            _byUniqueKey = new Dictionary<TUniqueKey, TItem>(uniqueKeyComparer);
+        }
+
+        public MultiKeyCollection(IEqualityComparer<TPrimaryKey> primaryKeyComparer, IEqualityComparer<TUniqueKey> uniqueKeyComparer)
+            : base(primaryKeyComparer)
+        {
+            _byUniqueKey = new Dictionary<TUniqueKey, TItem>(uniqueKeyComparer);
+        }
+
+        #endregion
+
         #region Methods
 
         /// <summary>

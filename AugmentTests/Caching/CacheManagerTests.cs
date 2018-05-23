@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Augment.Caching;
-using AutoMoq;
 using FizzWare.NBuilder;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -34,7 +33,7 @@ namespace Augment.Tests.Caching
             }
         }
 
-        private AutoMoqer Mocker { get; set; }
+        private Moxy Moxy { get; set; }
         private Mock<ICacheProvider> MockProvider { get; set; }
         private CacheManager SubjectUnderTest { get; set; }
 
@@ -50,11 +49,11 @@ namespace Augment.Tests.Caching
         [TestInitialize]
         public void TestInitialize()
         {
-            Mocker = new AutoMoqer();
+            Moxy = new Moxy();
 
-            SubjectUnderTest = Mocker.Create<CacheManager>();
+            SubjectUnderTest = Moxy.CreateInstance<CacheManager>();
 
-            MockProvider = Mocker.GetMock<ICacheProvider>();
+            MockProvider = Moxy.GetMock<ICacheProvider>();
         }
 
         #endregion
@@ -67,9 +66,12 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Absolute, CachePriority.Normal));
+            MockProvider
+                .Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Absolute, CachePriority.Normal));
 
             //  act
             var actual = SubjectUnderTest.Cache<User>(() => user)
@@ -81,7 +83,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -90,9 +92,12 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Absolute, CachePriority.High));
+            MockProvider
+                .Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Absolute, CachePriority.High));
 
             //  act
             var actual = SubjectUnderTest
@@ -105,7 +110,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -114,9 +119,12 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Sliding, CachePriority.Normal));
+            MockProvider
+                .Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Sliding, CachePriority.Normal));
 
             //  act
             var actual = SubjectUnderTest
@@ -129,7 +137,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -138,9 +146,12 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Sliding, CachePriority.High));
+            MockProvider
+                .Setup(x => x.Add(AnyKey, AnyObject, AnyTimeSpan, CacheExpiration.Sliding, CachePriority.High));
 
             //  act
             var actual = SubjectUnderTest
@@ -153,7 +164,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -162,7 +173,12 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(null as User);
+
+            MockProvider
+                .Setup(x => x.Add(AnyKey, user, 20.Minutes(), CacheExpiration.Absolute, CachePriority.Default));
 
             var called = false;
 
@@ -176,7 +192,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -185,7 +201,9 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(user);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(user);
 
             var called = false;
 
@@ -199,7 +217,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -208,7 +226,9 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(user);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(user);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().CachedObject;
@@ -218,7 +238,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -227,7 +247,9 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(UserKey + "123;")).Returns(user);
+            MockProvider
+                .Setup(x => x.Get(UserKey + "123;"))
+                .Returns(user);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().By(123).CachedObject;
@@ -237,7 +259,7 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -246,7 +268,9 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(user);
+            MockProvider
+                .Setup(x => x.Remove(UserKey + "123;"))
+                .Returns(user);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().By(123).Remove();
@@ -256,14 +280,16 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
         public void CacheManger_Should_Not_Find_Object()
         {
             //  arrange
-            MockProvider.Setup(x => x.Get(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(AnyKey))
+                .Returns(null as User);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().CachedObject;
@@ -271,7 +297,7 @@ namespace Augment.Tests.Caching
             //  assert
             Assert.IsNull(actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -280,7 +306,9 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Remove(AnyKey)).Returns(user);
+            MockProvider
+                .Setup(x => x.Remove(AnyKey))
+                .Returns(user);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().Remove();
@@ -290,14 +318,16 @@ namespace Augment.Tests.Caching
 
             Assert.AreSame(user, actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
         public void CacheManger_Should_Remove_Not_Found_Object()
         {
             //  arrange
-            MockProvider.Setup(x => x.Remove(AnyKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(AnyKey))
+                .Returns(null as User);
 
             //  act
             var actual = SubjectUnderTest.Find<User>().Remove();
@@ -305,7 +335,7 @@ namespace Augment.Tests.Caching
             //  assert
             Assert.IsNull(actual);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         #endregion
@@ -318,16 +348,19 @@ namespace Augment.Tests.Caching
             //  arrange
             var user = Builder<User>.CreateNew().Build();
 
-            MockProvider.Setup(x => x.Get(UserKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(UserKey))
+                .Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(UserKey, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider
+                .Setup(x => x.Add(UserKey, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).CachedObject;
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -338,16 +371,19 @@ namespace Augment.Tests.Caching
 
             var key = "System.Int32;Enumerable;";
 
-            MockProvider.Setup(x => x.Get(key)).Returns(null as IList<int>);
+            MockProvider
+                .Setup(x => x.Get(key))
+                .Returns(null as IList<int>);
 
-            MockProvider.Setup(x => x.Add(key, list, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider
+                .Setup(x => x.Add(key, list, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => list).CachedObject;
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -358,16 +394,19 @@ namespace Augment.Tests.Caching
 
             var key = UserKey + "123;";
 
-            MockProvider.Setup(x => x.Get(key)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Get(key))
+                .Returns(null as User);
 
-            MockProvider.Setup(x => x.Add(key, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider
+                .Setup(x => x.Add(key, user, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => user).By(123).CachedObject;
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -376,16 +415,19 @@ namespace Augment.Tests.Caching
             //  arrange
             var users = Builder<User>.CreateListOfSize(10).Build();
 
-            MockProvider.Setup(x => x.Get(UserEnumerableKey)).Returns(null as IList<User>);
+            MockProvider
+                .Setup(x => x.Get(UserEnumerableKey))
+                .Returns(null as IList<User>);
 
-            MockProvider.Setup(x => x.Add(UserEnumerableKey, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider
+                .Setup(x => x.Add(UserEnumerableKey, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).CachedObject;
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -396,9 +438,12 @@ namespace Augment.Tests.Caching
 
             var key = UserEnumerableKey + "123,456;";
 
-            MockProvider.Setup(x => x.Get(key)).Returns(null as IList<User>);
+            MockProvider
+                .Setup(x => x.Get(key))
+                .Returns(null as IList<User>);
 
-            MockProvider.Setup(x => x.Add(key, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
+            MockProvider
+                .Setup(x => x.Add(key, users, AnyTimeSpan, AnyCacheExpiration, AnyCachePriority));
 
             //  act
             var actual = SubjectUnderTest.Cache(() => users).By(123, 456).CachedObject;
@@ -407,7 +452,7 @@ namespace Augment.Tests.Caching
 
             System.Diagnostics.Debug.WriteLine(actual.Count);
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -415,19 +460,25 @@ namespace Augment.Tests.Caching
         {
             //  arrange
 
-            MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
+            MockProvider
+                .Setup(x => x.GetAllKeys())
+                .Returns(new[] {
                 UserKey, UserEnumerableKey
             });
 
-            MockProvider.Setup(x => x.Remove(UserKey)).Returns(null as User);
-            MockProvider.Setup(x => x.Remove(UserEnumerableKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserKey))
+                .Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserEnumerableKey))
+                .Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<User>().RemoveAll();
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -435,18 +486,22 @@ namespace Augment.Tests.Caching
         {
             //  arrange
 
-            MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
+            MockProvider
+                .Setup(x => x.GetAllKeys())
+                .Returns(new[] {
                 UserKey, UserEnumerableKey
             });
 
-            MockProvider.Setup(x => x.Remove(UserEnumerableKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserEnumerableKey))
+                .Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<IList<User>>().RemoveAll();
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -454,18 +509,22 @@ namespace Augment.Tests.Caching
         {
             //  arrange
 
-            MockProvider.Setup(x => x.GetAllKeys()).Returns(new[] {
+            MockProvider
+                .Setup(x => x.GetAllKeys())
+                .Returns(new[] {
                 UserKey, UserEnumerableKey
             });
 
-            MockProvider.Setup(x => x.Remove(UserEnumerableKey)).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserEnumerableKey))
+                .Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<IList<User>>().RemoveAll();
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -474,16 +533,20 @@ namespace Augment.Tests.Caching
             //  arrange
             var keys = new[] { UserKey, UserEnumerableKey, UserKey + "123;", UserKey + "456;" };
 
-            MockProvider.Setup(x => x.GetAllKeys()).Returns(keys);
+            MockProvider
+                .Setup(x => x.GetAllKeys())
+                .Returns(keys);
 
-            MockProvider.Setup(x => x.Remove(UserKey + "123;")).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserKey + "123;"))
+                .Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<User>().By(123).RemoveAll();
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         [TestMethod]
@@ -492,17 +555,23 @@ namespace Augment.Tests.Caching
             //  arrange
             var keys = new[] { UserKey, UserEnumerableKey, UserKey + "123,456;", UserKey + "123,789;" };
 
-            MockProvider.Setup(x => x.GetAllKeys()).Returns(keys);
+            MockProvider
+                .Setup(x => x.GetAllKeys())
+                .Returns(keys);
 
-            MockProvider.Setup(x => x.Remove(UserKey + "123,456;")).Returns(null as User);
-            MockProvider.Setup(x => x.Remove(UserKey + "123,789;")).Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserKey + "123,456;"))
+                .Returns(null as User);
+            MockProvider
+                .Setup(x => x.Remove(UserKey + "123,789;"))
+                .Returns(null as User);
 
             //  act
             SubjectUnderTest.Find<User>().By(123, "*").RemoveAll();
 
             //  assert
 
-            MockProvider.VerifyAll();
+            Moxy.VerifyAll();
         }
 
         #endregion

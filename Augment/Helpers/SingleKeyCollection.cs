@@ -12,7 +12,23 @@ namespace Augment
     {
         #region Members
 
-        private Dictionary<TPrimaryKey, TItem> _byPrimaryKey = new Dictionary<TPrimaryKey, TItem>();
+        private Dictionary<TPrimaryKey, TItem> _byPrimaryKey;
+
+        #endregion
+
+        #region Constructors
+
+        public SingleKeyCollection()
+            : base()
+        {
+            _byPrimaryKey = new Dictionary<TPrimaryKey, TItem>();
+        }
+
+        public SingleKeyCollection(IEqualityComparer<TPrimaryKey> comparer)
+            : base()
+        {
+            _byPrimaryKey = new Dictionary<TPrimaryKey, TItem>(comparer);
+        }
 
         #endregion
 

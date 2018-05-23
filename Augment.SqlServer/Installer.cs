@@ -200,6 +200,8 @@ namespace Augment.SqlServer
 
                 foreach (SqlObject sqlObj in operations)
                 {
+                    Logger.Info("EXECUTING -> " + sqlObj.OriginalSql + Environment.NewLine);
+
                     _targetConnection.Execute(sqlObj.OriginalSql);
                 }
 

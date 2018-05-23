@@ -1,83 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{937B672A-3534-480F-B9B2-34E1094BDDAD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Augment</RootNamespace>
-    <AssemblyName>Augment</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>bin\Debug\Augment.XML</DocumentationFile>
-    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Augment.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <TargetFrameworks>net451;net461;net471;netstandard2.0</TargetFrameworks>
+    <Version>3.0.0</Version>
+    <PackageReleaseNotes>3.0 - Support net45, net46, net41, and nestandard2.0, Added constructors to KeyedCollections for Comparers
+2.1 - Support net45 and net46
+2.0 - Bumped to net46, Added StartsWithSameAs, EndsWithSameAs (added NotSame Extensions)
+1.5 - Added Exception Extensions (and IsIn extension verfication)
+1.4 - Added Try/Get to Single/Multi Key Collections
+1.3 - Added Single Key Collection
+1.2 - EnsureThat 3.2
+1.1 - Added Reflection Helper for get/set properties
+1.0 - Initial Release</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/ellerbus/Augment</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ellerbus/Augment</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>extension methods dry</PackageTags>
+    <Description>.NET Object Extension Library</Description>
+    <PackageLicenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</PackageLicenseUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ensure.That, Version=8.0.0.86, Culture=neutral, PublicKeyToken=d7cf9132176ba30b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ensure.That.8.0.0\lib\net451\Ensure.That.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
+    <PackageReference Include="Ensure.That" Version="8.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Extensions\ExceptionExtensions.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\ComparableExtensions.cs" />
-    <Compile Include="Extensions\IntExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\DoubleExtensions.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
-    <Compile Include="Helpers\LeastRecentlyUsedCache.cs" />
-    <Compile Include="Helpers\SingleKeyCollection.cs" />
-    <Compile Include="Helpers\MultiKeyCollection.cs" />
-    <Compile Include="Helpers\Range.cs" />
-    <Compile Include="Helpers\ReflectionHelper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Extensions\StringBuilderExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Extensions\TypeExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Augment.nuspec" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

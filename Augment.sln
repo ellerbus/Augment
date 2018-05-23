@@ -2,11 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment", "Augment\Augment.csproj", "{937B672A-3534-480F-B9B2-34E1094BDDAD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Tests", "AugmentTests\Augment.Tests.csproj", "{01B3740F-61BA-4F73-8F6D-63806A333689}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Caching", "Augment.Caching\Augment.Caching.csproj", "{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment", "Augment\Augment.csproj", "{937B672A-3534-480F-B9B2-34E1094BDDAD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{58F9C475-3E8B-469E-81F2-97CB871CA232}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,9 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.SqlServer", "Augment.SqlServer\Augment.SqlServer.csproj", "{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.Tests", "AugmentTests\Augment.Tests.csproj", "{01B3740F-61BA-4F73-8F6D-63806A333689}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.SqlServer.Sample", "Augment.SqlServer.Sample\Augment.SqlServer.Sample.csproj", "{408361FD-1A55-4A5A-BA60-834DBCF020D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.SqlServer", "Augment.SqlServer\Augment.SqlServer.csproj", "{608DC7FC-DDD7-44B5-B6A7-CF3596DFB8CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.Caching", "Augment.Caching\Augment.Caching.csproj", "{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,18 +32,14 @@ Global
 		{01B3740F-61BA-4F73-8F6D-63806A333689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01B3740F-61BA-4F73-8F6D-63806A333689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01B3740F-61BA-4F73-8F6D-63806A333689}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9F72F9D-FADA-4ABB-B7E6-438CDAB744C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{914A2F31-07E0-4ADE-A97E-34AFBA17DF88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{408361FD-1A55-4A5A-BA60-834DBCF020D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{608DC7FC-DDD7-44B5-B6A7-CF3596DFB8CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{608DC7FC-DDD7-44B5-B6A7-CF3596DFB8CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{608DC7FC-DDD7-44B5-B6A7-CF3596DFB8CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{608DC7FC-DDD7-44B5-B6A7-CF3596DFB8CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
