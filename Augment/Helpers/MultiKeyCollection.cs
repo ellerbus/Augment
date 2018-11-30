@@ -40,14 +40,14 @@ namespace Augment
         #region Methods
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         protected abstract TUniqueKey GetUniqueKey(TItem item);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         protected override void ClearItems()
         {
@@ -57,7 +57,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         /// <param name="item"></param>
@@ -69,7 +69,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         /// <param name="item"></param>
@@ -95,7 +95,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="index"></param>
         protected override void RemoveItem(int index)
@@ -113,7 +113,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="uq"></param>
         /// <returns></returns>
@@ -123,7 +123,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="uq"></param>
         /// <returns></returns>
@@ -133,7 +133,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="uq"></param>
         /// <param name="item"></param>

@@ -14,14 +14,14 @@ namespace Augment
         #region Type Assistance
 
         ///// <summary>
-        ///// 
+        /////
         ///// </summary>
         ///// <remarks>
         ///// For instance:
         ///// Type customType = typeof(Custom<>);
-        ///// 
+        /////
         ///// type.IsSubclassOfGeneric(customType)
-        ///// 
+        /////
         ///// works when type is NOT generic
         ///// </remarks>
         ///// <param name="type"></param>
@@ -82,7 +82,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>

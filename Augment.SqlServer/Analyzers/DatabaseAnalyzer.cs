@@ -146,9 +146,12 @@ namespace Augment.SqlServer.Analyzers
         {
             SqlObject drop = DropOf(sqlObj);
 
-            _drops.Add(drop);
+            if (!_drops.Contains(drop))
+            {
+                _drops.Add(drop);
 
-            _registry.Drop(drop);
+                _registry.Drop(drop);
+            }
         }
 
         public SqlObject DropOf(SqlObject sqlObj)

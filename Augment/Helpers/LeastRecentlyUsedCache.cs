@@ -40,7 +40,7 @@ namespace Augment
         #region Constructors
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="capacity"></param>
         public LeastRecentlyUsedCache(int capacity = 500)
@@ -109,7 +109,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         private void Add(LinkedListNode<Entry> node)
@@ -122,7 +122,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -135,7 +135,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -153,7 +153,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="node"></param>
         private void Remove(LinkedListNode<Entry> node)
@@ -164,7 +164,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -179,7 +179,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void ShrinkToCapacity()
         {
@@ -192,7 +192,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         private IEnumerable<TItem> GetItems()
@@ -208,7 +208,7 @@ namespace Augment
         #region Properities
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Capacity
         {
@@ -223,10 +223,11 @@ namespace Augment
                 }
             }
         }
+
         private int _capacity;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public TItem First
         {
@@ -242,7 +243,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public TItem Last
         {
@@ -266,7 +267,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int Count
         {
@@ -274,7 +275,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IEnumerable<TKey> Keys
         {
@@ -282,7 +283,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public IEnumerable<TItem> Items
         {
@@ -290,7 +291,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -332,7 +333,7 @@ namespace Augment
         #region IEnumerable Implementation
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IEnumerator<TItem> GetEnumerator()
@@ -341,7 +342,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

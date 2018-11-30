@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETSTANDARD2_0
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Web;
@@ -19,7 +21,7 @@ namespace Augment.Caching
         private TimeSpan NoSliding = System.Web.Caching.Cache.NoSlidingExpiration;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -33,16 +35,18 @@ namespace Augment.Caching
                 case CacheExpiration.Absolute:
                     HttpRuntime.Cache.Add(key, value, null, DateTime.UtcNow.Add(duration), NoSliding, (CacheItemPriority)priority, null);
                     break;
+
                 case CacheExpiration.Sliding:
                     HttpRuntime.Cache.Add(key, value, null, NoExpiration, duration, (CacheItemPriority)priority, null);
                     break;
+
                 default:
                     throw new InvalidOperationException("Unknown Cache Expiration " + expires);
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -52,7 +56,7 @@ namespace Augment.Caching
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -62,7 +66,7 @@ namespace Augment.Caching
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public IEnumerable<string> GetAllKeys()
@@ -85,3 +89,5 @@ namespace Augment.Caching
         #endregion
     }
 }
+
+#endif

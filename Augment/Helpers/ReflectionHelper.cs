@@ -10,7 +10,7 @@ namespace Augment
     #region Exception
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     [Serializable]
     public class ReflectionHelperException : Exception, ISerializable
@@ -20,7 +20,7 @@ namespace Augment
         internal const string CannotWriteMessage = "Specified Property cannot be written to '{0}->{1}'";
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="message"></param>
         /// <param name="type"></param>
@@ -33,7 +33,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
@@ -45,7 +45,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
@@ -82,9 +82,9 @@ namespace Augment
 
         private static ConcurrentDictionary<Type, PropertyWrapper> _wrappers = new ConcurrentDictionary<Type, PropertyWrapper>();
 
-        class PropertyWrapper
+        private class PropertyWrapper
         {
-            class Methods
+            private class Methods
             {
                 public MethodBase Get { get; set; }
                 public MethodBase Set { get; set; }

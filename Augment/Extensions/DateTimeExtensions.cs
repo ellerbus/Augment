@@ -16,7 +16,7 @@ namespace Augment
         #region Day
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -26,7 +26,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -40,7 +40,7 @@ namespace Augment
         #region Week
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="startOfWeek"></param>
@@ -60,7 +60,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="startOfWeek"></param>
@@ -75,7 +75,7 @@ namespace Augment
         #region Month
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -85,7 +85,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -99,7 +99,7 @@ namespace Augment
         #region Quarter
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -111,7 +111,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -127,7 +127,7 @@ namespace Augment
         #region Year
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -137,7 +137,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -151,7 +151,7 @@ namespace Augment
         #region Misc
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -212,7 +212,7 @@ namespace Augment
         private static LeastRecentlyUsedCache<int, HashSet<DateTime>> _holidayCache = new LeastRecentlyUsedCache<int, HashSet<DateTime>>(50);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="year"></param>
         /// <returns></returns>
@@ -227,12 +227,12 @@ namespace Augment
 
                 HashSet<DateTime> holidays = new HashSet<DateTime>();
 
-                //  NEW YEARS 
+                //  NEW YEARS
                 DateTime newYearsDate = AdjustForWeekendHoliday(new DateTime(year, 1, 1));
 
                 holidays.Add(newYearsDate);
 
-                //  MEMORIAL DAY  -- last monday in May 
+                //  MEMORIAL DAY  -- last monday in May
                 DateTime memorialDay = new DateTime(year, 5, 31);
 
                 DayOfWeek dayOfWeek = memorialDay.DayOfWeek;
@@ -246,12 +246,12 @@ namespace Augment
 
                 holidays.Add(memorialDay);
 
-                //  INDEPENCENCE DAY 
+                //  INDEPENCENCE DAY
                 DateTime independenceDay = AdjustForWeekendHoliday(new DateTime(year, 7, 4));
 
                 holidays.Add(independenceDay);
 
-                //  LABOR DAY -- 1st Monday in September 
+                //  LABOR DAY -- 1st Monday in September
                 DateTime laborDay = new DateTime(year, 9, 1);
 
                 dayOfWeek = laborDay.DayOfWeek;
@@ -265,7 +265,7 @@ namespace Augment
 
                 holidays.Add(laborDay.Date);
 
-                //  THANKSGIVING DAY - 4th Thursday in November 
+                //  THANKSGIVING DAY - 4th Thursday in November
                 int thanksgiving = Enumerable.Range(1, 30)
                     .Where(i => new DateTime(year, 11, i).DayOfWeek == DayOfWeek.Thursday)
                     .ElementAt(3)
@@ -306,7 +306,7 @@ namespace Augment
         #region Relative Date String
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -316,7 +316,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
@@ -326,7 +326,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="comparedTo"></param>
@@ -382,19 +382,6 @@ namespace Augment
         }
 
         #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         ///// <summary>
         ///// Returns the first day of week with in the month.
@@ -522,7 +509,6 @@ namespace Augment
         //    return dt.AddDays(Sub(day, dt.DayOfWeek));
         //}
 
-
         ///// <summary>
         ///// Adds the specified number of financials days to the value of this instance.
         ///// </summary>
@@ -572,5 +558,4 @@ namespace Augment
         //    return (dt - new DateTime(1972, 1, 1, 0, 0, 0, 0)).TotalSeconds;
         //}
     }
-
 }

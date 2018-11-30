@@ -40,7 +40,7 @@ namespace Augment
         #region Operators
 
         /// <summary>
-        /// Determines whether two specified ranges have the same value. 
+        /// Determines whether two specified ranges have the same value.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -63,7 +63,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// Determines whether two specified ranges have different values. 
+        /// Determines whether two specified ranges have different values.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -88,7 +88,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// Determines whether this instance and another have the same value. 
+        /// Determines whether this instance and another have the same value.
         /// </summary>
         /// <param name="other"></param>
         /// <returns>true if other is a ranges and its value is the same as this instance; otherwise, false.</returns>
@@ -105,7 +105,7 @@ namespace Augment
         }
 
         /// <summary>
-        /// Determines whether this instance and a specified object, have the same value. 
+        /// Determines whether this instance and a specified object, have the same value.
         /// </summary>
         /// <param name="obj"></param>
         /// <returns>true if obj is a range and its value is the same as this instance; otherwise, false.</returns>
@@ -117,7 +117,7 @@ namespace Augment
         /// <summary>
         /// Returns the hash code.
         /// </summary>
-        /// <returns>A 32-bit signed integer hash code.</returns>		
+        /// <returns>A 32-bit signed integer hash code.</returns>
         public override int GetHashCode()
         {
             var hashCode = Start.GetHashCode();

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net451;net461;net471;netstandard2.0</TargetFrameworks>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Description>Easy to Use SQL Server Script Management Library</Description>
     <PackageLicenseUrl>https://github.com/ellerbus/Augment/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ellerbus/Augment</PackageProjectUrl>
