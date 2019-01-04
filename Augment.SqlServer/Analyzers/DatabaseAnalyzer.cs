@@ -25,7 +25,7 @@ namespace Augment.SqlServer.Analyzers
     {
         #region Members
 
-        class ColumnDefinition
+        private class ColumnDefinition
         {
             public string Name { get; set; }
             public string Definition { get; set; }
@@ -246,8 +246,14 @@ namespace Augment.SqlServer.Analyzers
                 case ObjectTypes.ForeignKey:
                 case ObjectTypes.TableType:
                 case ObjectTypes.View:
-                    Drop(target);
-                    Add(source);
+                    if (!_drops.Contains(target))
+                    {
+                        Drop(target);
+                    }
+                    if (!_adds.Contains(source))
+                    {
+                        Add(source);
+                    }
                     ApplyImpacts(target);
                     break;
 
@@ -269,7 +275,6 @@ namespace Augment.SqlServer.Analyzers
                 default:
                     throw source.Type.UnsupportedException();
             }
-
         }
 
         public void ApplyImpacts(SqlObject target)
@@ -290,7 +295,7 @@ namespace Augment.SqlServer.Analyzers
         #region Properties
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public SqlConnection Connection { get; private set; }
 

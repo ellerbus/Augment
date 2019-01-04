@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.SqlServer", "Augmen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.Caching", "Augment.Caching\Augment.Caching.csproj", "{827D75C1-BD27-44B0-99EB-5FEA0491CDFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Augment.SqlServer.Sample", "Augment.SqlServer.Sample\Augment.SqlServer.Sample.csproj", "{408361FD-1A55-4A5A-BA60-834DBCF020D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Augment.SqlServer.Sample", "Augment.SqlServer.Sample\Augment.SqlServer.Sample.csproj", "{408361FD-1A55-4A5A-BA60-834DBCF020D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

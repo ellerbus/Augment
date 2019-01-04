@@ -87,42 +87,42 @@ namespace Augment.SqlServer.Models
         #region Properties
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ObjectTypes Type { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string OriginalName { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string NormalizedName { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string SchemaName { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string OwnerName { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string ObjectName { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private string[] Identifiers { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string OriginalSql
         {
@@ -134,15 +134,16 @@ namespace Augment.SqlServer.Models
                 NormalizedSql = Tokenizer.Normalize(value);
             }
         }
+
         private string _originalSql;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public string NormalizedSql { get; private set; }
 
         /// <summary>
-        /// Those object impacted by changes 'this' object
+        /// Those object impacted by changes of 'this' object
         /// </summary>
         public SqlObjectCollection Impacts { get; } = new SqlObjectCollection();
 
