@@ -7,7 +7,7 @@ properties {
 
 FormatTaskName (("-" * 25) + "[{0}]" + ("-" * 25))
 
-Task Default -Depends Clean, Build, Pack
+Task Default -Depends Clean, Build, Pack, Push
 
 Task Clean {
     Write-Host "Cleaning Build Folder"
@@ -35,4 +35,12 @@ Task Pack {
     Exec {
         dotnet pack "$base_dir\Augment.sln" --configuration "Release"
     }
+}
+
+Task Push {
+	Write-Host "Pushing ..." -ForegroundColor Green
+	
+	Exec {
+		#dotnet nuget push --source "http:" --api-key "$key" "path"
+	}
 }
